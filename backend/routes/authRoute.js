@@ -1,12 +1,13 @@
-const express = require('express');
+import { signupUser } from '../controllers/authController.js';
+import express from 'express'
 const router = express.Router()
 
 router.get("/", (req, res) => {
-  res.send("Server is running 🚀");
+  res.send("Server is running");
 });
 
-router.get('/api/signup',(req,res)=>{
 
-})
+// signing up route
+router.post('/api/auth/signup',signupUser)
 
 export default router

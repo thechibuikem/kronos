@@ -1,11 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "../features/auth/Slices/LoggedInSlice"; //authReducer becomes the default export of LoggedInslice 
+import isExistingUserReducer from "../features/auth/Slices/ExistingUserSlice"; //authReducer becomes the default export of LoggedInslice
+import isAuthenticatedReducer from "../features/auth/Slices/AuthenthicatedSlice"
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer,
+    /*{slice name:default export}*/
+    existingUser: isExistingUserReducer,
+    authenticated:isAuthenticatedReducer
   },
 });
+
+// const stateName = useSelector((state:RootState)=>state.sliceName)
 
 //
 export type RootState = ReturnType<typeof store.getState>;

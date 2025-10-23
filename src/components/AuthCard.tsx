@@ -11,29 +11,31 @@ import AuthForm from "./AuthForm";
 import { Button } from "@/components/ui/button";
 import { useSelector, useDispatch } from "react-redux";
 import { type RootState } from "../app/centralStore"; //adjust path if needed
-import { toggleLogin } from "@/features/auth/Slices/LoggedInSlice"; //reduce
+import { toggleExistingUser } from "@/features/auth/Slices/ExistingUserSlice"; //reducer
 
 export default function AuthCard() {
   const dispatch = useDispatch();
-  const isLogin = useSelector((state: RootState) => state.auth.isLogin);
+  const isExistingUser = useSelector(
+    (state: RootState) => state.existingUser.isExistingUser
+  );
 
-  const authState = useSelector((state: RootState) => state.auth);
-  console.log("Full auth state:", authState);
+  const userState = useSelector((state: RootState) => state.existingUser);
+  console.log("is existing user:", userState);
 
   // State for mode: login or signup
-  const handleLoginToggle = () => {
-    dispatch(toggleLogin());
+  const handleIsExistingUserToggle = () => {
+    dispatch(toggleExistingUser());
   };
 
   return (
     <Card className="w-full max-w-sm h-fit mx-auto">
       <CardHeader>
         <CardTitle>
-          {isLogin ? "Login to your account" : "Sign up on Kronos"}
+          {isExistingUser ? "Login to your account" : "Sign up on Kronos"}
         </CardTitle>
 
         <CardDescription>
-          {isLogin
+          {isExistingUser
             ? "Enter your email below to sign up on kronos"
             : "Enter your email below to join us on kronos"}
         </CardDescription>
@@ -43,9 +45,9 @@ export default function AuthCard() {
             variant="link"
             type="button"
             className="cursor-pointer"
-            onClick={handleLoginToggle}
+            onClick={handleIsExistingUserToggle}
           >
-            {isLogin ? "Log In" : "Sign Up"}
+            {isExistingUser ? "Log In" : "Sign Up"}
           </Button>
         </CardAction>
       </CardHeader>
@@ -57,7 +59,7 @@ export default function AuthCard() {
       <CardFooter className="flex-col gap-2">
         {/* oauth button */}
         <Button variant="outline" className="w-full">
-          {isLogin ? "Log In With Github" : "Sign Up With Github"}
+          {isExistingUser ? "Log In With Github" : "Sign Up With Github"}
         </Button>
       </CardFooter>
     </Card>
