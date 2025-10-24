@@ -53,7 +53,7 @@ export default function AuthForm() {
 
     // handling backend response
     if (!res.ok) {
-      return console.error("Backend response was not okay:", res.statusText);
+      return console.error("Backend response was not okay:",res, res.statusText);
     }
  
     let data;// data variable to provide jwt token
@@ -73,9 +73,18 @@ export default function AuthForm() {
         navigate('/dashboard',{replace:true})//dashboard route
       }
       // how ever if my data contains an existing user Error message
-      else if (data.oldEmail) {
+      else if (data.relay) {
         if (emailMessageRef.current && !isExistingUser) {
-          emailMessageRef.current.textContent = "user already exists";
+          emailMessageRef.current.textContent = data.error;
+        }
+        //if I'm on login form and 
+        else if (passwordMessageRef.current && isExistingUser) {
+          passwordMessageRef.current.textContent = data.error
+        }
+      }
+      else if (data.oldEmail){
+        if(emailMessageRef.current && isExistingUser){
+          emailMessageRef.current.textContent = data.error
         }
       }
     } catch (err) {
@@ -89,12 +98,14 @@ export default function AuthForm() {
     if (passwordRef.current) passwordRef.current.value = "";
   };
 
-//
+//use effect to clear, error messages on change of a value
 useEffect(() => {
   if (emailMessageRef.current) {
     emailMessageRef.current.textContent = "";
+  }else if(passwordMessageRef.current){
+    passwordMessageRef.current.textContent = "";
   }
-}, [isExistingUser])
+}, [isExistingUser,passwordMessageRef.current])
 
 
   //finally what is being returned

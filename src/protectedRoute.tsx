@@ -5,15 +5,12 @@ import { useSelector } from "react-redux";
 import { type RootState } from "./app/centralStore";
 
 
-
-
-
 // the interface for the return value of ProtectedRoute component
 interface ProtectedRouteProps {
   children: ReactNode;
 }
 
-
+// protected route. dashboard
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
 }: {
@@ -21,16 +18,19 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 }) => {
 
   const reduxToken = useSelector(
-    (state: RootState) => state.authenticated
+    (state: RootState) => state.authenticated.isAuthenticated
   )
   const token = localStorage.getItem("token")|| reduxToken||"";//getting our token from either local storage or redux
 
 
   if (!token) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/" replace/>;
   }
 
   return <>{children}</>;
 };
 
 export default ProtectedRoute;
+
+
+// {state.objectName.variableName}
