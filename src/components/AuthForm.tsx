@@ -18,12 +18,12 @@ export default function AuthForm() {
   console.log(isExistingUser);
   
   
-  // getting token from local storage if it exists there, else let it be an empty string
-  let token: string = localStorage.getItem("token") || "";
+
+  let token: string = localStorage.getItem("token") || "";  // getting token from local storage if it exists there, else let it be an empty string
+
   const BACKENDURL:string = "http://localhost:5000";
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   
 
   // refs to hold input box and their relay messages
@@ -72,12 +72,12 @@ export default function AuthForm() {
         dispatch(toggleExistingUser())
         navigate('/dashboard',{replace:true})//dashboard route
       }
-      // how ever if my data contains an existing user Error message
+      // If my user credentials contain invalid entry
       else if (data.relay) {
         if (emailMessageRef.current && !isExistingUser) {
           emailMessageRef.current.textContent = data.error;
         }
-        //if I'm on login form and 
+        //...invalid 
         else if (passwordMessageRef.current && isExistingUser) {
           passwordMessageRef.current.textContent = data.error
         }

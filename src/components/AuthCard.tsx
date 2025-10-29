@@ -7,11 +7,13 @@ import {
   CardContent,
   CardFooter,
 } from "./ui/card";
+import OauthBtn from "./OauthBtn";
 import AuthForm from "./AuthForm";
 import { Button } from "@/components/ui/button";
 import { useSelector, useDispatch } from "react-redux";
 import { type RootState } from "../app/centralStore"; //adjust path if needed
 import { toggleExistingUser } from "@/features/auth/Slices/ExistingUserSlice"; //reducer
+
 
 export default function AuthCard() {
   const dispatch = useDispatch();
@@ -58,9 +60,7 @@ export default function AuthCard() {
       </CardContent>
       <CardFooter className="flex-col gap-2">
         {/* oauth button */}
-        <Button variant="outline" className="w-full">
-          {isExistingUser ? "Log In With Github" : "Sign Up With Github"}
-        </Button>
+        <OauthBtn/>
       </CardFooter>
     </Card>
   );

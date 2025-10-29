@@ -46,5 +46,20 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.45.0",
     "vite": "^7.1.7"
-  }
+  },
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thechibuikem/kronos.git"
+  },
+  "keywords": [
+    "github"
+  ],
+  "author": "chukwuemeka david",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thechibuikem/kronos/issues"
+  },
+  "homepage": "https://github.com/thechibuikem/kronos#readme"
 }
