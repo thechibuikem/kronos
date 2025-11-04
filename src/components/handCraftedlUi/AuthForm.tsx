@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useNewOrExistingUsersHandlers } from "@/features/auth/hooks/useExistingUserHandlers";
+import { useNewOrExistingUsersHandlers } from "@/redux/auth/hooks/useExistingUserHandlers";
 import { useRef,useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { type RootState } from "@/app/centralStore";
-import { setAuthenticated } from "@/features/auth/Slices/AuthenthicatedSlice"; //importing my action
+import { setAuthenticated } from "@/redux/auth/Slices/AuthenthicatedSlice"; //importing my action
 import { useNavigate } from "react-router-dom";
-import { toggleExistingUser } from "@/features/auth/Slices/ExistingUserSlice";
+import { toggleExistingUser } from "@/redux/auth/Slices/ExistingUserSlice";
 
 export default function AuthForm() {
   const isAuthenticated = useSelector(

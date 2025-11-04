@@ -1,5 +1,5 @@
-import LogInLeft from "../components/LogInLeft";
-import AuthCard from "@/components/AuthCard";
+import LogInLeft from "../components/sectionComponents/LogInLeft";
+import AuthCard from "@/components/sectionComponents/AuthCard";
 
 const LoginPage = () => {
   return (

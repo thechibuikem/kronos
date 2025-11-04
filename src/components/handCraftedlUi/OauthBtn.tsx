@@ -1,4 +1,4 @@
-import { Button } from "./ui/button"
+import { Button } from "../ui/button"
 import { useEffect } from "react"
 
 function OauthBtn() {
@@ -19,14 +19,13 @@ const handleOauthClick = async(e:React.FormEvent)=>{
 e.preventDefault();
   const endpoint = 'http://localhost:5000/api/auth/github'
 
-
 //first going to github oauth stuff
  window.location.href=endpoint}
 
 
     {/* oauth button */}
     return (          
-        <Button variant="outline" className="w-full"
+        <Button variant="outline" className="w-full hover:bg-[#00000020] hover:shadow-md cursor-pointer"
         onClick={handleOauthClick}>
           Continue With Github
         </Button>

@@ -6,13 +6,13 @@ import {
   CardAction,
   CardContent,
   CardFooter,
-} from "./ui/card";
-import OauthBtn from "./OauthBtn";
-import AuthForm from "./AuthForm";
+} from "../ui/card";
+import OauthBtn from "../handCraftedlUi/OauthBtn";
+import AuthForm from "../handCraftedlUi/AuthForm";
 import { Button } from "@/components/ui/button";
 import { useSelector, useDispatch } from "react-redux";
-import { type RootState } from "../app/centralStore"; //adjust path if needed
-import { toggleExistingUser } from "@/features/auth/Slices/ExistingUserSlice"; //reducer
+import { type RootState } from "../../app/centralStore"; //adjust path if needed
+import { toggleExistingUser } from "@/redux/auth/Slices/ExistingUserSlice"; //reducer
 
 
 export default function AuthCard() {
