@@ -8,9 +8,9 @@ router.get("/", (req, res) => {
 });
 
 
-router.post('/api/auth/signup',signupUser)// signing up route
-router.post('/api/auth/login',loginUser)//login route
-router.get('/api/auth/github',githubOauth)//oauth route
-router.get('/api/auth/github/callback',gitHubToken)//oauth route
+router.post('/signup',signupUser)
+router.post('/login',loginUser)
+router.get('/github',githubOauth)
+router.get('/github/callback',gitHubToken)//oauth callback route
 
 export default router

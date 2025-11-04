@@ -2,10 +2,12 @@
 import cors from "cors";
 import bodyParser from "body-parser";
 import express from "express";
-import connectDB from "./config/db.js";
-import authRoutes from "./routes/authRoute.js"
+import dotenv from "dotenv";
+import connectDB from "./db.js";
+import authRoutes from "../modules/auth/routes/authRoute.js"
 
 
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json()); // Parse JSON data
 app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded data (like form submissions)
-app.use(authRoutes)
+app.use("/api/auth", authRoutes);
 
 
 

@@ -1,4 +1,4 @@
-import { userModel } from "../models/userModel.js";
+import { userModel } from "../../user/userModel.js";
 import jwt from "jsonwebtoken"
 
 export const addOauthUser = async (email,user) =>{

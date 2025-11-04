@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
-import { userModel } from "../models/userModel.js";
-import { genHashPassword, checkUser } from "../features/bcryptHashing.js";
+import { userModel } from "../../user/userModel.js";
+import { genHashPassword, checkUser } from "../utils/bcryptHashing.js";
 import jwt from "jsonwebtoken";
 dotenv.config(); // making all environmental variables accessible
 let secretKey = process.env.JWT_SECRET_KEY
@@ -22,9 +22,7 @@ export async function signupUser(req, res) {
       await newUser.save(); // save newUser to userModel collection
       console.log("saved new user successfully");
       // after user has been saved to database, create a jwt token for the user for session management
-      token = jwt.sign({ verified: true }, secretKey , {
-        // expiresIn: "1h",
-      });
+      token = jwt.sign({ verified: true }, secretKey );
       res.json({ message: "user created successfully", token: token }); //send token to the front-end
       return;
     }
