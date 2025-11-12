@@ -1,11 +1,11 @@
 {
-  "name": "backend",
+  "name": "backend-kronos",
   "version": "1.0.0",
   "main": "server.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon core/server.js"
   },
   "keywords": [],
   "author": "chukwuemeka david",
@@ -14,6 +14,7 @@
     "bcrypt": "^6.0.0",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "express-rate-limit": "^8.2.1",
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {

@@ -2,7 +2,7 @@
 import {
   githubOauthService,
   githubTokenService,
-} from "../services/oauth.service.js";
+} from "../services/oauthService.js";
 
 //controller using githubOauthService to redirect us to github oauth service and get code
 export async function githubOauth(req, res) {
