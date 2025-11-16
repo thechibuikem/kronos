@@ -7,22 +7,33 @@ import {
   CardContent,
   CardFooter,
 } from "../ui/card";
+import KronosLogo from "../handCraftedlUi/KronosLogo";
 import OauthBtn from "../handCraftedlUi/OauthBtn";
 import AuthForm from "../handCraftedlUi/AuthForm";
 import { Button } from "@/components/ui/button";
 import { useSelector, useDispatch } from "react-redux";
 import { type RootState } from "../../app/centralStore"; //adjust path if needed
 import { toggleExistingUser } from "@/redux/auth/Slices/ExistingUserSlice"; //reducer
-
+import { useContext } from "react";
+import { AppContext } from "@/Context/Context";
+import ErrorBanner from "../handCraftedlUi/ErrorBanner";
 
 export default function AuthCard() {
+  // setting up context
+  const context = useContext(AppContext);
+  if (!context) {
+    console.log("use of context isn't permitted at Banner");
+  } // guard to check if context's okay
+
+  const {authErrorMsg } = context; //destructuring from comntext
+
   const dispatch = useDispatch();
   const isExistingUser = useSelector(
     (state: RootState) => state.existingUser.isExistingUser
   );
 
   const userState = useSelector((state: RootState) => state.existingUser);
-  console.log("is existing user:", userState);
+  // console.log("is existing user:", userState);
 
   // State for mode: login or signup
   const handleIsExistingUserToggle = () => {
@@ -30,7 +41,8 @@ export default function AuthCard() {
   };
 
   return (
-    <Card className="w-full max-w-sm h-fit mx-auto">
+    <Card className=" md:w-full max-w-sm h-fit mx-auto relative">
+{ authErrorMsg && (<ErrorBanner />)}
       <CardHeader>
         <CardTitle>
           {isExistingUser ? "Login to your account" : "Sign up on Kronos"}
@@ -60,7 +72,11 @@ export default function AuthCard() {
       </CardContent>
       <CardFooter className="flex-col gap-2">
         {/* oauth button */}
-        <OauthBtn/>
+        <OauthBtn />
+
+        <div className="pt-4">
+          <KronosLogo color="#17255466" />
+        </div>
       </CardFooter>
     </Card>
   );

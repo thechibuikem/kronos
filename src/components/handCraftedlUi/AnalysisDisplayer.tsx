@@ -12,7 +12,9 @@ const analysisContainer:string[] = [
     <figure className='transparent-cards h-full lg:w-[40%] p-8'>
         <ul className="md:p-8">
 {/* mapping analysis into our analysus container */}
-          {analysisContainer.map((analysis)=><li className="mt-2">
+          {analysisContainer.map((analysis,index)=><li  
+          key={index}
+          className="mt-2">
           {analysis}
             </li>)}
 

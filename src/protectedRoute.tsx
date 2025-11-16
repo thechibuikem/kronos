@@ -1,36 +1,42 @@
-import type { ReactNode } from "react";
-import type React from "react";
+import { type ReactNode, useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { type RootState } from "./app/centralStore";
+import api from "./api/axiosInterceptor"; //interceptor instance
 
-
-// the interface for the return value of ProtectedRoute component
 interface ProtectedRouteProps {
   children: ReactNode;
 }
 
-// protected route. dashboard
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const reduxToken = useSelector(
     (state: RootState) => state.authenticated.isAuthenticated
-  )
-  const token = localStorage.getItem("token")|| reduxToken||"";//getting our token from either local storage or redux
+  );
+  const dispatch = useDispatch();
+  const [checking, setChecking] = useState(true);
+  const [authorizedState, setAuthorizedState] = useState(false);
 
+  useEffect(() => {
+    async function validate() {
+      try {
+        // Always try calling a backend endpoint to check token validity.using your interceptor ensures that if access token is expired,it will automatically refresh via your interceptor logic.
+        await api.post("/api/auth/validate-token");
+        // If it succeeds, token is valid
+        setAuthorizedState(true);
+      } catch {
+        // If it fails (refresh also failed), redirect to login
+        setAuthorizedState(false);
+      } finally {
+        setChecking(false);
+      }
+    }
+    validate();
+  }, [reduxToken, dispatch]);
 
-  if (!token) {
-    return <Navigate to="/" replace/>;
-  }
+  if (checking) return <div>Loading...</div>;
+  if (!authorizedState) return <Navigate to="/" replace />;
 
   return <>{children}</>;
 };
 
 export default ProtectedRoute;
-
-
-// {state.objectName.variableName}

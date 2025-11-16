@@ -10,8 +10,6 @@ export const store = configureStore({
   },
 });
 
-// const stateName = useSelector((state:RootState)=>state.sliceName)
-
 //
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

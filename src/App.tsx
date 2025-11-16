@@ -5,37 +5,42 @@ import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./protectedRoute";
 import PublicRoute from "./PublicRoute";
 import { AppProvider } from "./Context/Context";
+export const baseBackendUrl = `${import.meta.env.VITE_BASE_BACKEND_URL}`;
+// export const baseBackendUrl = "http://localhost:5000/";
+// localhost:5000
+
 function App() {
   return (
     <AppProvider>
-    <Routes>
-      <Route path="/" element={
-        <PublicRoute>
-        <LoginPage />
-        </PublicRoute>
-        } 
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <PublicRoute>
+              <LoginPage />
+            </PublicRoute>
+          }
         />
-      {/* protected dashboard route */}
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      />
-      {/* protected update route */}
-      <Route
-        path="/update"
-        element={
-          <ProtectedRoute>
-            <Update />
-          </ProtectedRoute>
-        }
-      />
-
-    </Routes>
-</AppProvider>
+        {/* protected dashboard route */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        {/* protected update route */}
+        <Route
+          path="/update"
+          element={
+            <ProtectedRoute>
+              <Update />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </AppProvider>
   );
 }
 
