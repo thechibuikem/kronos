@@ -3,8 +3,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNewOrExistingUsersHandlers } from "@/redux/auth/hooks/useExistingUserHandlers";
 import { useRef, useContext } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { type RootState } from "@/app/centralStore";
+import { useDispatch } from "react-redux";
+// import { type RootState } from "@/app/centralStore";
 import { setAuthenticated } from "@/redux/auth/Slices/AuthenthicatedSlice"; //importing my action
 import { useNavigate } from "react-router-dom";
 import { toggleExistingUser } from "@/redux/auth/Slices/ExistingUserSlice";
@@ -13,9 +13,9 @@ import { baseBackendUrl } from "@/App";
 
 
 export default function AuthForm() {
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.authenticated
-  ); //getting redux state that would hold token
+  // const isAuthenticated = useSelector(
+    // (state: RootState) => state.authenticated
+  // ); //getting redux state that would hold token
 
   const { isExistingUser } = useNewOrExistingUsersHandlers(); //destructuring from redux
   // console.log(isAuthenticated);

@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { AppContext } from "@/Context/Context";
+import LogOut from "../handCraftedlUi/LogOut";
 import KronosLogo from "../handCraftedlUi/KronosLogo"
 import LabelBtn from "../handCraftedlUi/LabelBtn"
 import { 
@@ -74,14 +75,8 @@ const buttonMakers = [
 {/* ending section */}
 <section className="fixed bottom-[2rem]">
 
-<LabelBtn 
-  Logo={IoSettingsOutline}
-  name="config"
-  logoWidth={1}
-  textWidth={1}
-  to ="/settings"
-    color="#ecececbd"
-/>
+<LogOut />
+
   </section>
 
     </figure>

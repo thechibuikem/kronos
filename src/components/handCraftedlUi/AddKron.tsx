@@ -10,7 +10,7 @@ export default function AddKron() {
     
       {/* the container housing the wires */}
       <CardContent className="">
-          <CgMathPlus style={{ color: "#4a556530", fontSize: "7rem" }} />
+          <CgMathPlus style={{ color: "#00000040", fontSize: "7rem" }} />
       </CardContent>
     </Card>
   )

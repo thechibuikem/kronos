@@ -1,6 +1,7 @@
 import { type ReactNode, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Navigate } from "react-router-dom";
+import LoadingPage from "./pages/LoadingPage";
 import { type RootState } from "./app/centralStore";
 import api from "./api/axiosInterceptor"; //interceptor instance
 
@@ -33,7 +34,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     validate();
   }, [reduxToken, dispatch]);
 
-  if (checking) return <div>Loading...</div>;
+  if (checking) return <LoadingPage/>;
   if (!authorizedState) return <Navigate to="/" replace />;
 
   return <>{children}</>;

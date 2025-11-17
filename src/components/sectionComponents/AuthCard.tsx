@@ -32,7 +32,7 @@ export default function AuthCard() {
     (state: RootState) => state.existingUser.isExistingUser
   );
 
-  const userState = useSelector((state: RootState) => state.existingUser);
+  // const userState = useSelector((state: RootState) => state.existingUser);
   // console.log("is existing user:", userState);
 
   // State for mode: login or signup

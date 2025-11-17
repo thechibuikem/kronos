@@ -10,7 +10,7 @@ const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
   const reduxToken = useSelector(
     (state: RootState) => state.authenticated.isAuthenticated
   );
-  const token = localStorage.getItem("token") || reduxToken || "";
+  const token = reduxToken? reduxToken : "";
 
   // If already logged in → redirect to dashboard
   if (token) {
