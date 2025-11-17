@@ -114,6 +114,7 @@ git clone https://github.com/yourusername/kronos.git
 cd kronos
  ```
  
+<br>
 
 ## 2. Install dependencies
 
@@ -132,6 +133,7 @@ cd ../
 npm install
 ```
 
+<br>
 
 
 ## 3. Setup MongoDB Atlas Cluster
@@ -141,6 +143,8 @@ npm install
 - Copy the connection string and add it to your backend `.env` as `MONGO_URI`.
 
 **See [here] (https://learn.mongodb.com/courses/getting-started-with-mongodb-atlas) for more information on setting up MongoDB Atlas Cluster**
+
+<br>
 
 
 ## 4. Set up variables
