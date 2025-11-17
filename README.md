@@ -23,7 +23,7 @@
 <p align="center">
   <img src="./public/kronosBanner.png" alt="Kronos Banner" width="100%" />
 </p>
-<br>
+
 
 <p align="center">
  <h1 align='center'> Developer Productivity Guardian </h1>
