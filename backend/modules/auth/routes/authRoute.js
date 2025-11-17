@@ -4,6 +4,7 @@ import { signupUser, logInUser } from "../controllers/authController.js";
 import { githubOauth, githubCallback } from "../controllers/oauthController.js";
 import { checkToken } from "../controllers/refreshTokenController.js";
 import express from 'express'
+import { logOut } from "../controllers/logoutController.js";
 const router = express.Router()
 
 
@@ -17,6 +18,7 @@ router.post("/login", logInUser);
 router.get('/github',githubOauth)
 router.get('/github/callback',githubCallback)//oauth callback route
 router.post('/refresh-token',checkToken)//validating refresh-tokens
+router.post('/logout',logOut)
 
 
 //protected routes

@@ -2,7 +2,7 @@
 import { addOauthUser } from "../utils/addOauthUser.js";
 
 export function githubOauthService() {
-  return `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&redirect_uri=${process.env.PROJECT_BASE_URL}/api/auth/github/callback&scope=user:email`;
+  return `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&redirect_uri=${process.env.PROJECT_BASE_URL}/api/auth/github/callback&scope=user:email,repo`;
 }
 
 //getting token
@@ -25,7 +25,7 @@ export async function githubTokenService(code) {
   // Fetch user profile
   const user = await (
     await fetch("https://api.github.com/user", {
-      headers: { Authorization: `Bearer ${access_token}` },
+      headers: { Authorization: `Bearer ${access_token}` }
     })
   ).json();
 
@@ -39,15 +39,14 @@ export async function githubTokenService(code) {
   if (!primary) throw new Error("No verified email");
 
   const email = primary.email;
-
-  const { exitingOauthUser, token, newUser, newToken } = await addOauthUser(
+// Authorization;Authorization;
+// 
+  const {status,data,exitingOauthUser} = await addOauthUser(
     email,
     user
   );
 
-  const redirectUrl = exitingOauthUser
-    ? `${process.env.PROJECT_BASE_URL}?token=${token}`
-    : `${process.env.PROJECT_BASE_URL}?token=${newToken}`;
+  const redirectUrl = `http://localhost:5173/dashboard` 
 
-  return { redirectUrl };
+  return { redirectUrl,data,status};
 }

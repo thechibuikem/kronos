@@ -63,7 +63,7 @@ console.log("Backend says user created successfully")
   } 
   catch (error) {
   // Log the error for internal debugging
-  console.error("Login Service Error:", error);
+  console.error("Signup Service Error:", error);
 
   // Return a generic, non-descriptive error to the client for security
   return {
