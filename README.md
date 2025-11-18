@@ -45,8 +45,7 @@
 <br>
 
 # About
-Kronos is a developer productivity guardian for GitHub. It uses schedued tasks (cron-jobs) to collect activity metrics - commits, pull requests, lines of code, coding patterns, and module focus - and leverages AI via an LLM to generate text insights and visualizations. Kronos helps developers spot patterns, bottlenecks, and actionable ways to work smarter.
-
+Kronos is a modular-monolith web application which functions as a developer productivity guardian for GitHub. It uses schedued tasks (cron-jobs) to collect activity metrics - commits, pull requests, lines of code, coding patterns, and module focus - and leverages AI via an LLM to generate text insights and visualizations. Kronos helps developers spot patterns, bottlenecks, and actionable ways to work smarter.
 <br>
 <br>
 

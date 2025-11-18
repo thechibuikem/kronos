@@ -19,7 +19,7 @@ export async function signUpService(email,password){
             "password must contain at least one special character and no whitespace",
         },
       };
-    }
+    }//end process if password combination is invalid
 
     const existingUser = await userModel.findOne({ userEmail: email }); // catch duplicates
     if (existingUser) {
@@ -27,24 +27,25 @@ export async function signUpService(email,password){
         status: 400,
         data: { error: "user already exists" }, //flag for front-end
       };
-    }
+    }//end process if user already exists
+    
     //if we pass our guard
     const hashpassword = await genHashPassword(password); //hash using bcrypt
     const newUser = new userModel({
       userEmail: email,
       userPassword: hashpassword,
-    });
+    });//create a new user using mongodb model
 
-
+// creating access and refresh token for authorization
     const accessToken = jwt.sign(
       { userId: newUser["_id"], roles: newUser["roles"] },
        process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "15m" }
-    ); //access-token
+    ); //access-token for front-ends redux 
 
     const refreshToken = jwt.sign({ userId: newUser["_id"] },  process.env.REFRESH_TOKEN_SECRET,{
       expiresIn: "30d",
-    }); //refresh Token
+    }); //refresh Token for cookie and redis
 
     // Store refresh token in redis, we are using refreshToken as the key because redis doesn't allow us retrieve by value and for our cookie refresh_token, we can only identify by value
     redisClient.set(refreshToken,`refresh:${newUser["_id"]}`, { EX: 60*60*24*30 });
@@ -104,7 +105,7 @@ export async function logInService(email,password){
     if (!match) {
       existingUser.failedAttempts++; //increments failed attempts
 
-      // check if exiting user failed attmepys is greater than 5 before locking account
+      // check if exiting user failed attmept is greater than 5 before locking account
       if (existingUser.failedAttempts > 5) {
         existingUser.lockUntil = Date.now() + 30 * 60 * 1000; // lock for 30 mins
       }

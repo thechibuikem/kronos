@@ -3,7 +3,7 @@ import { signUpService,logInService } from "../services/authService.js";
 // import path from "path";
 
 export async function signupUser (req,res){
-  const { email, password } = req.body;
+  const { email, password } = req.body;//retrieving email and password from http request
 
   const result = await signUpService(email, password); //response from signup service
 

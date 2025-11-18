@@ -23,7 +23,7 @@ export default function AuthForm() {
 
   const context = useContext(AppContext);
 
-  if (!context) {
+  if  (!context) {
     console.log("use of context isn't permitted at AuthForm");
   } // guard to check if context's okay
 
