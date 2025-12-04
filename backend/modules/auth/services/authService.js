@@ -7,9 +7,8 @@ import jwt from "jsonwebtoken"
 // sign up user service
 export async function signUpService(email,password){
   
-  // email = email.toLowerCase.trim()//norminalizing email
   try {
-    const isPasswordValid = checkPassword(password); //check if password is invalid and alert user
+    const isPasswordValid = checkPassword(password); //password input validation
 
     if (!isPasswordValid) {
       return {
@@ -63,19 +62,18 @@ console.log("Backend says user created successfully")
     };
   } 
   catch (error) {
-  // Log the error for internal debugging
-  console.error("Signup Service Error:", error);
+    console.error("Signup Service Error:", error); // Log the error for internal debugging
 
-  // Return a generic, non-descriptive error to the client for security
-  return {
-    status: 500,
-    data: { error: "Internal server error" },
-  };}
+    // Return a generic, non-descriptive error to the client for security
+    return {
+      status: 500,
+      data: { error: "Internal server error" },
+    };
+  }
 }
 
 //log in user service
 export async function logInService(email,password){
-  // email = email.toLowerCase.trim(); //norminalizing email
 
   try {
     const existingUser = await userModel.findOne({ userEmail: email }); // finds user
@@ -147,7 +145,7 @@ export async function logInService(email,password){
     await existingUser.save();
 
     console.log("Backend says user logged in successfully");
-
+ 
     return {
       status: 200,
       data: {

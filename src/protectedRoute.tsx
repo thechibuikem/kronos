@@ -2,7 +2,7 @@ import { type ReactNode, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Navigate } from "react-router-dom";
 import LoadingPage from "./pages/LoadingPage";
-import { type RootState } from "./app/centralStore";
+import { type RootState } from "./store/centralStore";
 import api from "./api/axiosInterceptor"; //interceptor instance
 
 interface ProtectedRouteProps {

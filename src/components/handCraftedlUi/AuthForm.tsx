@@ -8,26 +8,17 @@ import { useDispatch } from "react-redux";
 import { setAuthenticated } from "@/redux/auth/Slices/AuthenthicatedSlice"; //importing my action
 import { useNavigate } from "react-router-dom";
 import { toggleExistingUser } from "@/redux/auth/Slices/ExistingUserSlice";
-import { AppContext } from "@/Context/Context";
+import { AppContext } from "@/api/Context";
 import { baseBackendUrl } from "@/App";
 
 
 export default function AuthForm() {
-  // const isAuthenticated = useSelector(
-    // (state: RootState) => state.authenticated
-  // ); //getting redux state that would hold token
+
 
   const { isExistingUser } = useNewOrExistingUsersHandlers(); //destructuring from redux
-  // console.log(isAuthenticated);
-  // console.log(isExistingUser);
+  const context = useContext(AppContext)!;
 
-  const context = useContext(AppContext);
-
-  if  (!context) {
-    console.log("use of context isn't permitted at AuthForm");
-  } // guard to check if context's okay
-
-  const { setAuthErrorMsg } = context; //destructuring from comntext
+  const { setAuthErrorMsg } = context; 
 
   let token: string = localStorage.getItem("token") || ""; // getting token from local storage if it exists there, else let it be an empty string
 

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { AppContext } from "@/Context/Context";
+import { AppContext } from "@/api/Context";
 import { X } from "lucide-react";
 
 

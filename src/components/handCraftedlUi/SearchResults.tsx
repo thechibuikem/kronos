@@ -3,7 +3,7 @@ import {
   CardContent,
 } from "@/components/ui/card"
 import { useContext } from "react"
-import { AppContext } from "@/Context/Context"
+import { AppContext } from "@/api/Context"
 import {type repoItem } from "../sectionComponents/SearchComponent"
 import fuzzySearch from "@/features/fuzzySimulation" //importing fuzzy search function for filtering
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { store } from "../app/centralStore";
+import { store } from "../store/centralStore";
 import { setAuthenticated } from "../redux/auth/Slices/AuthenthicatedSlice";
 // import { baseBackendUrl } from "../App";
 

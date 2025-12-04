@@ -1,5 +1,7 @@
 import { redisClient } from "../../../core/redisClient.js";
 
+
+// we use our refresh token stored in an http-only cookie as a key in redis, so here we're gonna clear the session token from redis
 export async function logOutService(refreshToken) {
 
 try{

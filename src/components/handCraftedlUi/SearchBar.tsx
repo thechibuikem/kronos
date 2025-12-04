@@ -1,7 +1,7 @@
 import { Input } from "../ui/input"; 
 import { CiSearch } from "react-icons/ci";
 import { TbZoomCancel } from "react-icons/tb";
-import { AppContext } from "@/Context/Context";
+import { AppContext } from "@/api/Context";
 import {useContext } from "react";
 
 function SearchBar() {

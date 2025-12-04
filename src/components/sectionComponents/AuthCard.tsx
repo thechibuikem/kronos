@@ -12,10 +12,10 @@ import OauthBtn from "../handCraftedlUi/OauthBtn";
 import AuthForm from "../handCraftedlUi/AuthForm";
 import { Button } from "@/components/ui/button";
 import { useSelector, useDispatch } from "react-redux";
-import { type RootState } from "../../app/centralStore"; //adjust path if needed
+import { type RootState } from "../../store/centralStore"; //adjust path if needed
 import { toggleExistingUser } from "@/redux/auth/Slices/ExistingUserSlice"; //reducer
 import { useContext } from "react";
-import { AppContext } from "@/Context/Context";
+import { AppContext } from "@/api/Context";
 import ErrorBanner from "../handCraftedlUi/ErrorBanner";
 
 export default function AuthCard() {
