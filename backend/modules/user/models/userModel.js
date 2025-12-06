@@ -4,13 +4,14 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
   userEmail: { type: String, required: true, unique: true },
   userPassword: { type: String },
-  username:{type:String},
+  username: { type: String },
   failedAttempts: { type: Number, default: 0 },
   lockUntil: { type: Number, default: null },
-  githubId:{type:Number,unique:true,sparse:true},
+  githubId: { type: Number, unique: true, sparse: true },
   repos_url: { type: [String], default: [] },
   avatar_url: { type: String },
   roles: { type: [String], default: ["user"] },
+  refreshToken: { type: String,required:true   },
   createdAt: { type: Date, default: Date.now },
 });
 

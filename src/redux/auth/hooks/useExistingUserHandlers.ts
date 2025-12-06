@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { toggleExistingUser } from "../Slices/ExistingUserSlice";
+import { toggleExistingUser } from "../../../features/auth/slices/ExistingUserSlice";
 import { type RootState } from "../../../store/centralStore";
 
 // handlers that would update redux state

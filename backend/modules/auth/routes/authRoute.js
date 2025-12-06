@@ -19,8 +19,6 @@ router.get('/github',githubOauth)
 router.get('/github/callback',githubCallback)//oauth callback route
 router.post('/refresh-token',checkToken)//validating refresh-tokens
 router.post('/logout',logOut)
-
-
 //protected routes
 router.use(authMiddleware)
 router.post("/validate-token",

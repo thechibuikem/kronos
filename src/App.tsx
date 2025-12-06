@@ -1,6 +1,6 @@
-import LoginPage from "./pages/LoginPage";
-import Dashboard from "./pages/Dashboard";
-import Update from "./pages/Update";
+import LoginPage from "./features/auth/pages/LoginPage";
+import Dashboard from "./features/home/pages/Dashboard";
+import Update from "./features/watchlist/pages/Update";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./protectedRoute";
 import PublicRoute from "./PublicRoute";

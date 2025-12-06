@@ -1,11 +1,13 @@
 // services/oauth.service.js
+import { getReposFromGithub, storeInRedis, storeReposInRedis } from "../../watchList/services/watchListService.js";
 import { addOauthUser } from "../utils/addOauthUser.js";
 
+//url to get github code
 export function githubOauthService() {
-  return `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&redirect_uri=${process.env.PROJECT_BASE_URL}/api/auth/github/callback&scope=user:email,repo`;
+  return `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&redirect_uri=${process.env.PROJECT_BASE_URL}/api/auth/github/callback&scope=user:email,repo`; 
 }
 
-//getting token
+//callback function to get github token using code 
 export async function githubTokenService(code) {
   // Exchange code for token using a POST request, token is response
   const tokenRes = await fetch(`https://github.com/login/oauth/access_token`, {
@@ -16,9 +18,10 @@ export async function githubTokenService(code) {
       client_secret: process.env.GITHUB_CLIENT_SECRET,
       code,
     }),
-  });
+  }); //using code to get github access-token
 
-  if (!tokenRes.ok) throw new Error("GitHub token request failed");
+
+  if (!tokenRes.ok) throw new Error("GitHub token request failed");//if something is wrong with our request to get an access token
 
   const { access_token } = await tokenRes.json();
 
@@ -27,7 +30,9 @@ export async function githubTokenService(code) {
     await fetch("https://api.github.com/user", {
       headers: { Authorization: `Bearer ${access_token}` }
     })
-  ).json();
+  ).json(); //get user details from github
+
+  // console.log("\n my user returned from github",user)
 
   const emails = await (
     await fetch("https://api.github.com/user/emails", {
@@ -39,8 +44,21 @@ export async function githubTokenService(code) {
   if (!primary) throw new Error("No verified email");
 
   const email = primary.email;
-// Authorization;Authorization;
-// 
+
+  const { repoList, eTag } = await getReposFromGithub(access_token);
+
+// store list of all repos in redis
+await storeReposInRedis(user.id,repoList)
+
+// store etag in redis
+await storeInRedis("etag",eTag)
+
+
+// console.log("repolist:", repoList);
+console.log("repolist:", repoList,"\n\neTag\n\n",eTag);
+
+
+
   const {status,data,exitingOauthUser} = await addOauthUser(
     email,
     user

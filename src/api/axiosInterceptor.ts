@@ -1,6 +1,6 @@
 import axios from "axios";
 import { store } from "../store/centralStore";
-import { setAuthenticated } from "../redux/auth/Slices/AuthenthicatedSlice";
+import { setAuthenticated } from "../features/auth/slices/AuthenthicatedSlice";
 // import { baseBackendUrl } from "../App";
 
 const api = axios.create({

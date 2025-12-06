@@ -4,11 +4,11 @@ import {
   githubTokenService,
 } from "../services/oauthService.js";
 
-//controller using githubOauthService to redirect us to github oauth service and get code
+//This service gets us our temporary github code
 export async function githubOauth(req, res) {
   try {
-    const url = githubOauthService();
-    return res.redirect(url);
+    const url = githubOauthService();//url to get github temporary code
+    return res.redirect(url); 
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "OAuth init failed" });
@@ -18,9 +18,8 @@ export async function githubOauth(req, res) {
 //where our githubOauth service would land us to, this would use the githubTokenService to get a token.
 export async function githubCallback(req, res) {
   const code = req.query.code;
-//
+//=== 
   try {
-    // const { redirectUrl, status, data } = await githubTokenService(code);
     const result = await githubTokenService(code);
 
 if (result.status == 200){

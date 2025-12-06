@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import isExistingUserReducer from "../redux/auth/Slices/ExistingUserSlice"; //authReducer becomes the default export of LoggedInslice
-import isAuthenticatedReducer from "../redux/auth/Slices/AuthenthicatedSlice"
+import isExistingUserReducer from "../features/auth/slices/ExistingUserSlice"; //authReducer becomes the default export of LoggedInslice
+import isAuthenticatedReducer from "../features/auth/slices/AuthenthicatedSlice"
 
 export const store = configureStore({
   reducer: {
