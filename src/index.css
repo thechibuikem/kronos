@@ -5,6 +5,10 @@
   @apply shadow-md hover:scale-99 hover:shadow-sm transition-all duration-500 cursor-pointer bg-[#1e1a4f5b] backdrop-blur-2xl rounded-lg border-1 border-[#ffffff18] text-[#ecececbd]
 }
 
+*::-webkit-scrollbar{
+  display: none;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

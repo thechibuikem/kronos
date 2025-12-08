@@ -1,13 +1,13 @@
 import { Button } from "@/features/home/ui/button";
 import { Input } from "@/features/home/ui/input";
 import { Label } from "@/features/home/ui/label";
-import { useNewOrExistingUsersHandlers } from "@/redux/auth/hooks/useExistingUserHandlers";
+import { useIsExistingUsersHandler } from "@/features/auth/handlers/UseIsExistingUser.Handlers";
 import { useRef, useContext } from "react";
 import { useDispatch } from "react-redux";
 // import { type RootState } from "@/app/centralStore";
-import { setAuthenticated } from "@/features/auth/slices/AuthenthicatedSlice"; //importing my action
+import { setAuthenticated } from "@/features/auth/slices/Authenthicated.Slice"; //importing my action
 import { useNavigate } from "react-router-dom";
-import { toggleExistingUser } from "@/features/auth/slices/ExistingUserSlice";
+import { toggleExistingUser } from "@/features/auth/slices/ExistingUser.Slice";
 import { AppContext } from "@/api/Context";
 import { baseBackendUrl } from "@/App";
 
@@ -15,7 +15,7 @@ import { baseBackendUrl } from "@/App";
 export default function AuthForm() {
 
 
-  const { isExistingUser } = useNewOrExistingUsersHandlers(); //destructuring from redux
+  const { isExistingUser } = useIsExistingUsersHandler(); //destructuring from redux
   const context = useContext(AppContext)!;
 
   const { setAuthErrorMsg } = context; 

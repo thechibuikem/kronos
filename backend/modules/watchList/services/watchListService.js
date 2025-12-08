@@ -40,14 +40,22 @@ export async function storeInRedis(key, value) {
 // get repos from redis
 export async function getReposFromRedis(refreshToken) {
 //first github
-const user = userModel.findOne({refreshToken:refreshToken})
+const user = await userModel.findOne({refreshToken})
+
+// console.log("user: ", user);
+console.log("githubId: ", user.githubId);
+
 
 if (!user){
  return console.log("user is not found at WatchList service 46")
 }
-const key = `user:${user.githubId}:repos `
+const key = `user:${user.githubId}:repos`
 
+console.log(key)
 const data = await redisClient.get(key);
+
+// console.log("data: ",data)
+
 return data ? JSON.parse(data) : [];
 }
 

@@ -1,6 +1,7 @@
 import LoginPage from "./features/auth/pages/LoginPage";
 import Dashboard from "./features/home/pages/Dashboard";
 import Update from "./features/watchlist/pages/Update";
+import Repositories from "./features/repositories/pages/Repositories";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./protectedRoute";
 import PublicRoute from "./PublicRoute";
@@ -36,6 +37,15 @@ function App() {
           element={
             <ProtectedRoute>
               <Update />
+            </ProtectedRoute>
+          }
+        />
+        {/* protected repositories route */}
+        <Route
+          path="/repositories"
+          element={
+            <ProtectedRoute>
+              <Repositories />
             </ProtectedRoute>
           }
         />

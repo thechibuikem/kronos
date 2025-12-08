@@ -2,8 +2,9 @@ import { type ReactNode, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Navigate } from "react-router-dom";
 import LoadingPage from "./features/loading/page/LoadingPage";
-import { type RootState } from "./store/centralStore";
-import api from "./api/axiosInterceptor"; //interceptor instance
+import { type RootState } from "./store/store";
+import api from "./api/http/axios.Interceptor"; //interceptor instance
+import { useAllReposHandler } from "./features/watchlist/handlers/allRepo.Handlers";
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -14,6 +15,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     (state: RootState) => state.authenticated.isAuthenticated
   );
   const dispatch = useDispatch();
+  let {repos,getRepos} = useAllReposHandler()
   const [checking, setChecking] = useState(true);
   const [authorizedState, setAuthorizedState] = useState(false);
 
@@ -32,12 +34,29 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
       }
     }
     validate();
-  }, [reduxToken, dispatch]);
+  }, [reduxToken,dispatch]);
 
+
+  // use effect to get all repos from redis
+useEffect(()=>{
+   function fetchRepos(){
+    if (authorizedState){
+   getRepos();
+    }else{
+      console.log("cannot retrieve repository as user is unauthorized")
+    }
+  }
+  fetchRepos();
+},[authorizedState,dispatch
+])
+
+console.log("repos from frontend: ",repos)
   if (checking) return <LoadingPage/>;
   if (!authorizedState) return <Navigate to="/" replace />;
 
   return <>{children}</>;
 };
+
+
 
 export default ProtectedRoute;

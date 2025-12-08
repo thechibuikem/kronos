@@ -1,6 +1,6 @@
-import { type kronType } from "../../watchlist/components/KronCard"
-import KronUpdateCard from "../../watchlist/components/KronUpdateCard"
-import AddKronUpdateCard from "../../watchlist/components/AddKronUpdateCard"
+import { type kronType } from "./KronCard"
+import KronUpdateCard from "./KronUpdateCard"
+import AddKronUpdateCard from "./AddKronUpdateCard"
 
 function KronUpdateWrapper() {
 const kronLimit:number = 4

@@ -7,8 +7,6 @@ import {useContext } from "react";
 function SearchBar() {
   // initializing context
 const context = useContext(AppContext)
-
-
 // adding guard for context
  if (!context) {
     console.log("Dashboard must be used inside AppProvider");
