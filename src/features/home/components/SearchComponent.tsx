@@ -7,15 +7,19 @@ export interface repoItem{
   name:string,
 }
 
-function SearchComponent(SearchArray:Repo[]) {
+// Props for my search component
+interface SearchComponentsProps {
+  searchArray: Repo[];
+}
 
-
+// search component consisting search bar and results
+function SearchComponent({ searchArray }: SearchComponentsProps) {
   return (
     <section className="relative md:w-[40rem] gap-y-2 px-4 md:px-8">
-    <SearchBar/>
-    <SearchResults repos={SearchArray}/>
+      <SearchBar />
+      <SearchResults repos={searchArray} />
     </section>
-  )
+  );
 }
 
 export default SearchComponent
