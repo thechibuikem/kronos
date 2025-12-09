@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
   failedAttempts: { type: Number, default: 0 },
   lockUntil: { type: Number, default: null },
   githubId: { type: Number, unique: true, sparse: true },
+  githubToken: { type: String, unique: true, sparse: true },
   repos_url: { type: [String], default: [] },
   avatar_url: { type: String },
   roles: { type: [String], default: ["user"] },

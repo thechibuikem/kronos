@@ -1,8 +1,9 @@
+// access_token means github access token while accessToken is jwt's access token
 import { userModel } from "../../user/models/userModel.js";
 import { redisClient } from "../../../core/redisClient.js";
 import jwt from "jsonwebtoken";
 
-export const addOauthUser = async (email, user) => {
+export const addOauthUser = async (email, user,access_token) => {
   try {
     const exitingOauthUser = await userModel.findOne({
       $or: [{ userEmail: email }, { github_id: user.id }],
@@ -16,6 +17,7 @@ export const addOauthUser = async (email, user) => {
         repos_url: user.repos_url,
         avatar_url: user.avatar_url,
         username: user.login,
+        githubToken:access_token
       });
 
       // create tokens
@@ -71,9 +73,10 @@ export const addOauthUser = async (email, user) => {
 
       exitingOauthUser.githubId = user.id;
       (exitingOauthUser.repos_url = user.repos_url),
-        (exitingOauthUser.avatar_url = user.avatar_url),
-        (exitingOauthUser.username = user.login);
+        // (exitingOauthUser.avatar_url = user.avatar_url),
+        // (exitingOauthUser.username = user.login);
       exitingOauthUser.refreshToken = refreshToken;
+    exitingOauthUser.githubToken= access_token
 
       // Store refresh token in redis
       redisClient.set(refreshToken, `refresh:${exitingOauthUser["_id"]}`, {

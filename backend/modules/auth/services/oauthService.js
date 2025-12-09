@@ -1,5 +1,3 @@
-// services/oauth.service.js
-import { getReposFromGithub, storeInRedis, storeReposInRedis } from "../../watchList/services/watchListService.js";
 import { addOauthUser } from "../utils/addOauthUser.js";
 
 //url to get github code
@@ -23,7 +21,9 @@ export async function githubTokenService(code) {
 
   if (!tokenRes.ok) throw new Error("GitHub token request failed");//if something is wrong with our request to get an access token
 
+  // retrieving access_token from github
   const { access_token } = await tokenRes.json();
+
 
   // Fetch user profile
   const user = await (
@@ -40,28 +40,21 @@ export async function githubTokenService(code) {
     })
   ).json();
 
+  // getting our users email to store in on gitHub
   const primary = emails.find((e) => e.primary && e.verified && e.email);
   if (!primary) throw new Error("No verified email");
 
   const email = primary.email;
 
-  const { repoList, eTag } = await getReposFromGithub(access_token);
-
-// store list of all repos in redis
-await storeReposInRedis(user.id,repoList)
-
-// store etag in redis
-await storeInRedis("etag",eTag)
-
-
 // console.log("repolist:", repoList);
-console.log("repolist:", repoList,"\n\neTag\n\n",eTag);
+// console.log("repolist:", repoList,"\n\neTag\n\n",eTag);
 
 
 
   const {status,data,exitingOauthUser} = await addOauthUser(
     email,
-    user
+    user,
+    access_token
   );
 
   const redirectUrl = `http://localhost:5173/dashboard` 

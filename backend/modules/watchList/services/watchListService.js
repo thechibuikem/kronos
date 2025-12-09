@@ -2,60 +2,71 @@
 import { redisClient } from "../../../core/redisClient.js";
 import { userModel } from "../../user/models/userModel.js";
 
-export async function getReposFromGithub(token, etag) {
+export async function getReposFromGithub(githubToken, etag) {
   let response = await fetch("https://api.github.com/user/repos", {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${githubToken}`,
       "If-None-Match": etag || "",
     },
   });
 
-  if (!response.ok) {
-    return console.log("repolist http response is flawed");
+ if (response.status === 304) {
+   return response; // No changes
   }
 
-  const eTag = response.headers.get("etag")//retrieving etag from response
-  const repoData = await response.json();
-  const repoList = repoData.map((e) => ({
-    repoId: e.id,
-    repoName: e.name,
-    repoUrl: e.html_url,
-    isPrivate: e.private,
-  }));
-  return {repoList,eTag};
-}
+console.log("response: ",response)
 
-// store repos in redis
-export async function storeReposInRedis(userId,repos){
-    const key =`user:${userId}:repos`;
-    await redisClient.set(key, JSON.stringify(repos));
+  // if (!response.ok) {
+  //   return console.log("repolist http response is flawed ");
+  // }
+  
+  return response;
 }
 
 // store in redis
 export async function storeInRedis(key, value) {
-
   await redisClient.set(key, JSON.stringify(value));
 }
 
 // get repos from redis
-export async function getReposFromRedis(refreshToken) {
-//first github
-const user = await userModel.findOne({refreshToken})
-
-// console.log("user: ", user);
-console.log("githubId: ", user.githubId);
-
-
-if (!user){
- return console.log("user is not found at WatchList service 46")
-}
-const key = `user:${user.githubId}:repos`
-
-console.log(key)
-const data = await redisClient.get(key);
-
-// console.log("data: ",data)
-
-return data ? JSON.parse(data) : [];
+export async function getReposFromRedis(user) {
+  console.log("githubId: ", user.githubId);
+  const key = `user:${user.githubId}:repos`; //key to get repos from redis
+  const data = await redisClient.get(key); //redis repos
+  return data ? JSON.parse(data) : [];
 }
 
+// function to get all Repos
+export async function getRepos(user) {
+  console.log("user at getRepos",user)
+  const githubToken = await user.githubToken
+  console.log("githubToken at getRepos :",githubToken)
+  const etagKey = `user:${user.id}:etag`;
+  const repoKey = `user:${user.id}:repos`;
+  const redisEtag = await redisClient.get(etagKey);//checking redis for etag
+  let etag = redisEtag || "";
+  // fetching repositories from github
+  const response = await getReposFromGithub(githubToken, etag);
+  if (response.status == 200) 
+    {
+    etag = response.headers.get("etag"); //retrieving etag from response
+    const repoData = await response.json();//retrieving all repositories
+    // creating an array of sub-objects we'd use in our front-end
+    const repoList = repoData.map((e) => ({
+      repoId: e.id,
+      repoName: e.name,
+      repoUrl: e.html_url,
+      isPrivate: e.private,
+    }));
+    // saving new etag and repoList to redis
+    await redisClient.set(repoKey, JSON.stringify(repoList));
+    await redisClient.set(etagKey, etag);
+    // returning repoList to user
+    return repoList;
+  } 
+  else if (response.status == 304) {
+    const repoData  = await redisClient.get(repoKey);
+    const repoList = JSON.parse(repoData)||[]
+    return repoList
+  }
+}
