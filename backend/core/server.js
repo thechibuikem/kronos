@@ -7,7 +7,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import connectDB from "./db.js";
 import authRoutes from "../modules/auth/routes/authRoute.js";
-import watchListRoutes from "../modules/watchList/routes/watchListRoutes.js"
+import repoListRoutes from "../modules/repoList/routes/repoListRoutes.js"
 
 //-- confiigurations
 const authLimiter = rateLimit({
@@ -34,7 +34,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded data
 app.use(cookieParser());    
 // app.use("/api/auth", authLimiter);
 app.use("/api/auth", authRoutes);
-app.use("/api/watchList",watchListRoutes)
+app.use("/api/watchList",repoListRoutes)
 
 
 app.use((req, res, next) => {

@@ -1,5 +1,5 @@
 import express from "express"
-import { getAllReposController } from "../controller/watchListController.js"
+import { getAllReposController } from "../controller/repoListController.js"
 
 const router = express.Router()//creating router instance
 
