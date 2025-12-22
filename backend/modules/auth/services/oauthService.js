@@ -40,16 +40,14 @@ export async function githubTokenService(code) {
     })
   ).json();
 
+
+// console.log("emails",emails)
+
   // getting our users email to store in on gitHub
   const primary = emails.find((e) => e.primary && e.verified && e.email);
   if (!primary) throw new Error("No verified email");
 
   const email = primary.email;
-
-// console.log("repolist:", repoList);
-// console.log("repolist:", repoList,"\n\neTag\n\n",eTag);
-
-
 
   const {status,data,exitingOauthUser} = await addOauthUser(
     email,

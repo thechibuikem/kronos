@@ -26,7 +26,7 @@ const VerticalNavigation = () => {
       to: "/dashboard",
     },
     {
-      name: "Update Krons",
+      name: "Kron List",
       Logo: LuRefreshCcw,
       logoWidth: 1,
       textWidth: 1,

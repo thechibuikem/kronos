@@ -1,10 +1,10 @@
-import RepoUpdateCard from "@/features/repositories/components/RepoUpdateCard";
+import RepoCard from "@/features/repositories/components/RepoCard";
 import { Loader } from "@/features/loading/components/preloader";
 // import AddKronUpdateCard from "./AddKronUpdateCard";
-import { useAllReposHandler } from "@/features/watchlist/handlers/allRepo.Handlers";
+import { useAllReposHandler } from "@/features/repositories/handlers/allRepo.Handlers";
 
 function KronUpdateWrapper() {
-  const kronLimit: number = 30;
+  // const kronLimit: number = 30;
   const { repos } = useAllReposHandler();//repos State from redux
 
   return (
@@ -13,18 +13,21 @@ function KronUpdateWrapper() {
 
       {/* group of krons */}
       <figure className="w-full  gap-[1rem] flex flex-col">
+        {repos.length === 0 && (
+          <div className="w-full my-8 flex justify-center ">
+            <Loader />
+          </div>
+        )}
 
-{repos.length === 0 &&
-<div className="w-full my-8 flex justify-center ">
-<Loader /> 
-</div>
-}
-
-        {repos.slice(0, kronLimit).map((repo, index) => (
-          <RepoUpdateCard
+        {/* {repos.slice(0, kronLimit).map((repo, index) => ( */}
+        {repos.map((repo, index) => (
+          <RepoCard
             key={index}
-            name={repo.repoName}
-            link={repo.repoUrl}
+            repoName={repo.repoName}
+            repoUrl={repo.repoUrl}
+            githubOwnerId={repo.githubOwnerId}
+            repoId={repo.repoId}
+            isPrivate={repo.isPrivate}
           />
         ))}
       </figure>

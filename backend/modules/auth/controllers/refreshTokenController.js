@@ -26,7 +26,4 @@ if (result.data.accessToken){
     catch(error){
         res.json({error:`${error}`})
     }
-
-  
-
 }

@@ -1,8 +1,7 @@
-//service to get list of repositories from github
 import { redisClient } from "../../../core/redisClient.js";
-import { userModel } from "../../user/models/userModel.js";
 import { RepoModel } from "../models/repoModel.js";
 
+//service to get list of repositories from github
 export async function getReposFromGithub(githubToken, etag) {
   let response = await fetch("https://api.github.com/user/repos", {
     headers: {
@@ -40,15 +39,13 @@ export async function getReposFromRedis(user) {
 
 // function to get all Repos
 export async function getRepos(user) {
-  console.log("user at getRepos",user)
-  const githubToken = await user.githubToken
-  console.log("githubToken at getRepos :",githubToken)
-  const etagKey = `user:${user.id}:etag`;
-   const repoKey = `user:${user.id}:repos`;//key to retrieve repos from github
-  const redisEtag = await redisClient.get(etagKey);//checking redis for etag
+  // console.log("user at getRepos",user)
+  const redisEtagKey = `user:${user.id}:etag`;
+  const redisRepoKey = `user:${user.id}:repos`;//key to retrieve repos from github
+  const redisEtag = await redisClient.get(redisEtagKey);//checking redis for etag
   let etag = redisEtag || "";
   // fetching repositories from github
-  const response = await getReposFromGithub(githubToken, etag);
+  const response = await getReposFromGithub(user.githubToken, etag);
   if (response.status == 200) 
     {
       etag = response.headers.get("etag"); //retrieving etag from response
@@ -66,27 +63,27 @@ export async function getRepos(user) {
 
       // first delete all these users repos
       await RepoModel.deleteMany({ githubOwnerId: user.id });
+ 
       //adding a new set of repos
-
- await Promise.all(
-   repoList.map((repo) => {
-     const newRepo = new RepoModel(repo);
-     return newRepo.save(); // returns a promise
-   })
- );
+      await Promise.all(
+        repoList.map((repo) => {
+          const newRepo = new RepoModel(repo);
+          return newRepo.save(); // returns a promise
+        })
+      );
 
       // ========= UPDATING REDIS ==========//
-      await redisClient.set(repoKey, JSON.stringify(repoList));
-      await redisClient.set(etagKey, etag);
+      await redisClient.set(redisRepoKey, JSON.stringify(repoList));
+      await redisClient.set(redisEtagKey, etag);
 
       return repoList; // returning repoList to user
     } 
 
 
   else if (response.status == 304) {
-    const repoData  = await redisClient.get(repoKey);
-    // const repoData  = await RepoModel.find({githubOwnerId:user.id})//return an array containing the repositories related to a user.
-    const repoList = JSON.parse(repoData) || [];
+    const redisRepos = await redisClient.get(redisRepoKey);
+    const githubRepos  = await RepoModel.find({githubOwnerId:user.id})//return an array containing the repositories related to a user.
+    const repoList = JSON.parse(redisRepos) || githubRepos;
     return repoList;
   }
 }

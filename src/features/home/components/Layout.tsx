@@ -1,7 +1,7 @@
 import TopBar from "./TopBar";
-import KronList from "../../watchlist/components/KronList";
+import KronList from "./HomeKronList";
 import ChartAndAnalysis from "../../analysis/components/ChartAndAnalysis";
-import { useAllReposHandler } from "@/features/watchlist/handlers/allRepo.Handlers";
+import { useAllReposHandler } from "@/features/repositories/handlers/allRepo.Handlers";
 
 
 function Layout() {

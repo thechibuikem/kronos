@@ -72,11 +72,9 @@ export const addOauthUser = async (email, user,access_token) => {
       );
 
       exitingOauthUser.githubId = user.id;
-      (exitingOauthUser.repos_url = user.repos_url),
-        // (exitingOauthUser.avatar_url = user.avatar_url),
-        // (exitingOauthUser.username = user.login);
+      exitingOauthUser.repos_url = user.repos_url,
       exitingOauthUser.refreshToken = refreshToken;
-    exitingOauthUser.githubToken= access_token
+      exitingOauthUser.githubToken= access_token
 
       // Store refresh token in redis
       redisClient.set(refreshToken, `refresh:${exitingOauthUser["_id"]}`, {

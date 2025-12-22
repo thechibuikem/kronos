@@ -1,7 +1,7 @@
 import VerticalNavigation from "@/features/home/components/VerticalNavigation";
 import RepoList from "@/features/repositories/components/RepoList";
-import { type Repo } from "@/features/watchlist/slices/allRepo.Slice";
-import { useAllReposHandler } from "@/features/watchlist/handlers/allRepo.Handlers";
+import { type Repo } from "@/features/repositories/slices/allRepo.Slice";
+import { useAllReposHandler } from "@/features/repositories/handlers/allRepo.Handlers";
 
 interface RepoListProps {
   searchArray: Repo[];
@@ -9,7 +9,7 @@ interface RepoListProps {
 
 
 //=========My repositories list ===========//
-function Repositories({ searchArray }: RepoListProps) {
+function Repositories({searchArray}: RepoListProps) {
 const {repos} = useAllReposHandler()
 
   return (

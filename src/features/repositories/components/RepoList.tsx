@@ -1,17 +1,10 @@
 import TopBar from "../../home/components/TopBar"
 import RepoUpdateWrapper from "@/features/repositories/components/RepoUpdateWrapper";
-import { useAllReposHandler} from "@/features/watchlist/handlers/allRepo.Handlers"; 
-import type { Repo } from "@/features/watchlist/slices/allRepo.Slice";
+import { useAllReposHandler } from "@/features/repositories/handlers/allRepo.Handlers"; 
 
 
-interface RepoListProps {
-  searchArray: Repo[];
-}
-
-
-
-
-function RepoList({ searchArray }: RepoListProps) {
+//the main part in our respositories page 
+function RepoList() {
   const { repos } = useAllReposHandler(); //repos State from redux
   return (
     //

@@ -17,4 +17,4 @@ const userSchema = new mongoose.Schema({
 });
 
 // creating models for kronos users
-export const userModel = mongoose.model("userModel", userSchema);
+export const userModel = mongoose.model("user", userSchema);

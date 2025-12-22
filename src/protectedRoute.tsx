@@ -4,7 +4,8 @@ import { Navigate } from "react-router-dom";
 import LoadingPage from "./features/loading/page/LoadingPage";
 import { type RootState } from "./store/store";
 import api from "./api/http/axios.Interceptor"; //interceptor instance
-import { useAllReposHandler } from "./features/watchlist/handlers/allRepo.Handlers";
+import { useAllReposHandler } from "./features/repositories/handlers/allRepo.Handlers";
+import { useAllKronsHandler } from "./features/kronList/handlers/allKrons.Handlers";
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -15,7 +16,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     (state: RootState) => state.authenticated.isAuthenticated
   );
   const dispatch = useDispatch();
-  let {repos,getRepos} = useAllReposHandler()
+  let { getRepos } = useAllReposHandler();
+  let { getKrons} = useAllKronsHandler();
   const [checking, setChecking] = useState(true);
   const [authorizedState, setAuthorizedState] = useState(false);
 
@@ -34,24 +36,34 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
       }
     }
     validate();
-  }, [reduxToken,dispatch]);
+  }, [reduxToken, dispatch]);
 
-
-  // use effect to get all repos from redis
-useEffect(()=>{
-   function fetchRepos(){
-    if (authorizedState){
-   getRepos();
-    }else{
-      console.log("cannot retrieve repository as user is unauthorized")
+  // use effect to get all repos
+  useEffect(() => {
+    function fetchRepos() {
+      if (authorizedState) {
+        getRepos();
+      } else {
+        console.log("cannot retrieve repository as user is unauthorized");
+      }
     }
-  }
-  fetchRepos();
-},[authorizedState,dispatch
-])
+    fetchRepos();
+  }, [authorizedState, dispatch]);
 
-console.log("repos from frontend: ",repos)
-  if (checking) return <LoadingPage/>;
+  // use effect to get all krons
+  useEffect(() => {
+    function fetchKrons() {
+      if (authorizedState) {
+        getKrons();
+      } else {
+        console.log("cannot retrieve krons as user is unauthorized");
+      }
+    }
+    fetchKrons();
+  }, [authorizedState, dispatch]);
+
+  // console.log("repos from frontend: ",repos)
+  if (checking) return <LoadingPage />;
   if (!authorizedState) return <Navigate to="/" replace />;
 
   return <>{children}</>;

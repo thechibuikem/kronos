@@ -6,7 +6,7 @@ export async function logOut(req,res) {
 const cookie = req.cookies
 const refreshCookie = cookie.refreshToken
 
-console.log(refreshCookie)
+console.log("refresh token", refreshCookie)
 
 try{
     await logOutService(refreshCookie)

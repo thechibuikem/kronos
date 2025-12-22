@@ -3,10 +3,11 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 // type for redux
 export interface Repo {
-repoId:number,
-repoName:string,
-repoUrl:string,
-isPrivate:boolean
+  repoName: string;
+  repoUrl: string;
+  githubOwnerId: string;
+  repoId: number;
+  isPrivate: boolean;
 }
 
 
@@ -16,7 +17,7 @@ async ()=>{
   const url = `${baseBackendUrl}api/watchList/allRepos`;
   const response = await axios.get(url, { withCredentials: true });
 console.log(response)
-  console.log(response.data.allRepos); //array of repos
+  // console.log(response.data.allRepos); //array of repos
   return response.data.allRepos; //array of repos
 })
 

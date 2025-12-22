@@ -1,16 +1,21 @@
 import LoginPage from "./features/auth/pages/LoginPage";
 import Dashboard from "./features/home/pages/Dashboard";
-import Update from "./features/watchlist/pages/Update";
+import Update from "./features/kronList/pages/Krons";
 import Repositories from "./features/repositories/pages/Repositories";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./protectedRoute";
 import PublicRoute from "./PublicRoute";
 import { AppProvider } from "./api/Context";
 export const baseBackendUrl = `${import.meta.env.VITE_BASE_BACKEND_URL}`;
+import { useAllReposHandler } from "./features/repositories/handlers/allRepo.Handlers";
+
+
 // export const baseBackendUrl = "http://localhost:5000/";
 // localhost:5000
 
 function App() {
+const { repos } = useAllReposHandler();
+
   return (
     <AppProvider>
       <Routes>
@@ -45,7 +50,7 @@ function App() {
           path="/repositories"
           element={
             <ProtectedRoute>
-              <Repositories />
+              <Repositories searchArray={repos}/>
             </ProtectedRoute>
           }
         />

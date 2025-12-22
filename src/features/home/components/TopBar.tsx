@@ -1,6 +1,6 @@
 import Introtext from "./Introtext";
 import SearchComponent from "./SearchComponent";
-import { type Repo } from "@/features/watchlist/slices/allRepo.Slice";
+import { type Repo } from "@/features/repositories/slices/allRepo.Slice";
 // import { useAllReposHandler } from "@/features/watchlist/handlers/allRepo.Handlers";
 
 
