@@ -11,6 +11,7 @@ export const store = configureStore({
     authenticated: isAuthenticatedReducer,
     repoList: allRepoListReducer,
     KronList:allKronSliceReducer,
+  // isLoading:isLoadingReducer,
   },
 });
 

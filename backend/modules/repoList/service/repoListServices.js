@@ -24,10 +24,10 @@ console.log("response: ",response)
   return response;
 }
 
-// store in redis
-export async function storeInRedis(key, value) {
-  await redisClient.set(key, JSON.stringify(value));
-}
+// // store in redis
+// export async function storeInRedis(key, value) {
+//   await redisClient.set(key, JSON.stringify(value));
+// }
 
 // get repos from redis
 export async function getReposFromRedis(user) {

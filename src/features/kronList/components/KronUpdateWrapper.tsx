@@ -2,6 +2,7 @@ import KronUpdateCard from "./KronUpdateCard"
 import AddKronUpdateCard from "./AddKronUpdateCard"
 import { useAllKronsHandler } from "../handlers/allKrons.Handlers"
 import { useEffect } from "react"
+import LoadingPage from "@/features/loading/page/LoadingPage"
 
 
 function KronUpdateWrapper() {
@@ -10,10 +11,15 @@ const {krons,getKrons} = useAllKronsHandler()
 
 console.log("krons at frontend :",krons)
 
+
+// use effect to get all krons
 useEffect(()=>{
   getKrons()
 },[])
 
+
+
+// if (loading)return <LoadingPage/>
 
   return (
     <section className="bg-bue-500 w-full mt-8 gap-[2rem] flex flex-col px-4 md:px-8 mx-auto">
@@ -24,7 +30,6 @@ useEffect(()=>{
       
         {/* group of krons */}
         <figure className="w-full  gap-[1rem] flex flex-col">
-           {/* {KronList.slice(0,kronLimit).map((kron,index)=>( */}
            {krons.map((kron,index)=>(
             <KronUpdateCard
              key={index}

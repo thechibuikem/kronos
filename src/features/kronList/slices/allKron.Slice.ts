@@ -23,20 +23,22 @@ async ()=>{
 })
 
 //initial state
-const initialState: Kron[] = [];
+const initialState: Partial<Kron>[] = [];
 //All kron Slice 
 const allKronSlice = createSlice({
-    name:"allKrons",
-    initialState,
+  name: "allKrons",
+  initialState,
   reducers: {
-    updateKronUI(state, action: PayloadAction<Kron>) {
+    updateKronUI(state, action: PayloadAction<Partial<Kron>>) {
       state.push(action.payload);
-    }},
-    extraReducers:(builder)=>{
-        builder.addCase(fetchAllKrons.fulfilled, (state, action) => {
-          return action.payload;
-        });
-    }
+    },
+  }, //a reducer that pushes in a value to our already existing state
+
+  extraReducers: (builder) => {
+    builder.addCase(fetchAllKrons.fulfilled, (state, action) => {
+      return action.payload;
+    });//an extra reducer that updates our state to value returned by our fetchAllKrons async thunk
+  },
 });
 // export const {fetchAllRepos}= allRepoSlice.actions;
 export default allKronSlice.reducer;
