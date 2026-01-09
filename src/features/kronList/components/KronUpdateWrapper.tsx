@@ -2,21 +2,16 @@ import KronUpdateCard from "./KronUpdateCard"
 import AddKronUpdateCard from "./AddKronUpdateCard"
 import { useAllKronsHandler } from "../handlers/allKrons.Handlers"
 import { useEffect } from "react"
-import LoadingPage from "@/features/loading/page/LoadingPage"
-
 
 function KronUpdateWrapper() {
 const {krons,getKrons} = useAllKronsHandler()
 
 
 console.log("krons at frontend :",krons)
-
-
 // use effect to get all krons
 useEffect(()=>{
   getKrons()
 },[])
-
 
 
 // if (loading)return <LoadingPage/>
@@ -33,7 +28,8 @@ useEffect(()=>{
            {krons.map((kron,index)=>(
             <KronUpdateCard
              key={index}
-             name={kron.repoName}
+             repoName={kron.repoName}
+             _id={kron._id}
              />
             ))}
         </figure>

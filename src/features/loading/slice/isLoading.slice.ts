@@ -1,8 +1,5 @@
-import { baseBackendUrl } from "@/App";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {  createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
-
 //initial state
 const initialState: boolean = false
 //All kron Slice

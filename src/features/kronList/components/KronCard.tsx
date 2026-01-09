@@ -7,6 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/features/home/ui/card"
+// import type { Kron } from "@/features/repositories/components/RepoCard";
+
 
 export type kronType = {
   name:string,
@@ -15,6 +17,10 @@ export type kronType = {
 }
 
 export default function KronCard({name,link,desc}:kronType) {
+
+
+
+
   return (
     <Card className="h-fit w-full md:w-[12rem] aspect-square flex flex-col gap-y-[1.5rem] transparent-cards">
       <CardHeader style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>

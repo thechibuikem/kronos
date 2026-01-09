@@ -7,7 +7,6 @@ export function githubOauthService() {
 
 //callback function to get github token using code 
 export async function githubTokenService(code) {
-  // Exchange code for token using a POST request, token is response
   const tokenRes = await fetch(`https://github.com/login/oauth/access_token`, {
     method: "POST",
     headers: { Accept: "application/json", "Content-Type": "application/json" },
@@ -32,8 +31,6 @@ export async function githubTokenService(code) {
     })
   ).json(); //get user details from github
 
-  // console.log("\n my user returned from github",user)
-
   const emails = await (
     await fetch("https://api.github.com/user/emails", {
       headers: { Authorization: `Bearer ${access_token}` },
@@ -41,7 +38,6 @@ export async function githubTokenService(code) {
   ).json();
 
 
-// console.log("emails",emails)
 
   // getting our users email to store in on gitHub
   const primary = emails.find((e) => e.primary && e.verified && e.email);

@@ -14,8 +14,8 @@ function KronUpdateWrapper() {
       {/* group of krons */}
       <figure className="w-full  gap-[1rem] flex flex-col">
         {repos.length === 0 && (
-          <div className="w-full my-8 flex justify-center ">
-            <Loader />
+          <div className="w-full my-24 flex justify-center ">
+            <Loader size={50}/>
           </div>
         )}
 

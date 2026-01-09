@@ -4,6 +4,7 @@ import type{ PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 // type for redux
 export interface Kron {
+  _id:string,
   repoName: string;
   repoUrl: string;
   githubOwnerId: string;

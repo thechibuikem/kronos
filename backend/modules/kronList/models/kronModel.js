@@ -1,22 +1,26 @@
 import mongoose from "mongoose";
 
-
-// creating schemal for users
-// const kronSchema = new mongoose.Schema({
-//   repoId :{ type: String, required: true, unique: true },
-//   repoUrl: { type: String},
-//   repoName: { type: String },
-//   githubOwnerId: { type: String},
-// isPrivate:{type:Boolean}
-// });
-
-
 // creating a schema referencing our Repo schema
-const kronSchema = new mongoose.Schema({
-  githubOwnerId: { type: String },
-  repoId: { type: mongoose.Schema.Types.ObjectId, ref: "repo" },
+const kronSchema = new mongoose.Schema(
+  {
+    githubOwnerId: { type: String },
+    repoId: { type: String },
+  },
+  {
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true },
+  }
+);
+
+// virtual for non-objectId populate
+kronSchema.virtual("repo", {
+  ref: "Repo",
+  localField: "repoId",//kron field
+  foreignField: "repoId",//repo field
+  justOne: true,
 });
 
+
 // creating models for kronos users repos
-export const KronModel = mongoose.model("kron", kronSchema);
+export const KronModel = mongoose.model("Kron", kronSchema);
 

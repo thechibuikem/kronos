@@ -2,21 +2,14 @@ import axios from "axios";
 import { Card } from "@/features/home/ui/card"
 import { IoIosAdd } from "react-icons/io";
 import { useAllKronsHandler } from "@/features/kronList/handlers/allKrons.Handlers";
-
-
-// type for data we'd send to backend for kron storage
-export interface Kron {
-  repoName: string;
-  repoUrl: string;
-  githubOwnerId: string;
-  repoId: number;
-  isPrivate: boolean;
-}
+import {type Kron } from "@/features/kronList/slices/allKron.Slice";
+import { Loader } from "@/features/loading/components/preloader";
+import { useState } from "react";
 
 // repocard 
 function RepoCard({ repoName,repoUrl,githubOwnerId,repoId,
  }: Partial<Kron>) {
-
+const [isLoading,setIsLoading] = useState<boolean>(false)
 const {updateKronUiHandler} = useAllKronsHandler()
 
 
@@ -31,18 +24,20 @@ const kronData:Partial<Kron> = {
 // console.log("Redux state:", store.getState().KronList);
 
   async function addKron() {
-  try{ 
+  try {
+    setIsLoading(true);
     await axios.post(
       `http://localhost:5000/api/kronList/addKron`,
       { kronData },
       { withCredentials: true }
     );
 
-    await updateKronUiHandler(kronData)//updafing ui with kron
-
-  }
-  catch (error) {
-console.log("error adding kron",error)
+    await updateKronUiHandler(kronData); //updafing ui with kron
+  } catch (error) {
+    console.log("error adding kron", error);
+    setIsLoading(true);
+  } finally {
+    setIsLoading(false);
   }
   }
 
@@ -51,8 +46,11 @@ console.log("error adding kron",error)
   return (
     <Card className="w-full flex flex-row justify-between px-4 md:px-4 transparent-cards py-3 text-[1rem]">
       <a href={repoUrl}>{repoName}</a>
-      <IoIosAdd size={"1.5rem"} className="hover:text-blue-950" onClick={addKron} />
-    </Card>
+      {isLoading
+        ?<Loader size={20}/>
+        :<IoIosAdd size={"1.5rem"} className="hover:text-blue-950" onClick={addKron} />
+      }
+        </Card>
   );
 }
 

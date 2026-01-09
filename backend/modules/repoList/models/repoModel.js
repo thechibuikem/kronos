@@ -10,4 +10,4 @@ const repoSchema = new mongoose.Schema({
 });
 
 // creating models for kronos users repos
-export const RepoModel = mongoose.model("repo", repoSchema);
+export const RepoModel = mongoose.model("Repo", repoSchema);
