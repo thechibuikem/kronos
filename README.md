@@ -93,7 +93,14 @@ Kronos is a modular-monolith web application which functions as a developer prod
 </div>
 
 
+<br>
+<br>
+<br>
 
+
+# System Diagram
+
+ ![Demo](./public/systemDiagram.png)
 
 <!-- [![Kronos Demo](./public/demoThumbnail.png)](./public/kronosDemo.mp4) -->
 <!-- *Click the image to play the demo video.* -->
