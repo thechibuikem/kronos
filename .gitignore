@@ -15,6 +15,9 @@ dist-ssr
 #environmental variables 
 .env
 .env.*
+.env
+*.env.*
+
 
 
 # Editor directories and files
