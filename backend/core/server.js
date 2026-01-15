@@ -9,7 +9,7 @@ import connectDB from "./db.js";
 import authRoutes from "../modules/auth/routes/authRoute.js";
 import repoListRoutes from "../modules/repoList/routes/repoListRoutes.js";
 import kronListRoutes from "../modules/kronList/routes/kronListRoutes.js"
-
+import changeDetectionRoutes from "../modules/changeDetection/routes/changeDetection.routes.js"
 
 //-- confiigurations
 const authLimiter = rateLimit({
@@ -35,9 +35,17 @@ app.use(bodyParser.json()); // Parse JSON data
 app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded data
 app.use(cookieParser());    
 // app.use("/api/auth", authLimiter);
+
+//======authentication endpoint======//
+
 app.use("/api/auth", authRoutes);
+//====== watchList endpoint======//
 app.use("/api/watchList",repoListRoutes)
 app.use("/api/kronList", kronListRoutes);
+//====== change detection endpoint======//
+app.use("/api/changeDetection",changeDetectionRoutes)
+
+
 
 
 app.use((req, res, next) => {
