@@ -1,8 +1,8 @@
-import octoKit from "octokit";
+import {Octokit} from "octokit";
 
 // function to create octokit client
 export function createOctoKitClient(token){
-const octokit = new octoKit({
+const octokit = new Octokit({
   auth: token,
 });
 
