@@ -1,4 +1,5 @@
 import { addOauthUser } from "../utils/addOauthUser.js";
+import { initOctokit } from "../../../core/octokit.client.js";
 
 //url to get github code
 export function githubOauthService() {
@@ -17,13 +18,14 @@ export async function githubTokenService(code) {
     }),
   }); //using code to get github access-token
 
-
   if (!tokenRes.ok) throw new Error("GitHub token request failed");//if something is wrong with our request to get an access token
-
+  
   // retrieving access_token from github
   const { access_token } = await tokenRes.json();
-
-
+  
+  //=======initialize octoKit client=========
+  initOctokit(access_token,(console.log("octokit client has been initialized successfully")))
+  
   // Fetch user profile
   const user = await (
     await fetch("https://api.github.com/user", {
@@ -37,14 +39,14 @@ export async function githubTokenService(code) {
     })
   ).json();
 
-
-
+  
+  
   // getting our users email to store in on gitHub
   const primary = emails.find((e) => e.primary && e.verified && e.email);
   if (!primary) throw new Error("No verified email");
-
+  
   const email = primary.email;
-
+  
   const {status,data,exitingOauthUser} = await addOauthUser(
     email,
     user,
