@@ -10,6 +10,10 @@ import authRoutes from "../modules/auth/routes/authRoute.js";
 import repoListRoutes from "../modules/repoList/routes/repoListRoutes.js";
 import kronListRoutes from "../modules/kronList/routes/kronListRoutes.js"
 import changeDetectionRoutes from "../modules/changeDetection/routes/changeDetection.routes.js"
+import { getUrls } from "./url.getter.js";
+dotenv.config();
+const {frontendUrl,backendUrl} = getUrls()
+
 
 //-- confiigurations
 const authLimiter = rateLimit({
@@ -19,12 +23,11 @@ const authLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 });
-const allowedOrigin = "http://localhost:5173";
+const allowedOrigin = frontendUrl;
 const corsOptions = {
   origin: allowedOrigin,
   credentials: true,//for headers|cookies
 };
-dotenv.config();
 
 //-- mountings
 const app = express();
@@ -45,9 +48,6 @@ app.use("/api/kronList", kronListRoutes);
 //====== change detection endpoint======//
 app.use("/api/changeDetection",changeDetectionRoutes)
 
-
-
-
 app.use((req, res, next) => {
   console.log("Incoming request:", req.method, req.url);
   next();
@@ -62,7 +62,7 @@ app.get("/api", (req, res) => {
 connectDB()
   .then(() => {
     app.listen(PORT, () =>
-      console.log(`Server running on http://localhost:${PORT} ✅`)
+      console.log(`Server running on port: ${PORT} ✅`)
     );
   })
   .catch((err) => console.error("db connection failed", err));

@@ -1,8 +1,8 @@
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
 import mongoose from "mongoose";// import mongoose ODM
 import { redisClient } from './redisClient.js';
 
-dotenv.config();
+// dotenv.config();
 
 // initializing redis
 redisClient.on("error", (err) => console.error("Redis Client Error", err));
