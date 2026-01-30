@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getUrls } from "@/config";
 import { Card } from "@/features/home/ui/card"
 import { AiOutlineDelete } from "react-icons/ai";
 import type { Kron } from "../slices/allKron.Slice";
@@ -6,6 +7,7 @@ import { useAllKronsHandler } from "../handlers/allKrons.Handlers";
 import { Loader } from "@/features/loading/components/preloader";
 import { useState } from "react";
 
+const {backendUrl} = getUrls()
 
 // my kron update card for my kron LIst page
 function KronUpdateCard({repoName,_id}:Partial<Kron>) {
@@ -17,7 +19,7 @@ const {getKrons} = useAllKronsHandler();
     try{
       setIsLoading(true)
       await axios.delete(
-            `http://localhost:5000/api/kronList/deleteKron/${_id}`,
+            `${backendUrl}/api/kronList/deleteKron/${_id}`,
       { withCredentials: true }
     )
     }catch(err){
