@@ -1,19 +1,23 @@
+import dotenv from "dotenv";
+dotenv.config();
 
-const mode = process.env.local
-const localBackendUrl=  process.env.localBackendUrl
-const remoteBackendUrl= process.env.remoteBackendUrl
-const localFrontendUrl=  process.env.localFrontendUrl
-const remoteFrontendUrl = process.env.remoteFrontendUrl;
+const mode = process.env.MODE || "local";
 
-// defining urls to be used
+const config = {
+  local: {
+    backendUrl:process.env.LOCAL_BACKEND_URL,
+    frontendUrl: process.env.LOCAL_FRONTEND_URL,
+  },
+  remote: {
+    backendUrl: process.env.REMOTE_BACKEND_URL,
+    frontendUrl: process.env.REMOTE_FRONTEND_URL,
+  },
+};
 
-let backendUrl
-let frontendUrl
+// fallback to local if mode is invalid
+const { backendUrl, frontendUrl } = config[mode] || config.local;
 
-// dynamically initializing them
-mode == "local" ? backendUrl = localBackendUrl : remoteBackendUrl
-mode == "local" ? frontendUrl = localFrontendUrl : remoteFrontendUrl
-
-export function getUrls (){
-  return {frontendUrl,backendUrl}
-} 
+export function getUrls() {
+  console.log("frontend url:", frontendUrl, "backend url:", backendUrl);
+  return { frontendUrl, backendUrl };
+}
