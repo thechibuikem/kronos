@@ -1,7 +1,9 @@
-import { baseBackendUrl } from "@/App";
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import type{ PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
+import type{ PayloadAction } from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+
+import { getUrls } from "@/config";
+const {backendUrl} = getUrls()
 // type for redux
 export interface Kron {
   _id:string,
@@ -10,15 +12,15 @@ export interface Kron {
   githubOwnerId: string;
   repoId: number;
   isPrivate: boolean;
+  owner:string
 }
 
 
 // async thunk to get all repos from backend
 export const fetchAllKrons = createAsyncThunk("allKrons/fetchAllKrons",
 async ()=>{
-  const url = `${baseBackendUrl}api/kronList/allKrons`;
+  const url = `${backendUrl}api/kronList/allKrons`;
   const response = await axios.get(url, { withCredentials: true });
-// console.log(response)
   console.log("my krons from backend",response.data.allKrons); //array of repos
   return response.data.allKrons; //array of repos
 })
