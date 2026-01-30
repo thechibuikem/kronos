@@ -1,20 +1,23 @@
-import { baseBackendUrl } from "@/App";
+
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 // type for redux
+import { getUrls } from "@/config";
 export interface Repo {
   repoName: string;
   repoUrl: string;
   githubOwnerId: string;
   repoId: number;
   isPrivate: boolean;
+  owner:string
 }
 
+const {backendUrl} = getUrls()
 
 // async thunk to get all repos from backend
 export const fetchAllRepos = createAsyncThunk("allRepos/fetchAllRepos",
 async ()=>{
-  const url = `${baseBackendUrl}api/watchList/allRepos`;
+  const url = `${backendUrl}api/watchList/allRepos`;
   const response = await axios.get(url, { withCredentials: true });
 console.log(response.data.allRepos)
   // console.log(response.data.allRepos); //array of repos
