@@ -28,6 +28,7 @@ function KronUpdateWrapper() {
             githubOwnerId={repo.githubOwnerId}
             repoId={repo.repoId}
             isPrivate={repo.isPrivate}
+            owner={repo.owner}
           />
         ))}
       </figure>
