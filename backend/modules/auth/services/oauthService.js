@@ -1,5 +1,5 @@
 import { addOauthUser } from "../utils/addOauthUser.js";
-import { initOctokit } from "../../../core/octokit.client.js";
+// import { initOctokit } from "../../../core/octokit.client.js";
 
 //url to get github code
 export function githubOauthService() {
@@ -23,8 +23,11 @@ export async function githubTokenService(code) {
   // retrieving access_token from github
   const { access_token } = await tokenRes.json();
   
-  //=======initialize octoKit client=========
-  initOctokit(access_token,(console.log("octokit client has been initialized successfully")))
+  // //=======initialize octoKit client=========
+  // initOctokit(
+  //   access_token,
+  //   (console.log("octokit client has been initialized successfully")
+  // ))
   
   // Fetch user profile
   const user = await (
