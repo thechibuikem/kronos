@@ -10,7 +10,7 @@ import authRoutes from "../modules/auth/routes/authRoute.js";
 import repoListRoutes from "../modules/repoList/routes/repoListRoutes.js";
 import kronListRoutes from "../modules/kronList/routes/kronListRoutes.js"
 import changeDetectionRoutes from "../modules/changeDetection/routes/changeDetection.routes.js"
-import { getUrls } from "./url.getter.js";
+import { getUrls } from "./config.js";
 dotenv.config();
 const {frontendUrl,backendUrl} = getUrls()
 
@@ -62,7 +62,7 @@ app.get("/api", (req, res) => {
 connectDB()
   .then(() => {
     app.listen(PORT, () =>
-      console.log(`Server running on port: ${PORT} ✅`)
+      console.log(`Server running on port:${backendUrl} ${PORT} ✅`)
     );
   })
   .catch((err) => console.error("db connection failed", err));

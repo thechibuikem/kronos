@@ -9,6 +9,7 @@ export function initOctokit (accessToken,callback){
   auth: accessToken,
 });
 
+// alerting that octoKit has been initialized
 if (callback) callback();
 }
 
@@ -18,5 +19,6 @@ export function getOctokit(){
   if (!octokitClient){
     throw new Error("octokit is not initialized")
   }
+  return octokitClient
 }
 
