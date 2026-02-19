@@ -24,7 +24,7 @@ export async function githubTokenService(code) {
   const { access_token } = await tokenRes.json();
   
   // //=======initialize octoKit client=========
-  // initOctokit(
+  // initOctokit(git
   //   access_token,
   //   (console.log("octokit client has been initialized successfully")
   // ))
