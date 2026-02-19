@@ -4,12 +4,19 @@ import { Octokit } from "octokit";
 
 // function to initialize octokit, to br used in the oauth flow
 export function createOctokit(accessToken, callback) {
-  octokitClient = new Octokit({
+  let octokitClient = new Octokit({
     auth: accessToken,
   });
 
   // alerting that octoKit has been initialized
-  if (callback) callback();
+  if (octokitClient) {
+    console.log("octokit client initialized successfully");
+    return octokitClient
+  }
+  else{
+    console.log("octokit client was not initialized successfully");
+    return
+  }
 }
 
 // // // getter function for octokit
