@@ -17,12 +17,14 @@ const {backendUrl} = getUrls()
 // async thunk to get all repos from backend
 export const fetchAllRepos = createAsyncThunk("allRepos/fetchAllRepos",
 async ()=>{
-  const url = `${backendUrl}api/watchList/allRepos`;
+  const url = `${backendUrl}/api/watchList/allRepos`;
+  console.log(url,"the url I'm targetting to get repositories")
   const response = await axios.get(url, { withCredentials: true });
 console.log(response.data.allRepos)
   // console.log(response.data.allRepos); //array of repos
   return response.data.allRepos; //array of repos
 })
+
 
 //initial state
 const initialState: Repo [] = []
