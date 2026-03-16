@@ -2,6 +2,10 @@ import { FaGithub } from "react-icons/fa";
 import { Button } from "@/features/home/ui/button";
 import { useEffect } from "react";
 
+import { getUrls } from "@/config";
+const {backendUrl}= getUrls()
+
+
 function OauthBtn() {
   // function that watches login/signup page on reload retrievs that token from search key if any
   useEffect(() => {
@@ -17,7 +21,7 @@ function OauthBtn() {
   // function that runs on click of signUp With Github btn
   const handleOauthClick = async (e: React.FormEvent) => {
     e.preventDefault();
-    const endpoint = "http://localhost:5000/api/auth/github";
+    const endpoint = `${backendUrl}/api/auth/github`;
     //first going to github oauth stuff
     window.location.href = endpoint;
   };

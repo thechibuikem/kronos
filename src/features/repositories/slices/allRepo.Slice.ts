@@ -3,6 +3,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 // type for redux
 import { getUrls } from "@/config";
+const {backendUrl} = getUrls()
 export interface Repo {
   repoName: string;
   repoUrl: string;
@@ -12,7 +13,6 @@ export interface Repo {
   owner:string
 }
 
-const {backendUrl} = getUrls()
 
 // async thunk to get all repos from backend
 export const fetchAllRepos = createAsyncThunk("allRepos/fetchAllRepos",

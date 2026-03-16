@@ -26,7 +26,7 @@ const config:Config = {
 }; //my config map
 
 // fallback to local if mode is invalid
-const { backendUrl, frontendUrl } = config[mode] || config.local;
+const { backendUrl, frontendUrl } = config[mode]
 
 
 
