@@ -1,4 +1,4 @@
-import { getRefreshTokenFromRedis } from "../../../core/redisClient.js";
+import { getRefreshTokenFromRedis } from "../../../core/redis.client.js";
 import jwt from "jsonwebtoken"
 
 export async function refreshTokenService(refreshToken) {
