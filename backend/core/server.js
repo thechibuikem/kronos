@@ -1,68 +1,93 @@
-// server.js
 import cors from "cors";
-import bodyParser from "body-parser";
 import express from "express";
 import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import connectDB from "./db.js";
+import { connectRedis } from "./redis.client.js"
+import { getUrls } from "./config.js";
 import authRoutes from "../modules/auth/routes/authRoute.js";
 import repoListRoutes from "../modules/repoList/routes/repoListRoutes.js";
-import kronListRoutes from "../modules/kronList/routes/kronListRoutes.js"
-import changeDetectionRoutes from "../modules/changeDetection/routes/changeDetection.routes.js"
-import { getUrls } from "./config.js";
+import kronListRoutes from "../modules/kronList/routes/kronListRoutes.js";
+import changeDetectionRoutes from "../modules/changeDetection/routes/changeDetection.routes.js";
+
 dotenv.config();
-const {frontendUrl,backendUrl} = getUrls()
 
+// 1. getting urls
+const { frontendUrl, backendUrl } = getUrls();
 
-//-- confiigurations
+// 2. constructing auth limiter
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 10,
-  message: { error: "Too many attempts, please try again later" },
+  message: { error: "Kronos says too many attempts,try again later" },
   standardHeaders: true,
   legacyHeaders: false,
 });
+
+// 3. mounting CORS
 const allowedOrigin = frontendUrl;
 const corsOptions = {
   origin: allowedOrigin,
-  credentials: true,//for headers|cookies
+  credentials: true, //for headers|cookies
 };
 
-//-- mountings
+//4. initializing express app
 const app = express();
-const PORT = process.env.PORT||5000;
+const PORT = process.env.PORT || 5000;
+
+// 5. mounting middleware packages
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(bodyParser.json()); // Parse JSON data
-app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded data
-app.use(cookieParser());    
-// app.use("/api/auth", authLimiter);
+app.use(cookieParser());
 
-//======authentication endpoint======//
+/**  
+  6. rate limiter for my endpoints
+ app.use("/api/auth", authLimiter);
+ */
 
-app.use("/api/auth", authRoutes);
-//====== watchList endpoint======//
-app.use("/api/watchList",repoListRoutes)
-app.use("/api/kronList", kronListRoutes);
-//====== change detection endpoint======//
-app.use("/api/changeDetection",changeDetectionRoutes)
 
+// *. middle ware that logs every request coming to my server
 app.use((req, res, next) => {
   console.log("Incoming request:", req.method, req.url);
   next();
 });
 
-// Use the routes
-// A test route directly in server.js
+
+//*. a test route directly in server.js
 app.get("/api", (req, res) => {
   res.send("Server is running");
 });
 
-connectDB()
-  .then(() => {
-    app.listen(PORT, () =>
-      console.log(`Server running on port:${backendUrl}`)
-    );
-  })
-  .catch((err) => console.error("db connection failed", err));
+
+// 7. mounting authentication endpoints
+app.use("/api/auth", authRoutes);
+
+// 8. mounting watchlist endpoints
+app.use("/api/watchList", repoListRoutes);
+
+// 9. mounting kronlist endpoints
+app.use("/api/kronList", kronListRoutes);
+
+//10. mounting change detection endpoints
+app.use("/api/changeDetection", changeDetectionRoutes);
+
+
+
+
+// 11. starting server
+async function startServer() {
+  try {
+    await connectDB();
+    await connectRedis();
+    // await startCronJobs();
+
+    app.listen(PORT, () => {
+      console.log(`Server running on port:${backendUrl}`);
+    });
+  } catch (err) {
+    console.error("Startup failed:", err);
+  }
+}
+
+await startServer()
