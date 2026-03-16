@@ -10,9 +10,8 @@ export const baseBackendUrl = `${import.meta.env.VITE_BASE_BACKEND_URL}`;
 import { useAllReposHandler } from "./features/repositories/handlers/allRepo.Handlers";
 
 
-// export const baseBackendUrl = "http://localhost:5000/";
-// localhost:5000
 
+// my frontend app structure
 function App() {
 const { repos } = useAllReposHandler();
 

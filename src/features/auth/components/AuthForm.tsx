@@ -9,8 +9,12 @@ import { setAuthenticated } from "@/features/auth/slices/Authenthicated.Slice"; 
 import { useNavigate } from "react-router-dom";
 import { toggleExistingUser } from "@/features/auth/slices/ExistingUser.Slice";
 import { AppContext } from "@/api/Context";
-import { baseBackendUrl } from "@/App";
+import { getUrls } from "@/config";
 
+const {backendUrl} = getUrls()
+
+
+console.log("backendUrl at authForm",backendUrl)
 
 export default function AuthForm() {
 
@@ -38,8 +42,8 @@ export default function AuthForm() {
 
     // dynamically targetting backend endpoint depending on if we're dealing with new or existing user
     const endpoint = isExistingUser
-      ? `${baseBackendUrl}api/auth/login`
-      : `${baseBackendUrl}api/auth/signup`;
+      ? `${backendUrl}api/auth/login`
+      : `${backendUrl}api/auth/signup`;
 
     // grabbing response from express backend api
     const res = await fetch(endpoint, {
