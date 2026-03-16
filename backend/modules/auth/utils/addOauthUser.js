@@ -1,6 +1,6 @@
 // access_token means github access token while accessToken is jwt's access token
 import { userModel } from "../../user/models/userModel.js";
-import { redisClient } from "../../../core/redisClient.js";
+import { redisClient } from "../../../core/redis.client.js";
 import jwt from "jsonwebtoken";
 
 export const addOauthUser = async (email, user,access_token) => {
