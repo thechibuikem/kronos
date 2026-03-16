@@ -1,4 +1,4 @@
-import { redisClient } from "../../../core/redisClient.js";
+import { redisClient } from "../../../core/redis.client.js";
 import { RepoModel } from "../models/repoModel.js";
 
 //service to get list of repositories from github
@@ -7,6 +7,7 @@ export async function getReposFromGithub(githubToken, etag) {
     headers: {
       Authorization: `Bearer ${githubToken}`,
       "If-None-Match": etag || "",
+      // "If-None-Match": "",
       // "If-None-Match": "",
     },
   });
@@ -22,7 +23,6 @@ export async function getReposFromGithub(githubToken, etag) {
   if (response.status === 304) {
     return response; // No changes
   }
-
   // console.log("response: ",response)
 
   //checking response
@@ -70,21 +70,27 @@ export async function getRepos(user) {
     etag = response.headers.get("etag"); //retrieving etag from response
     const repoData = await response.json(); //retrieving all repositories
 
+
+// console.log(repoData)
+
     // filtering returned repositories to exclude forked, archives and organization owned repositories
-    const filteredRepoData = repoData.filter(r=>
-      (r) => !r.fork &&
-      // !r.archived &&
-      r.owner.type === "User"
-    );
+    // const filteredRepoData = repoData.filter(r=>
+    //   (r) => !r.fork &&
+    //   // !r.archived &&
+    //   r.owner.type === "User"
+    // );
 
     // repoList for front-end
-    const repoList = filteredRepoData.map((e) => ({
+    const repoList = repoData.map((e) => ({
       repoId: e.id,
       repoUrl: e.html_url,
       repoName: e.name,
       githubOwnerId: user.id,
       isPrivate: e.private,
+      owner:e.owner.login
     }));
+
+// console.log(repoList)
 
     console.log(
       "length of new repo list returned by github: ",
