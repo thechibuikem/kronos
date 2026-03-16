@@ -30,6 +30,7 @@ try{
 
   // .5 actual webhook registering operation.
   const octokitClient = createOctokit(requiredUser.githubToken);
+  // .6 adding webhook
   await octokitClient.request(repourl, {
     owner: webhookData.owner,
     repo: webhookData.repoName,
@@ -46,6 +47,7 @@ try{
     },
   });
 }
+// .7 loging any error encountered while adding webhook
 catch(error){
   console.log("error occured when adding webhook",error)
 }

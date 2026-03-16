@@ -1,14 +1,13 @@
 //service to get list of repositories from github
 import { RepoModel } from "../../repoList/models/repoModel.js";
 import { KronModel } from "../models/kronModel.js";
-
+import { addWebHook } from "../../changeDetection/service/changeDetection.service.js";
 
 //1. function to get Repo from RepoId
 export async function getRepoFromRepoId(repoId) {
   const requiredRepo = await RepoModel.findOne({_id:repoId});
   return requiredRepo;
 }
-
 
 //2. kron Input validator
 export async function kronValidator (githubOwnerId,repoId,limit) {  
@@ -42,13 +41,8 @@ export async function deleteKron(requiredRepo) {
 export async function getKronsFromMDB(user) {
   const mdbKrons = await KronModel
   .find({ githubOwnerId: user.id })
-  .populate(
-    "repo"
-  ); //populate with actual repo-references
-
+  .populate("repo"); //populate with actual repo-references
   // console.log(mdbKrons.repo,"krons at kronos",mdbKrons.length)
-
   const kronList = mdbKrons.map((kron) => kron.repo);//map out the actual krons
-
   return kronList; //returning krons from mongodb
 } 
