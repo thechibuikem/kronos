@@ -26,9 +26,9 @@ const authLimiter = rateLimit({
 });
 
 // 3. mounting CORS
-const allowedOrigins = [frontendUrl, "http://localhost:5173"];
+const allowedOrigin = frontendUrl;
 const corsOptions = {
-  origin: allowedOrigins,
+  origin: allowedOrigin,
   credentials: true, //for headers|cookies
 };
 
