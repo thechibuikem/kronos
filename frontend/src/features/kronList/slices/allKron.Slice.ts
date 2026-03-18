@@ -1,33 +1,34 @@
 import axios from "axios";
-import type{ PayloadAction } from "@reduxjs/toolkit";
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import { getUrls } from "@/config";
-const {backendUrl} = getUrls()
+const { backendUrl } = getUrls();
 // type for redux
 export interface Kron {
-  _id:string,
+  _id: string;
   repoName: string;
   repoUrl: string;
   githubOwnerId: string;
   repoId: number;
   isPrivate: boolean;
-  owner:string
+  owner: string;
 }
 
-
 // async thunk to get all repos from backend
-export const fetchAllKrons = createAsyncThunk("allKrons/fetchAllKrons",
-async ()=>{
-  const url = `${backendUrl}api/kronList/allKrons`;
-  const response = await axios.get(url, { withCredentials: true });
-  console.log("my krons from backend",response.data.allKrons); //array of repos
-  return response.data.allKrons; //array of repos
-})
+export const fetchAllKrons = createAsyncThunk(
+  "allKrons/fetchAllKrons",
+  async () => {
+    const url = `${backendUrl}api/kronList/allKrons`;
+    const response = await axios.get(url, { withCredentials: true });
+    console.log("my krons from backend", response.data.allKrons); //array of repos
+    return response.data.allKrons; //array of repos
+  },
+);
 
 //initial state
 const initialState: Partial<Kron>[] = [];
-//All kron Slice 
+//All kron Slice
 const allKronSlice = createSlice({
   name: "allKrons",
   initialState,
@@ -38,9 +39,9 @@ const allKronSlice = createSlice({
   }, //a reducer that pushes in a value to our already existing state
 
   extraReducers: (builder) => {
-    builder.addCase(fetchAllKrons.fulfilled, (action) => {
+    builder.addCase(fetchAllKrons.fulfilled, (_state, action) => {
       return action.payload;
-    });//an extra reducer that updates our state to value returned by our fetchAllKrons async thunk
+    }); //an extra reducer that updates our state to value returned by our fetchAllKrons async thunk
   },
 });
 // export const {fetchAllRepos}= allRepoSlice.actions;

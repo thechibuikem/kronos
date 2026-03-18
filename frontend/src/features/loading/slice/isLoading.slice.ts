@@ -1,17 +1,17 @@
-import {  createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 //initial state
-const initialState: boolean = false
+const initialState: boolean = false;
 //All kron Slice
 const isLoadingSlice = createSlice({
   name: "isLoading",
   initialState,
   reducers: {
-    setIsLoading(action: PayloadAction<boolean>) {
-      return (action.payload);
+    setIsLoading(state, action: PayloadAction<boolean>) {
+      state = action.payload;
+      return state;
     },
   }, //a reducer that pushes in a value to our already existing state
-
 });
 // export const {fetchAllRepos}= allRepoSlice.actions;
 export default isLoadingSlice.reducer;
