@@ -1,8 +1,7 @@
 import TopBar from "../../home/components/TopBar"
 import KronUpdateWrapper from "./KronUpdateWrapper"
 
-import { useAllReposHandler } from "@/features/watchlist/handlers/allRepo.Handlers";
-
+import { useAllReposHandler } from "@/features/repositories/handlers/allRepo.Handlers"
 
 // ====== my kron list ===========//
 function WatchList() {

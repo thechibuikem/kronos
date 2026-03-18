@@ -1,4 +1,4 @@
-import type { Repo } from "@/features/watchlist/slices/allRepo.Slice"
+import {type Repo } from "@/features/repositories/slices/allRepo.Slice";
 import SearchBar from "./SearchBar"
 import SearchResults from "./SearchResults"
 

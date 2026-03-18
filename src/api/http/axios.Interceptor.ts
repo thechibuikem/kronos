@@ -1,73 +1,91 @@
+//1. importing dependencies
 import axios from "axios";
 import { store } from "../../store/store";
 import { setAuthenticated } from "../../features/auth/slices/Authenthicated.Slice";
+import { getUrls } from "@/config";
 
+//2. importing backend url from getter function
+const { backendUrl } = getUrls();
+
+//3. creating axios instance for axios interceptor, always include cookies
 const api = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: backendUrl,
   withCredentials: true,
-})// axios instance
+});
 
+//4. isRefreshing flag to prevent multiple refresh-token calls.
+let isRefreshing = false; 
 
-let isRefreshing = false //prevents multiple refresh-token calls.
+//5. Queue to catch multiple failed requests
+let failedQueue: any[] = [];
 
-let failedQueue: any[] = []// When multiple requests fail with 401 while refresh is ongoing, we store them.
-
-
-
+// 6. function to handle requests in failed-Queue; race condition
 const processQueue = (error: any, token: string | null = null) => {
-  // Loop through all queued promises.
-  failedQueue.forEach(prom => {
-    if (error) prom.reject(error);// If refresh failed, reject all waiting requests.
-    else prom.resolve(token)// If refresh succeeded, give them the new token.
+  //.1 Loop through all queued promises.
+  failedQueue.forEach((prom) => {
+    // .2 If refresh failed, sequentially reject all waiting requests.
+    if (error) prom.reject(error);
+    //.3 If refresh succeeded,sequentially  give them the new token.
+    else prom.resolve(token);
   });
-  failedQueue = []; //Clear
-}//handle waiting requests
+  //Clear failedQueue
+  failedQueue = [];
+};
 
-// ====================== REQUEST INTERCEPTOR ======================
+// 7. axios request interceptor
 api.interceptors.request.use(
+  // .1 Adjusting config
   (config) => {
-    // Pull the latest access-token from Redux.
+    // .1.1 Pull the latest access-token from Redux.
     const state = store.getState();
     const token = state.authenticated.isAuthenticated;
 
-    // setting access token in request headers
+    //.1.2 attach access-token to our request config if any 
     if (token) config.headers.Authorization = `Bearer ${token}`;
-
     return config;
   },
-  (error) => Promise.reject(error)
+  // .2 edge case where there's an error setting up request.
+  (error) => Promise.reject(error),
 );
 
-// ====================== RESPONSE INTERCEPTOR ======================
+// 8. axios response interceptor
 api.interceptors.response.use(
-  (response) => response, // If response is successful, return it immediately.
-
+  // .1 return response immediately if successful
+  (response) => response, 
+  // .2 handling uncessful requests
   async (error) => {
-    const originalRequest = error.config;//error.config contains the request that failed
+    //.2.1 grab request that failed
+    const originalRequest = error.config;
 
-    //run refresh-logic on 401 errors and if request hasn't been retried
+
+
+    //.2.2 run refresh-logic on 401 && request hasn't been retried
     if (error.response?.status === 401 && !originalRequest._retry) {
-
-      // If another refresh is already happening:
+      //2.2.1 filter out requests if any refresh is ongoing
       if (isRefreshing) {
-        // Put this failed request inside a promise
-        return new Promise((resolve, reject) => {
+        try{ 
+          const token = await new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
-        })
-          .then((token) => {
-            originalRequest.headers.Authorization = "Bearer " + token;
+        }) 
+         originalRequest.headers.Authorization = "Bearer " + token;
             return api(originalRequest); // After refresh completes, retry this request with the new token.
-          })
-          .catch((err) => Promise.reject(err));
-      }
+      }//2.2.1.2 Put this failed request inside a promise
+        catch(err){
+          Promise.reject(err);
+      }}
+
 
       // Mark this request so we don't trigger infinite loops.
       originalRequest._retry = true;
+      // 
       isRefreshing = true;
-
       try {
         // Call the backend refresh endpoint.
-        const res = await axios.post("http://localhost:5000/api/auth/refresh-token",{},{withCredentials:true});
+        const res = await axios.post(
+          `${backendUrl}/api/auth/refresh-token`,
+          {},
+          { withCredentials: true },
+        );
 
         const newAccessToken = res.data.accessToken;
 
@@ -83,7 +101,6 @@ api.interceptors.response.use(
         // Retry the failed request that triggered the refresh.
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return api(originalRequest);
-
       } catch (refreshError) {
         // Refresh failed (maybe refresh-token expired).
         // Reject all queued requests.
@@ -95,9 +112,9 @@ api.interceptors.response.use(
     }
 
     // If error isn't a 401 or refresh not allowed, reject normally.
-    console.log(error)
+    console.log(error);
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;
