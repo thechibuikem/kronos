@@ -2,12 +2,7 @@
 import TopBar from "../../home/components/TopBar"
 import KronUpdateWrapper from "./KronUpdateWrapper";
 import { useAllKronsHandler } from "../handlers/allKrons.Handlers";
-import type { Kron } from "../slices/allKron.Slice";
 
-// 2. initializing interface
-interface KronListProps {
-  searchArray: Kron[];
-}
 
 // 3. main functional component
 function KronList() {
