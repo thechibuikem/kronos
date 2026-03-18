@@ -6,7 +6,7 @@ import { useContext } from "react"
 import { AppContext } from "@/api/Context"
 import fuzzySearch from "@/features/home/utilis/fuzzySimulation" //importing fuzzy search function for filtering
 // import { useAllReposHandler } from "@/features/watchlist/handlers/allRepo.Handlers"
-import type { Repo } from "@/features/watchlist/slices/allRepo.Slice"
+import { type Repo } from "@/features/repositories/slices/allRepo.Slice"
 
 interface SearchResultsParams{
 repos:Repo[]
