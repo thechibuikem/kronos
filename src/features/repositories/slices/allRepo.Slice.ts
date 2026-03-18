@@ -36,8 +36,8 @@ const allRepoSlice = createSlice({
     },
     extraReducers:(builder)=>{
         builder.addCase(
-            fetchAllRepos.fulfilled,(state,action)=>{
-                return action.payload;
+            fetchAllRepos.fulfilled,(action)=>{
+                return action;
             }
         )
     }

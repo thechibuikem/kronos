@@ -38,7 +38,7 @@ const allKronSlice = createSlice({
   }, //a reducer that pushes in a value to our already existing state
 
   extraReducers: (builder) => {
-    builder.addCase(fetchAllKrons.fulfilled, (state, action) => {
+    builder.addCase(fetchAllKrons.fulfilled, (action) => {
       return action.payload;
     });//an extra reducer that updates our state to value returned by our fetchAllKrons async thunk
   },
