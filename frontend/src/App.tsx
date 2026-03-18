@@ -7,13 +7,11 @@ import ProtectedRoute from "./protectedRoute";
 import PublicRoute from "./PublicRoute";
 import { AppProvider } from "./api/Context";
 export const baseBackendUrl = `${import.meta.env.VITE_BASE_BACKEND_URL}`;
-import { useAllReposHandler } from "./features/repositories/handlers/allRepo.Handlers";
 
 
 
 // my frontend app structure
 function App() {
-const { repos } = useAllReposHandler();
 
   return (
     <AppProvider>
@@ -49,7 +47,7 @@ const { repos } = useAllReposHandler();
           path="/repositories"
           element={
             <ProtectedRoute>
-              <Repositories searchArray={repos}/>
+              <Repositories />
             </ProtectedRoute>
           }
         />
