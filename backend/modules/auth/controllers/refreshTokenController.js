@@ -1,9 +1,10 @@
 import { refreshTokenService } from "../services/refreshTokenService.js";
 
 export async function checkToken(req,res) {
-
   try{
+    // 1. extract refersh token from request cookies
   const refreshToken = req.cookies.refreshToken;
+
   if (!refreshToken) return res.status(401).json({ error: "No refresh token in cookies" });
   // refresh token service
   const result = await refreshTokenService(refreshToken);

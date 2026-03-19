@@ -35,7 +35,6 @@ console.log("\naccess Token @ oauthService",access_token,"\n" )
     headers: { Authorization: `Bearer ${access_token}` },
   })  
   const user = await userRes.json();
-
   console.log(user)
 
   //.5 Fetching user emails
