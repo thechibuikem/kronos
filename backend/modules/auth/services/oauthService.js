@@ -28,28 +28,30 @@ export async function githubTokenService(code) {
   //.3 retrieving access token from token response
   const { access_token } = await tokenRes.json();
 
+console.log("\naccess Token @ oauthService",access_token,"\n" )
+
   //.4 Fetching user profile
-  const user = await (
-    await fetch("https://api.github.com/user", {
-      headers: { Authorization: `Bearer ${access_token}` },
-    })
-  ).json();
+  const userRes= await fetch("https://api.github.com/user", {
+    headers: { Authorization: `Bearer ${access_token}` },
+  })  
+  const user = await userRes.json();
+
+  console.log(user)
+
   //.5 Fetching user emails
-
-  const emails = await (
-    await fetch("https://api.github.com/user/emails", {
-      headers: { Authorization: `Bearer ${access_token}` },
-    })
-  ).json();
-
+  const emailRes= await fetch("https://api.github.com/user/emails", {
+    headers: { Authorization: `Bearer ${access_token}` },
+  })
+  const emails = await (emailRes).json();
   const primary = emails.find((e) => e.primary && e.verified && e.email);
-//  .6 validating emails
+  
+  //  .6 validating & retrieving emails
   if (!primary) throw new Error("No verified email");
-// .7 retrieving emails
   const email = primary.email;
 
-  // .8 signing up or signing in 
-  const { status, data, exitingOauthUser } = await addOauthUser(
+
+ // .7 signing up or signing in 
+  const { status, data } = await addOauthUser(
     email,
     user,
     access_token,
