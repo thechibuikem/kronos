@@ -4,29 +4,31 @@ import {
   githubTokenService,
 } from "../services/oauthService.js";
 
-//This service gets us our temporary github code
+const isProduction = process.env.MODE === "remote"
+
+
+//1. controller to get temporary github code
 export async function githubOauth(req, res) {
   try {
     const url = githubOauthService();//url to get github temporary code
     return res.redirect(url); 
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: "OAuth init failed" });
+    return res.status(500).json({ error: "OAuth initialization failed" });
   }
 }
 
-//where our githubOauth service would land us to, this would use the githubTokenService to get a token.
+//2. controller to get githubToken from code.
 export async function githubCallback(req, res) {
   const code = req.query.code;
-//=== 
   try {
     const result = await githubTokenService(code);
 
 if (result.status == 200){
 res.cookie("refreshToken", result.data.refreshToken, {
       httpOnly: true, // JS cannot access it
-      secure: false, // only over HTTPS in production
-      sameSite: "Lax",
+      secure: isProduction,
+      sameSite: isProduction ? "None" : "Lax",
       path:"/",
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
@@ -38,7 +40,6 @@ res.cookie("refreshToken", result.data.refreshToken, {
   if (result.data.acccessToken){
     responseBody.acccessToken = result.data.acccessToken
   }
-
     return res.status(result.status).redirect(result.redirectUrl);
   } catch (err) {
     console.error(err);
