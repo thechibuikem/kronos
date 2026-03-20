@@ -12,12 +12,11 @@ console.log("it got to the WebHookService\n",data,"\n")
 }
 
 
-
 //3. Service  to add a webhook to a repository. 
 export async function addWebHook(webhookData,refreshToken){
 try{
   //.0 logging the data being sent to from our client
-  console.log(webhookData);
+  console.log("webhook data @addWebHook",webhookData);
 
   // .1 github's standard url for adding webhook
   const repourl = `POST /repos/${webhookData.owner}/${webhookData.repoName}/hooks`; //endoint for webHook addition
