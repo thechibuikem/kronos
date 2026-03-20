@@ -1,1 +1,0 @@
-<h1 align = "center">Docs coming Soon</h1>
