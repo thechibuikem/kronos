@@ -2,7 +2,7 @@ import {
   Card,
   CardFooter,
 } from "@/features/home/ui/card";
-// import KronosLogo from "../../home/components/KronosLogo";
+
 import OauthBtn from "./OauthBtn";
 import { useContext } from "react";
 import { AppContext } from "@/api/Context";
@@ -23,7 +23,6 @@ export default function AuthCard() {
 { authErrorMsg && (<ErrorBanner />)}
 
       <CardFooter className="flex-col gap-2">
-        {/* oauth button */}
         <OauthBtn />
       </CardFooter>
     </Card>

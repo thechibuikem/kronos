@@ -1,11 +1,11 @@
     import { createSlice } from "@reduxjs/toolkit";
     // define the state interface
-    interface isAuthenticatedState {
-    isAuthenticated: String;
+    interface AuthState {
+    accessToken: String;
     }
     // create initial state
-    const initialState: isAuthenticatedState = {
-    isAuthenticated: "",
+    const initialState: AuthState = {
+      accessToken: "",
     };
     // create the slice
     const authenticatedSlice = createSlice({
@@ -13,16 +13,16 @@
     initialState,
     // define reducers
     reducers: {
-        setAuthenticated: (state, action) => {
-        state.isAuthenticated = action.payload;
+        setAccessToken: (state, action) => {
+        state.accessToken = action.payload;
         },
-        resetAuthenticated: (state) => {
-        state.isAuthenticated = "";
+        clearAccessToken: (state) => {
+        state.accessToken = "";
         },
     },
     });
     // export actions and reducer
-    export const { setAuthenticated, resetAuthenticated } =
+    export const { setAccessToken, clearAccessToken } =
     authenticatedSlice.actions;
 
     export default authenticatedSlice.reducer;

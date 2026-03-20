@@ -1,6 +1,6 @@
 //1. importing dependencies
 import TopBar from "../../home/components/TopBar"
-import KronUpdateWrapper from "./KronUpdateWrapper";
+import KronWrapper from "./KronWrapper";
 import { useAllKronsHandler } from "../handlers/allKrons.Handlers";
 import type { Repo } from "@/features/repositories/slices/allRepo.Slice";
 
@@ -14,7 +14,7 @@ function KronList() {
   return (
     <section className="w-full h-fit grid grid-rows-[minmax(0,50px)_minmax(0,400px)_minmax(0,fit)]">
       <TopBar searchArray={krons as Repo[]} />
-      <KronUpdateWrapper />
+      <KronWrapper />
     </section>
   );
 }

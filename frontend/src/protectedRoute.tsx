@@ -13,7 +13,7 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const reduxToken = useSelector(
-    (state: RootState) => state.authenticated.isAuthenticated
+    (state: RootState) => state.authenticated.accessToken
   );
   const dispatch = useDispatch();
   let { getRepos } = useAllReposHandler();
@@ -21,15 +21,15 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const [checking, setChecking] = useState(true);
   const [authorizedState, setAuthorizedState] = useState(false);
 
+  // 1. side effect to allow access to my protected route
   useEffect(() => {
     async function validate() {
       try {
-        // Always try calling a backend endpoint to check token validity.using your interceptor ensures that if access token is expired,it will automatically refresh via your interceptor logic.
         await api.post("/api/auth/validate-token");
-        // If it succeeds, token is valid
+        console.log("nigga it worked!"); // If it succeeds, token is valid
         setAuthorizedState(true);
       } catch {
-        // If it fails (refresh also failed), redirect to login
+        console.log("nigga it ain't working."); // If it fails, redirect to login
         setAuthorizedState(false);
       } finally {
         setChecking(false);
@@ -44,7 +44,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
       if (authorizedState) {
         getRepos();
       } else {
-        console.log("cannot retrieve repository as user is unauthorized");
+        // console.log("cannot retrieve repository as user is unauthorized");
       }
     }
     fetchRepos();
@@ -56,7 +56,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
       if (authorizedState) {
         getKrons();
       } else {
-        console.log("cannot retrieve krons as user is unauthorized");
+        // console.log("cannot retrieve krons as user is unauthorized");
       }
     }
     fetchKrons();

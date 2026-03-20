@@ -1,19 +1,28 @@
+//1. importing dependencies
+
 import { FaGithub } from "react-icons/fa";
 import { Button } from "@/features/home/ui/button";
 import { useEffect } from "react";
-
 import { getUrls } from "@/config";
+import { useDispatch } from "react-redux";
+import { setAccessToken } from "../slices/Authenthicated.Slice";
+
+
+
+// 2. destructuring backend url
 const {backendUrl}= getUrls()
 
-
+// 3. functional component
 function OauthBtn() {
-  // function that watches login/signup page on reload retrievs that token from search key if any
+
+  const dispatch = useDispatch()
+  //3. on-mount side-effect that watches retrievs that token from url-param key if any
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
 
     if (token) {
-      localStorage.setItem("token", token);
+      dispatch(setAccessToken(token))
       window.location.reload();
     }
   }, []);

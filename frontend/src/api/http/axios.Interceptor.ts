@@ -1,7 +1,7 @@
 //1. importing dependencies
 import axios from "axios";
 import { store } from "../../store/store";
-import { setAuthenticated } from "../../features/auth/slices/Authenthicated.Slice";
+import { setAccessToken } from "../../features/auth/slices/Authenthicated.Slice";
 import { getUrls } from "@/config";
 
 //2. importing backend url from getter function
@@ -38,8 +38,12 @@ api.interceptors.request.use(
   (config) => {
     // .1.1 Pull the latest access-token from Redux.
     const state = store.getState();
-    const token = state.authenticated.isAuthenticated;
+    const token = state.authenticated.accessToken;
 
+      console.log("Full auth state:", state.authenticated);
+      console.log("Token value:", token);
+      console.log("Token type:", typeof token);
+    console.log(config.headers)
     //.1.2 attach access-token to our request config if any 
     if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
@@ -50,14 +54,13 @@ api.interceptors.request.use(
 
 // 8. axios response interceptor
 api.interceptors.response.use(
+  // (config)=>{console.log(config.url)}
   // .1 return response immediately if successful
   (response) => response, 
   // .2 handling uncessful requests
   async (error) => {
     //.2.1 grab request that failed
     const originalRequest = error.config;
-
-
 
     //.2.2 run refresh-logic on 401 && request hasn't been retried
     if (error.response?.status === 401 && !originalRequest._retry) {
@@ -81,18 +84,16 @@ api.interceptors.response.use(
       isRefreshing = true;
       try {
         // Call the backend refresh endpoint.
-        const res = await axios.post(
+        const res = await api.post(
           `${backendUrl}/api/auth/refresh-token`,
           {},
-          { withCredentials: true },
         );
 
         const newAccessToken = res.data.accessToken;
 
         // Save the new access-token to Redux.
-        store.dispatch(setAuthenticated(newAccessToken));
+        store.dispatch(setAccessToken(newAccessToken));
 
-        // console.log(newAccessToken)
 
         // Resolve all queued requests using the new token.
         processQueue(null, newAccessToken);

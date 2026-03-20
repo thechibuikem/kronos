@@ -1,5 +1,5 @@
 import TopBar from "../../home/components/TopBar"
-import KronUpdateWrapper from "./KronUpdateWrapper"
+import KronUpdateWrapper from "./KronWrapper"
 
 import { useAllReposHandler } from "@/features/repositories/handlers/allRepo.Handlers"
 

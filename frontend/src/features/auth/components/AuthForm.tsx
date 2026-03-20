@@ -1,11 +1,11 @@
 import { Button } from "@/features/home/ui/button";
 import { Input } from "@/features/home/ui/input";
 import { Label } from "@/features/home/ui/label";
-import { useIsExistingUsersHandler } from "@/features/auth/handlers/UseIsExistingUser.Handlers";
+import { useIsExistingUsersHandler } from "@/features/auth/handlers/useIsExistingUser.handlers";
 import { useRef, useContext } from "react";
 import { useDispatch } from "react-redux";
 // import { type RootState } from "@/app/centralStore";
-import { setAuthenticated } from "@/features/auth/slices/Authenthicated.Slice"; //importing my action
+import { setAccessToken } from "@/features/auth/slices/Authenthicated.Slice"; //importing my action
 import { useNavigate } from "react-router-dom";
 import { toggleExistingUser } from "@/features/auth/slices/ExistingUser.Slice";
 import { AppContext } from "@/api/Context";
@@ -69,7 +69,7 @@ export default function AuthForm() {
            if (data.accessToken) {
         token = data.accessToken;
         //update redux state with token
-        dispatch(setAuthenticated(token));
+        dispatch(setAccessToken(token));
         dispatch(toggleExistingUser());
         navigate("/dashboard", { replace: true }); //dashboard route
   };

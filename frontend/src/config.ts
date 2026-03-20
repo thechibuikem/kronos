@@ -31,6 +31,6 @@ const { backendUrl, frontendUrl } = config[mode]
 
 
 export function getUrls() {
-  console.log("frontend url:", frontendUrl, "backend url:", backendUrl);
+  // console.log("frontend url:", frontendUrl, "backend url:", backendUrl);
   return { frontendUrl, backendUrl };
 }
