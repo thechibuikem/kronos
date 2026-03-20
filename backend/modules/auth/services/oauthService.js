@@ -2,7 +2,7 @@ import { addOauthUser } from "../utils/addOauthUser.js";
 import { getUrls } from "../../../core/config.js"
 
 // 0. destructuring backend url from getUrls getter function.
-const {backendUrl}= getUrls()
+const {frontendUrl,backendUrl}= getUrls()
 
 
 //1. Initial service to knock at github's door.
@@ -57,7 +57,7 @@ console.log("\naccess Token @ oauthService",access_token,"\n" )
   );
 
   // front-end redirect uri
-  const redirectUrl = `http://localhost:5173/dashboard`;
+  const redirectUrl = `${frontendUrl}/dashboard`;
 
   return { redirectUrl, data, status };
 }
