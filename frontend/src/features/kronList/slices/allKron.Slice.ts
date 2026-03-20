@@ -19,7 +19,7 @@ export interface Kron {
 export const fetchAllKrons = createAsyncThunk(
   "allKrons/fetchAllKrons",
   async () => {
-    const url = `${backendUrl}api/kronList/allKrons`;
+    const url = `${backendUrl}/api/kronList/allKrons`;
     const response = await axios.get(url, { withCredentials: true });
     console.log("my krons from backend", response.data.allKrons); //array of repos
     return response.data.allKrons; //array of repos

@@ -3,7 +3,7 @@ import AddKronUpdateCard from "./AddKronUpdateCard"
 import { useAllKronsHandler } from "../handlers/allKrons.Handlers"
 import { useEffect } from "react"
 
-function KronUpdateWrapper() {
+function KronWrapper() {
 const {krons,getKrons} = useAllKronsHandler()
 
 
@@ -39,4 +39,4 @@ useEffect(()=>{
   )
 }
 
-export default KronUpdateWrapper
+export default KronWrapper
