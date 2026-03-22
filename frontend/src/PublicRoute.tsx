@@ -8,7 +8,7 @@ interface PublicRouteProps {
 
 const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
   const reduxToken = useSelector(
-    (state: RootState) => state.authenticated.isAuthenticated
+    (state: RootState) => state.authenticated.accessToken
   );
   const token = reduxToken? reduxToken : "";
 
