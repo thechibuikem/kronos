@@ -10,11 +10,3 @@ const data = req.body
 webHookService(data)
 }
 
-// controller to add a webHook 
-// export async function addWebHookController (req, res) {
-// const refreshToken = res.cookies.refreshToken;
-// const webHookData = res.data.refreshToken;
-
-// addWebHook(refreshToken)
-// }
-

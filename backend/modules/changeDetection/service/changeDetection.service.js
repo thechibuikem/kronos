@@ -37,7 +37,7 @@ if (!requiredUser){
   // .5 actual webhook registering operation.
   const octokitClient = createOctokit(requiredUser.githubToken);
   // .6 adding webhook
-  await octokitClient.request(repourl, {
+ const webhook = await octokitClient.request(repourl, {
     owner: webhookData.owner,
     repo: webhookData.repoName,
     name: "web",
@@ -52,6 +52,8 @@ if (!requiredUser){
       "X-GitHub-Api-Version": "2022-11-28",
     },
   });
+
+  console.log("our beloved webhook",webhook)
 }
 // .7 loging any error encountered while adding webhook
 catch(error){
