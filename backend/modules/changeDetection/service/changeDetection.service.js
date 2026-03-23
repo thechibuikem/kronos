@@ -19,7 +19,7 @@ try{
   console.log("webhook data @addWebHook",webhookData);
 
   // .1 github's standard url for adding webhook
-  const repourl = `POST /repos/${webhookData.owner}/${webhookData.repoName}/hooks`; //endoint for webHook addition
+  const repourl = `POST /repos/${webhookData.owner}/${webhookData.repo}/hooks`; //endoint for webHook addition
 
   //.2 fetching the user who's adding a webhook from mongoDB
   const requiredUser = await userModel.findOne({ refreshToken: refreshToken });
