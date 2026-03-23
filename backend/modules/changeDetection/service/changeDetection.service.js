@@ -15,6 +15,8 @@ console.log("it got to the WebHookService\n",data,"\n")
 //3. Service  to add a webhook to a repository. 
 export async function addWebHook(webhookData,refreshToken){
 try{
+
+  console.log("checking to be sure refresh-token exists:\n",refreshToken)
   //.0 logging the data being sent to from our client
   console.log("webhook data @addWebHook",webhookData);
 
@@ -22,7 +24,12 @@ try{
   const repourl = `POST /repos/${webhookData.owner}/${webhookData.repo}/hooks`; //endoint for webHook addition
 
   //.2 fetching the user who's adding a webhook from mongoDB
-  const requiredUser = await userModel.findOne({ refreshToken: refreshToken });
+  const requiredUser = await userModel.findOne({ refreshToken });
+
+if (!requiredUser){
+  throw new Error("user could not be found when creating web-hook")
+}
+
 
   //.4 logging the repoUrl being crafted 
   console.log(repourl,requiredUser);
