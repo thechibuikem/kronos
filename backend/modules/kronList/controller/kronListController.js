@@ -21,7 +21,7 @@ export async function getAllkronsController(req,res){
 
 // 2.1 initializing variables
    const { kronData,webhookData } = req.body;
-   const refreshToken = req.refreshToken
+   const refreshToken = req.cookies.refreshToken
 
 
    // 2.2 registering webhook on github
