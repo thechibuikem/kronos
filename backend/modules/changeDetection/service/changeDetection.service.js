@@ -25,7 +25,7 @@ try{
   const requiredUser = await userModel.findOne({ refreshToken: refreshToken });
 
   //.4 logging the repoUrl being crafted 
-  console.log(repourl);
+  console.log(repourl,requiredUser);
 
   // .5 actual webhook registering operation.
   const octokitClient = createOctokit(requiredUser.githubToken);
