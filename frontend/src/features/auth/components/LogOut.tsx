@@ -4,7 +4,7 @@ import axios from "axios";
 
  function LogOut() {
 
-    const endpoint =`${baseBackendUrl}api/auth/logout`;
+    const endpoint =`${baseBackendUrl}api/v1/auth/logout`;
 
     const handleLogOut = async ()=>{
     await axios.post(endpoint,{},{withCredentials:true})

@@ -30,7 +30,7 @@ function OauthBtn() {
   // function that runs on click of signUp With Github btn
   const handleOauthClick = async (e: React.FormEvent) => {
     e.preventDefault();
-    const endpoint = `${backendUrl}/api/auth/github`;
+    const endpoint = `${backendUrl}/api/v1/auth/github`;
     //first going to github oauth stuff
     window.location.href = endpoint;
   };

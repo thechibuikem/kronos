@@ -85,7 +85,7 @@ api.interceptors.response.use(
       try {
         // Call the backend refresh endpoint.
         const res = await api.post(
-          `${backendUrl}/api/auth/refresh-token`,
+          `${backendUrl}/api/v1/auth/refresh-token`,
           {},
         );
 

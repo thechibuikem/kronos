@@ -61,16 +61,16 @@ app.get("/api", (req, res) => {
 
 
 // 7. mounting authentication endpoints
-app.use("/api/auth", authRoutes);
+app.use("/api/v1/auth", authRoutes);
 
 // 8. mounting watchlist endpoints
-app.use("/api/watchList", repoListRoutes);
+app.use("/api/v1/watchList", repoListRoutes);
 
 // 9. mounting kronlist endpoints
-app.use("/api/kronList", kronListRoutes);
+app.use("/api/v1/kronList", kronListRoutes);
 
 //10. mounting change detection endpoints
-app.use("/api/changeDetection", changeDetectionRoutes);
+app.use("/api/v1/changeDetection", changeDetectionRoutes);
 
 
 

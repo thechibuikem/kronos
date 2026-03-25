@@ -41,7 +41,7 @@ if (!requiredUser){
     active: true,
     events: ["push"],
     config: {
-      url: `${backendUrl}api/changeDetection/webhook`, //endpoint we'll send data to
+      url: `${backendUrl}api/v1/changeDetection/webhook`, //endpoint we'll send data to
       content_type: "json", //what format our data woulf come in
       insecure_ssl: "0",
     },
