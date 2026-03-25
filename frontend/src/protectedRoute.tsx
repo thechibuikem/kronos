@@ -25,7 +25,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   useEffect(() => {
     async function validate() {
       try {
-        await api.post("/api/auth/validate-token");
+        await api.post("/api/v1/auth/validate-token");
         console.log("nigga it worked!"); // If it succeeds, token is valid
         setAuthorizedState(true);
       } catch {
