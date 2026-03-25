@@ -41,12 +41,12 @@ function RepoCard({ repoName, repoUrl, githubOwnerId, repoId, owner
 
 // adding kron to kronList
       await axios.post(
-        `${backendUrl}/api/kronList/kron`,
+        `${backendUrl}/api/v1/kronList/kron`,
         { withCredentials: true }
       );
 
 // adding webhook for a kron @ github
-      await axios.post(`${backendUrl}/api/changeDetection/webhook`,
+      await axios.post(`${backendUrl}/api/v1/changeDetection/webhook`,
       {kronData,webhookData},
       {withCredentials:true})
 
