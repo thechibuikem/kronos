@@ -42,6 +42,7 @@ function RepoCard({ repoName, repoUrl, githubOwnerId, repoId, owner
 // adding kron to kronList
       await axios.post(
         `${backendUrl}/api/v1/kronList/kron`,
+      {kronData},
         { withCredentials: true }
       );
 
