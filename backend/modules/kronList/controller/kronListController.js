@@ -1,6 +1,6 @@
 import { getMDBUserThroughRefreshToken } from "../../user/service/user.service.js";
 import { addKron } from "../service/kronListService.js";
-import { RepoModel } from "../../repoList/models/repoModel.js";//our model for repositories
+import { getKronsFromMDB } from "../service/kronListService.js";
 import { deleteKron } from "../service/kronListService.js";
 
  //1. controller to get all users krons from mongoDb
