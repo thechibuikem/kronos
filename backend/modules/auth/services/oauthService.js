@@ -7,7 +7,7 @@ const {frontendUrl,backendUrl}= getUrls()
 
 //1. Initial service to knock at github's door.
 export function githubOauthService() {
-  return `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&redirect_uri=${backendUrl}/api/auth/v1/github/callback&scope=user:email,repo`; 
+  return `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&redirect_uri=${backendUrl}/api/v1/auth/github/callback&scope=user:email,repo`; 
 }
 
 //2. callback function to get github token using code
