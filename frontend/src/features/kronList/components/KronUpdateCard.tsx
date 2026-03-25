@@ -19,9 +19,11 @@ const {getKrons} = useAllKronsHandler();
     try{
       setIsLoading(true)
       await axios.delete(
-            `${backendUrl}/api/kronList/deleteKron/${_id}`,
-      { withCredentials: true }
-    )
+            `${backendUrl}/api/v1/kronList/deleteKron/${_id}`,
+      { withCredentials: true });
+
+      await axios.delete(`${backendUrl}/api/v1/changeDetection/webhook/${_id}`,{withCredentials:true});
+    
     }catch(err){
       throw new Error
     }

@@ -1,12 +1,9 @@
-//service to get list of repositories from github
-import { RepoModel } from "../../repoList/models/repoModel.js";
 import { KronModel } from "../models/kronModel.js";
-import { addWebHook } from "../../changeDetection/service/changeDetection.service.js";
 
-//1. function to get Repo from RepoId
-export async function getRepoFromRepoId(repoId) {
-  const requiredRepo = await RepoModel.findOne({_id:repoId});
-  return requiredRepo;
+//1. function to get kron from RepoId
+export async function getKronByKronId(repoId) {
+  const requiredKron = await KronModel.findOne({_id:repoId});
+  return requiredKron;
 }
 
 //2. kron Input validator
@@ -23,26 +20,61 @@ else{
   return
 }}
 
-//3. function to add Krons to my KronList
-export async function addKron (newKronData) {
-console.log("\nrepo at add Kron", newKronData);
-const newKron = new KronModel(newKronData);
-await newKron.save()
-  }
-
 //4. function to get Repo from RepoId
-export async function deleteKron(requiredRepo) {
-  console.log("kron to be deleted",requiredRepo)
-  await KronModel.deleteOne({repoId:requiredRepo.repoId})
+export async function deleteKron(repoId) {
+try {
+  const requiredKron = await getKronByKronId(repoId);
+  await deleteKron(requiredKron);//getting the kron to be removed
+  res.status(204).json({ message: "kron deleted successfully" });
+  await KronModel.deleteOne({ repoId: requiredRepo.repoId });
   console.log("kron deletion completed");
+  return;
+} 
+// 4.2 error handling
+  catch (error) {
+res.statys(500).json({error:error})
+};
 }
- 
+
 // 5. get actual kron objects from mongo
 export async function getKronsFromMDB(user) {
   const mdbKrons = await KronModel
   .find({ githubOwnerId: user.id })
   .populate("repo"); //populate with actual repo-references
-  // console.log(mdbKrons.repo,"krons at kronos",mdbKrons.length)
-  const kronList = mdbKrons.map((kron) => kron.repo);//map out the actual krons
-  return kronList; //returning krons from mongodb
-} 
+  const kronList = mdbKrons.map((kron) => kron.repo);//actual krons
+  return kronList;
+}
+
+
+
+//3. function to add Krons to my KronList
+export async function addKron(kronData) {
+  //2.3 get the repo we're registering as kron
+  const requiredRepo = await RepoModel.findOne({ repoId: kronData.repoId });
+
+  //2.4 retrieve this repos credentials
+  const newKronData = {
+    githubOwnerId: kronData.githubOwnerId,
+    repoId: requiredRepo.repoId,
+  };
+
+  //2.5 validate 2.4 (flagged if invalid)
+  const inputResponse = await kronValidator(
+    newKronData.githubOwnerId,
+    newKronData.repoId,
+    5,
+  );
+
+  //  2.6 revoke on flag
+  if (!inputResponse) {
+  console.log("\nrepo @ add Kron", newKronData);
+  const newKron = new KronModel(newKronData);
+  await newKron.save();
+  }
+  // 2.7 register kron is unflagged
+  else {
+      res.json({ error: inputResponse.error
+       });
+  }
+
+}

@@ -25,7 +25,7 @@ export default function KronCard({name,link,desc}:kronType) {
     <Card className="h-fit w-full md:w-[12rem] aspect-square flex flex-col gap-y-[1.5rem] transparent-cards">
       <CardHeader style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <CardTitle style={{fontSize:"1rem"}}>{name}</CardTitle>
-{/*  */}
+
 
 <a href={link} target="blank">
     <BsArrowUpRightCircleFill style={{

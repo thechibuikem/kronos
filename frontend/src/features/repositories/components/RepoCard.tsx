@@ -36,18 +36,19 @@ function RepoCard({ repoName, repoUrl, githubOwnerId, repoId, owner
   async function addKron() {
     try {
       setIsLoading(true);
-
-
       console.log("our webhook data", webhookData)
-
       console.log("owner of repo", owner)
 
-
+// adding kron to kronList
       await axios.post(
-        `${backendUrl}/api/kronList/addKron`,
-        { kronData, webhookData },
+        `${backendUrl}/api/kronList/kron`,
         { withCredentials: true }
-      );//adding kronList to user
+      );
+
+// adding webhook for a kron @ github
+      await axios.post(`${backendUrl}/api/changeDetection/webhook`,
+      {kronData,webhookData},
+      {withCredentials:true})
 
       await updateKronUiHandler(kronData); //updafing ui with kron
     } catch (error) {

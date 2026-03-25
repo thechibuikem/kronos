@@ -17,7 +17,7 @@ export interface Repo {
 // async thunk to get all repos from backend
 export const fetchAllRepos = createAsyncThunk("allRepos/fetchAllRepos",
 async ()=>{
-  const url = `${backendUrl}/api/watchList/allRepos`;
+  const url = `${backendUrl}/api/v1/watchList/repos`;
   const response = await axios.get(url, { withCredentials: true });
 console.log(response.data)
   return response.data.allRepos; //array of repos
