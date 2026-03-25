@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 // 1. our schema for storing webhooks
 const webhookSchema = new mongoose.Schema(
     {
-        githubHookId: {type:string},
-        repo:{type:string},
-        githubOwnerId: {type:string}
+        githubHookId: {type:String},
+        repo:{type:String},
+        githubOwnerId: {type:String}
 }
 )
 
