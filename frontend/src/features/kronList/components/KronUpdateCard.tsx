@@ -16,7 +16,7 @@ function KronUpdateCard({repoName,repoId}:Partial<Kron>) {
 const [isLoading,setIsLoading] = useState<boolean>(false)
 const {getKrons} = useAllKronsHandler();
 
-
+console.log(repoId)
 
 
 // my http request to remove a kron
@@ -24,7 +24,7 @@ const {getKrons} = useAllKronsHandler();
     try{
       setIsLoading(true)
       await axios.delete(
-            `${backendUrl}/api/v1/kronList/deleteKron/${repoId}`,
+            `${backendUrl}/api/v1/kronList/kron/${repoId}`,
       { withCredentials: true });
 
       await axios.delete(`${backendUrl}/api/v1/changeDetection/webhook/${repoId}`,{withCredentials:true});
