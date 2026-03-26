@@ -34,9 +34,8 @@ export async function addWebhookController(req,res) {
 // getting required webhook
 const requiredWebhook = await findWebhookMdb(webhookData,refreshToken)
 if (!requiredWebhook){
+    
 const hookId = await addWebhookGithub(webhookData, refreshToken);
-
-
 await addWebhookMdb(webhookData, hookId);
 
 res.status(201).json({ message: "kron added successfully" });

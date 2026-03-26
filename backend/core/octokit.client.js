@@ -14,7 +14,7 @@ export function createOctokit(accessToken, callback) {
     return octokitClient
   }
   else{
-    console.log("octokit client was not initialized successfully");
+    throw new Error("octokit client was not initialized successfully");
     return
   }
 }

@@ -20,9 +20,10 @@ export async function getWebhookData(data) {
 //3. Service  to add a webhook to a repository. 
 export async function addWebhookGithub(webhookData,refreshToken){
 try{
-
   // .1 github's standard url for adding webhook
   const repourl = `POST /repos/${webhookData.owner}/${webhookData.repo}/hooks`; //endoint for webHook addition
+
+  console.log(repourl)
 
   //.2 fetching the user who's adding a webhook from mongoDB
   const requiredUser = await userModel.findOne({ refreshToken });
@@ -33,7 +34,23 @@ if (!requiredUser){
 
   // .5 actual webhook registering operation.
   const octokitClient = createOctokit(requiredUser.githubToken);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // .6 adding webhook
+
  const webhook = await octokitClient.request(repourl, {
     owner: webhookData.owner,
     repo: webhookData.repoName,
@@ -42,13 +59,15 @@ if (!requiredUser){
     events: ["push"],
     config: {
       url: `${backendUrl}api/v1/changeDetection/webhook`, //endpoint we'll send data to
-      content_type: "json", //what format our data woulf come in
+      content_type: "json", //what format our data would   come in
       insecure_ssl: "0",
     },
     headers: {
       "X-GitHub-Api-Version": "2022-11-28",
     },
   });
+
+  console.log("webhook added successfully tho",webhook)
 if (!webhook){
  throw new Error("webhook registeration unsuccessful")
 }
@@ -57,7 +76,7 @@ return webhook.hookId
 }
 // .7 loging any error encountered while adding webhook
 catch(error){
-  console.log("error occured when adding webhook",error)
+  throw new Error ("error occured @ adding webhook github",error)
 }
 }
 
