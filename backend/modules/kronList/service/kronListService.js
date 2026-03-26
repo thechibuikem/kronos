@@ -24,15 +24,13 @@ else{
 export async function deleteKron(repoId) {
 try {
   const requiredKron = await getKronByRepoId(repoId);
-  await deleteKron(requiredKron);//getting the kron to be removed
-  res.status(204).json({ message: "kron deleted successfully" });
   await KronModel.deleteOne({ repoId: requiredKron.repoId });
   console.log("kron deletion completed");
   return;
 } 
 // 4.2 error handling
   catch (error) {
-res.statys(500).json({error:error})
+throw new Error(error)
 };
 }
 
