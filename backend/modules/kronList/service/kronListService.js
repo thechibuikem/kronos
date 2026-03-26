@@ -1,7 +1,7 @@
-import { KronModel } from "../models/kronModel.js";
+import { KronModel,RepoModel } from "../models/kronModel.js";
 
 //1. function to get kron from RepoId
-export async function getKronByKronId(repoId) {
+export async function getKronByRepoId(repoId) {
   const requiredKron = await KronModel.findOne({_id:repoId});
   return requiredKron;
 }
@@ -23,10 +23,10 @@ else{
 //4. function to get Repo from RepoId
 export async function deleteKron(repoId) {
 try {
-  const requiredKron = await getKronByKronId(repoId);
+  const requiredKron = await getKronByRepoId(repoId);
   await deleteKron(requiredKron);//getting the kron to be removed
   res.status(204).json({ message: "kron deleted successfully" });
-  await KronModel.deleteOne({ repoId: requiredRepo.repoId });
+  await KronModel.deleteOne({ repoId: requiredKron.repoId });
   console.log("kron deletion completed");
   return;
 } 
