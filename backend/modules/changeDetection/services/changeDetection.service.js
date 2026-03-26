@@ -67,12 +67,12 @@ if (!requiredUser){
     },
   });
 
-  console.log("webhook added successfully tho",webhook)
+  console.log("webhook added successfully tho")
 if (!webhook){
  throw new Error("webhook registeration unsuccessful")
 }
 
-return webhook.hookId
+return webhook.data.id
 }
 // .7 loging any error encountered while adding webhook
 catch(error){
@@ -113,6 +113,8 @@ const webhookEntry = new webhookModel({
 
 // saving hook entry to mongo db
 await webhookEntry.save()
+
+console.log("Pal! we've added webhook to mdb")
 }
 
 
