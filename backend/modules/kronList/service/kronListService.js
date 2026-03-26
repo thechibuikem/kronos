@@ -73,8 +73,11 @@ export async function addKron(kronData) {
   }
   // 2.7 register kron is unflagged
   else {
-      res.json({ error: inputResponse.error
-       });
+      // res.json({ error: inputResponse.error
+      // res.json({ error: inputResponse.error
+      //  });
+
+      throw new Error ("kron already exists")
   }
 
 }
