@@ -2,7 +2,7 @@ import { KronModel } from "../models/kronModel.js";
 import { RepoModel } from "../../repoList/models/repoModel.js";
 //1. function to get kron from RepoId
 export async function getKronByRepoId(repoId) {
-  const requiredKron = await KronModel.findOne({_id:repoId});
+  const requiredKron = await KronModel.findOne({repoId});
   return requiredKron;
 }
 
