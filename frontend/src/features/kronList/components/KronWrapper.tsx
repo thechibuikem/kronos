@@ -29,7 +29,7 @@ useEffect(()=>{
             <KronUpdateCard
              key={index}
              repoName={kron.repoName}
-             _id={kron._id}
+             repoId={kron.repoId}
              />
             ))}
         </figure>
