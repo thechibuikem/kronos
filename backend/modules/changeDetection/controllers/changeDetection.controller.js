@@ -29,6 +29,7 @@ export async function removeWebhookController(req, res) {
     await removeWebhookMdb(repoId, refreshToken);
     res.status(204).send();
   } catch (err) {
+    console.error(err)
     return res.status(500).json({ error: err.message });
   }
 }
