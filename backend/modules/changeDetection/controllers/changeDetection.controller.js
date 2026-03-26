@@ -6,7 +6,6 @@ import {
   removeWebhookMdb,
 } from "../services/changeDetection.service.js";
 import { addWebhookGithub } from "../services/changeDetection.service.js";
-import { removeWebhook } from "../services/changeDetection.service.js";
 
 // this controller would be mounted at the webhook
 export async function webhookDataController(req, res) {
