@@ -1,5 +1,6 @@
 import { getUrls } from "../../../core/config.js"
 import { createOctokit } from "../../../core/octokit.client.js"
+import { RepoModel } from "../../repoList/models/repoModel.js"
 import { userModel } from "../../user/models/userModel.js"
 import { webhookModel } from "../models/webhookModel.js"
 
@@ -11,11 +12,6 @@ export async function getWebhookData(data) {
   //.1 logging the data being sent to our webHook service
   console.log("it got to the WebHookService\n", data, "\n");
 }
-
-
-
-
-
 
 //3. Service  to add a webhook to a repository. 
 export async function addWebhookGithub(webhookData,refreshToken){
@@ -62,9 +58,8 @@ catch(error){
   throw new Error ("error occured @ adding webhook github",error)
 }
 }
-
 // service to check if webhook already exists
-export async function findWebhookMdb(webhookData,refreshToken){
+export async function findWebhookMdb(repoName,refreshToken){
   // .1 validating kronos user
 const requiredUser = await userModel.findOne({refreshToken})
 if (!requiredUser){
@@ -75,13 +70,11 @@ if (!requiredUser){
 const requiredWebhook = await webhookModel.findOne({
   $and:[
     {githubOwnerId:requiredUser.githubId},
-    {repo:webhookData.repo}
+    {repo:repoName}
   ]
 })
 return requiredWebhook
 }
-
-
 
 // service to add webhook to 
 export async function addWebhookMdb(refreshToken, webhookData, hookId) {
@@ -106,44 +99,87 @@ if (!requiredUser) {
   });
 
   //.3 saving hook entry to mongo db
-  await webhookEntry.save();
+  await webhookEntry.save();  
 }
 
+export async function removeWebhookGithub(repoId, refreshToken) {
 
-
-
-
-
-
-//4. Service  to remove a webhook from a repository. 
-export async function removeWebhook(webhookData,refreshToken){
 try{
+  //.1 validating user
+  const requiredUser = await userModel.findOne({ refreshToken });
+
+  if (!requiredUser) {
+    throw new Error("user could not be found when creating web-hook");
+  }
+
+  //.2 validating kronos user
+  const requiredRepo = await RepoModel.findOne({ repoId });
+
+  if (!requiredRepo) {
+    throw new Error("repo DNE @ removing web-hook Github.");
+  }
+
+  const requiredWebhook = await findWebhookMdb(
+    requiredRepo.repoName,
+    requiredUser,
+  );
+
+  if (!requiredWebhook) {
+    throw new Error("webhook DNE @ removing web-hook Github.");
+  }
+
   // .1 init octoKit
   const octokitClient = createOctokit(requiredUser.githubToken);
 
   // .2 create repourl
-  const repourl = `/repos/${webhookData.owner}/${webhookData.repo}/hooks`;
+  const repourl = `/repos/${requiredUser.username}/${requiredWebhook.repo}/hooks/${requiredWebhook.githubHookId}`;
+  console.log("repourl @ rmWebhook");
 
-  // .3 get all webhooks on desired repo.
-const webhooks = octokitClient.request(`GET ${repourl}`,{
-  owner: webhookData.owner,
-  repo: webhookData.repo,
-  headers: {
-    'X-GitHub-Api-Version': '2026-03-10'
-  }
-})
+  await octokitClient.request(`DELETE ${repourl}`, {
+    owner: requiredUser.username,
+    repo: requiredWebhook.repo,
+    hook_id: requiredWebhook.githubHookId,
+    headers: {
+      "X-GitHub-Api-Version": "2026-03-10",
+    },
+  });
+}catch(error){
+  throw new Error("error occured @ adding webhook github", error);
+}
+}
 
-// .4
-const requiredWebhook = webhooks.find(webhook=>webhook.name === webhookData.repo)
 
+export async function removeWebhookMdb(repoId, refreshToken) {
+try {
   const requiredUser = await userModel.findOne({ refreshToken });
+
   if (!requiredUser) {
     throw new Error("user could not be found when creating web-hook");
   }
+
+  //.2 validating kronos user
+  const requiredRepo = await RepoModel.findOne({ repoId });
+
+  if (!requiredRepo) {
+    throw new Error("repo DNE @ removing web-hook Github.");
+  }
+
+  const requiredWebhook = await findWebhookMdb(
+    requiredRepo.repoName,
+    requiredUser,
+  );
+
+  if (!requiredWebhook) {
+    throw new Error("webhook DNE @ removing web-hook Github.");
+  }
+
+  webhookModel.deleteOne(requiredWebhook);
+} catch (error) {
+  throw new Error("error occured @ removing webhook mdb", error);
 }
-// .7 loging any error encountered while adding webhook
-catch(error){
-  console.log("error occured when adding webhook",error)
 }
 
-}
+
+
+
+

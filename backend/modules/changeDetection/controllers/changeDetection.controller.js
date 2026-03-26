@@ -11,14 +11,14 @@ getWebhookData(data)
 
 export async function removeWebhookController(req,res){
 const refreshToken = req.cookies.refreshToken;
-if (!refreshToken){
-    console.log("refresh Token @ remove webhook controller DNE")
+const {repoId} = req.params
+// const {webhookData} = req.body
+
+if (!refreshToken || !repoId) {
+  throw new Error("cookie, param DNE @ remove webhook");
 }
-const webhookData = req.data
-if (!webhookData){
-    console.log("no payload @ remove webhook controller")
-}
-await removeWebhook(webhookData,refreshToken)
+
+// await removeWebhook(webhookData,refreshToken)
 }
 
 
@@ -34,7 +34,7 @@ export async function addWebhookController(req,res) {
 }
 
 // .3 validate kronos isn't already watching 
-const requiredWebhook = await findWebhookMdb(webhookData,refreshToken)
+const requiredWebhook = await findWebhookMdb(webhookData.repo,refreshToken)
 if (!requiredWebhook){
 
 // .4 watch kron & hold hookId

@@ -8,7 +8,7 @@ import { getUrls } from "@/config.ts";
 const { backendUrl } = getUrls();
 import { useState } from "react";
 
-interface WebHookData {
+interface WebhookData {
   repo: string,
   owner: string
 }
@@ -28,7 +28,7 @@ function RepoCard({ repoName, repoUrl, githubOwnerId, repoId, owner
     repoId: repoId,
   }
 
-  const webhookData: WebHookData = {
+  const webhookData: WebhookData = {
     repo: repoName,
     owner: owner,
   };

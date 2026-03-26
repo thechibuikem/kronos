@@ -9,20 +9,25 @@ import { useState } from "react";
 
 const {backendUrl} = getUrls()
 
+
+
 // my kron update card for my kron LIst page
-function KronUpdateCard({repoName,_id}:Partial<Kron>) {
+function KronUpdateCard({repoName,repoId}:Partial<Kron>) {
 const [isLoading,setIsLoading] = useState<boolean>(false)
 const {getKrons} = useAllKronsHandler();
+
+
+
 
 // my http request to remove a kron
   async function removeKron() {
     try{
       setIsLoading(true)
       await axios.delete(
-            `${backendUrl}/api/v1/kronList/deleteKron/${_id}`,
+            `${backendUrl}/api/v1/kronList/deleteKron/${repoId}`,
       { withCredentials: true });
 
-      await axios.delete(`${backendUrl}/api/v1/changeDetection/webhook/${_id}`,{withCredentials:true});
+      await axios.delete(`${backendUrl}/api/v1/changeDetection/webhook/${repoId}`,{withCredentials:true});
     
     }catch(err){
       throw new Error
