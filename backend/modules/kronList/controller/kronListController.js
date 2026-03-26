@@ -19,6 +19,8 @@ export async function getAllkronsController(req,res){
 //2. controller to add a new kron to mdb
  export async function addKronsController(req, res) {
 // 2.1 getting payload
+console.log("payload @ addKron",req.body)
+
    const { kronData } = req.body;
    if (!kronData){
     throw new Error("kronData unavailable @ add krons controller")
