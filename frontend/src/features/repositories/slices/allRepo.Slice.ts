@@ -8,7 +8,7 @@ export interface Repo {
   repoName: string;
   repoUrl: string;
   githubOwnerId: string;
-  repoId: number;
+  repoId: string;
   isPrivate: boolean;
   owner:string
 }
