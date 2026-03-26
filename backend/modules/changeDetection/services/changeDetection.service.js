@@ -23,34 +23,16 @@ try{
   // .1 github's standard url for adding webhook
   const repourl = `POST /repos/${webhookData.owner}/${webhookData.repo}/hooks`; //endoint for webHook addition
 
-  console.log(repourl)
-
-  //.2 fetching the user who's adding a webhook from mongoDB
+  //.2 validate kronos user
   const requiredUser = await userModel.findOne({ refreshToken });
-
 if (!requiredUser){
   throw new Error("user could not be found when creating web-hook")
 }
 
-  // .5 actual webhook registering operation.
+  // .3 initialize octokit client
   const octokitClient = createOctokit(requiredUser.githubToken);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // .6 adding webhook
-
+  // .4 registering webhook @ github
  const webhook = await octokitClient.request(repourl, {
     owner: webhookData.owner,
     repo: webhookData.repoName,
@@ -58,23 +40,24 @@ if (!requiredUser){
     active: true,
     events: ["push"],
     config: {
-      url: `${backendUrl}api/v1/changeDetection/webhook`, //endpoint we'll send data to
-      content_type: "json", //what format our data would   come in
+      url: `${backendUrl}api/v1/changeDetection/webhook`, 
+      content_type: "json", 
       insecure_ssl: "0",
-    },
+    },//settings on data from github
     headers: {
       "X-GitHub-Api-Version": "2022-11-28",
     },
   });
 
-  console.log("webhook added successfully tho")
+  // .5 handling errors @ reg webhook
 if (!webhook){
  throw new Error("webhook registeration unsuccessful")
 }
 
+// .6 returning webhook Id
 return webhook.data.id
 }
-// .7 loging any error encountered while adding webhook
+// .7 error handling
 catch(error){
   throw new Error ("error occured @ adding webhook github",error)
 }
@@ -82,10 +65,13 @@ catch(error){
 
 // service to check if webhook already exists
 export async function findWebhookMdb(webhookData,refreshToken){
+  // .1 validating kronos user
 const requiredUser = await userModel.findOne({refreshToken})
 if (!requiredUser){
   throw new Error ("required user DNE @ findWebhookMdb")
 }
+
+// .2 locate webhook in our mdb collection 
 const requiredWebhook = await webhookModel.findOne({
   $and:[
     {githubOwnerId:requiredUser.githubId},
@@ -104,7 +90,7 @@ export async function addWebhookMdb(refreshToken, webhookData, hookId) {
     throw new Error("hookId unavailable @ addwebhookMdb");
   }
 
-  //.2 fetching the user who's adding a webhook from mongoDB
+  //.2 validating kronos user
   const requiredUser = await userModel.findOne({ refreshToken });
 
 if (!requiredUser) {
@@ -119,10 +105,8 @@ if (!requiredUser) {
     githubOwnerId: requiredUser.githubId,
   });
 
-  // saving hook entry to mongo db
+  //.3 saving hook entry to mongo db
   await webhookEntry.save();
-
-  console.log("Pal! we've added webhook to mdb");
 }
 
 
