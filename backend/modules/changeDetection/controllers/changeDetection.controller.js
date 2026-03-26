@@ -28,7 +28,7 @@ export async function addWebhookController(req,res) {
     const refreshToken = req.cookies.refreshToken;
 
 
-    if (!refreshToken||webhookData){
+    if (!refreshToken||!webhookData){
     throw new Error ("cookie or payload unavailable @ addWebhookController")
 }
 // getting required webhook
