@@ -143,6 +143,8 @@ try{
       "X-GitHub-Api-Version": "2026-03-10",
     },
   });
+
+    console.log("webhook deleted successfully @ github")
 }catch(error){
   throw new Error("error occured @ adding webhook github", error);
 }
@@ -174,6 +176,7 @@ try {
   }
 
   webhookModel.deleteOne(requiredWebhook);
+    console.log("webhook deleted successfully @ mdb");
 } catch (error) {
   throw new Error("error occured @ removing webhook mdb", error);
 }
