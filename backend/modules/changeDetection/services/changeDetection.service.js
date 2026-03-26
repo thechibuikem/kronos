@@ -98,23 +98,31 @@ return requiredWebhook
 
 
 // service to add webhook to 
-export async function addWebhookMdb(webhookData,hookId){
+export async function addWebhookMdb(refreshToken, webhookData, hookId) {
   // .1 validating that hookId exists
-if (!hookId){
-  throw new Error("hookId unavailable @ addwebhookMdb");
+  if (!hookId) {
+    throw new Error("hookId unavailable @ addwebhookMdb");
+  }
+
+  //.2 fetching the user who's adding a webhook from mongoDB
+  const requiredUser = await userModel.findOne({ refreshToken });
+
+if (!requiredUser) {
+  throw new Error("user could not be found when creating web-hook");
 }
 
-// .2 creating webhook entry
-const webhookEntry = new webhookModel({
-  githubHookId: hookId,
-  repo: webhookData.repo,
-  githubOwnerId: requiredUser.githubId,
-});
 
-// saving hook entry to mongo db
-await webhookEntry.save()
+  // .2 creating webhook entry
+  const webhookEntry = new webhookModel({
+    githubHookId: hookId,
+    repo: webhookData.repo,
+    githubOwnerId: requiredUser.githubId,
+  });
 
-console.log("Pal! we've added webhook to mdb")
+  // saving hook entry to mongo db
+  await webhookEntry.save();
+
+  console.log("Pal! we've added webhook to mdb");
 }
 
 
