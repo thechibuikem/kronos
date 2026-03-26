@@ -7,7 +7,7 @@ function KronWrapper() {
 const {krons,getKrons} = useAllKronsHandler()
 
 
-console.log("krons at frontend :",krons)
+// console.log("krons at frontend :",krons)
 // use effect to get all krons
 useEffect(()=>{
   getKrons()

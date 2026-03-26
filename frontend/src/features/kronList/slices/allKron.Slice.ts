@@ -10,7 +10,7 @@ export interface Kron {
   repoName: string;
   repoUrl: string;
   githubOwnerId: string;
-  repoId: number;
+  repoId: string;
   isPrivate: boolean;
   owner: string;
 }
