@@ -54,7 +54,7 @@ const {repoId} = req.params
      res.status(204).end();
    } catch (error) {
      // 3.3 error handling
-     console.err("error occured @ kron deletion controller", error);
+     console.error("error occured @ kron deletion controller", error);
      res.status(500).json({error:error});
    }
 }
