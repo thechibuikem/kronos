@@ -22,6 +22,8 @@ export async function getAllkronsController(req,res){
 console.log("payload @ addKron",req.body)
 
    const { kronData } = req.body;
+
+   console.log("kronData itself",kronData)
    if (!kronData){
     throw new Error("kronData unavailable @ add krons controller")
    }
@@ -32,7 +34,7 @@ res.status(201).json({message:"created"})
 }
 // 2.3 error handling
    catch(error){
-    console.err("error occured @ kron addition controller", error);
+    console.error("error occured @ kron addition controller", error);
     res.status(500).json({error:error});
    }
 }
