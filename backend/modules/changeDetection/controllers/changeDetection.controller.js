@@ -24,10 +24,9 @@ await removeWebhook(webhookData,refreshToken)
 
 
 export async function addWebhookController(req,res) {
-    const webhookData = req.body
+    const {webhookData} = req.body
     const refreshToken = req.cookies.refreshToken;
 
-console.log(req.body,req.cookies.refreshToken)
 
     if (!refreshToken||webhookData){
     throw new Error ("cookie or payload unavailable @ addWebhookController")
