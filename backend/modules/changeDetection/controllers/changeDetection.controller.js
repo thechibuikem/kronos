@@ -2,35 +2,12 @@ import { addWebhookMdb, findWebhookMdb, getWebhookData } from "../services/chang
 import { addWebhookGithub } from "../services/changeDetection.service.js";
 import { removeWebhook } from "../services/changeDetection.service.js";
 
-
 // this controller would be mounted at the webhook 
 export async function webhookDataController(req, res) {
 const data = req.body
 // const refreshToken = req.cookies.refreshToken;
 getWebhookData(data)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export async function removeWebhookController(req,res){
 const refreshToken = req.cookies.refreshToken;
@@ -54,10 +31,10 @@ if (!refreshToken|webhookData){
 }
 // getting required webhook
 const requiredWebhook = await findWebhookMdb(webhookData,refreshToken)
-
-if (!removeWebhook){
-
+if (!requiredWebhook){
 const hookId = await addWebhookGithub(webhookData, refreshToken);
+
+
 await addWebhookMdb(webhookData, hookId);
 
 res.status(201).json({ message: "kron added successfully" });

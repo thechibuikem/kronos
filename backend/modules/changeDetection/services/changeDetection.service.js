@@ -49,6 +49,10 @@ if (!requiredUser){
       "X-GitHub-Api-Version": "2022-11-28",
     },
   });
+if (!webhook){
+ throw new Error("webhook registeration unsuccessful")
+}
+
 return webhook.hookId
 }
 // .7 loging any error encountered while adding webhook
@@ -60,13 +64,16 @@ catch(error){
 // service to check if webhook already exists
 export async function findWebhookMdb(webhookData,refreshToken){
 const requiredUser = await userModel.findOne({refreshToken})
+if (!requiredUser){
+  throw new Error ("required user DNE @ findWebhookMdb")
+}
 const requiredWebhook = await webhookModel.findOne({
   $and:[
     {githubOwnerId:requiredUser.githubId},
     {repo:webhookData.repo}
   ]
 })
-return removeWebhook
+return requiredWebhook
 }
 
 
