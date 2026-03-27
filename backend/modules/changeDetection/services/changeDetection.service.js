@@ -148,7 +148,7 @@ console.log("")
 
     console.log("webhook deleted successfully @ github",response)
 }catch(error){
-  throw new Error("error occured @ adding webhook github", error);
+  throw new Error(`error occured @ removing webhook github:${error}`);
 }
 }
 
