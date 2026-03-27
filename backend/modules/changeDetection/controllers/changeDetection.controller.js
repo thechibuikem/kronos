@@ -9,12 +9,11 @@ import {
 import { getWebhookData } from "../services/getWebhookData.service.js";
 
 
-// this controller would be mounted at the webhook
+// controller to read webhook data
 export async function webhookDataController(req, res) {
   const data = req.body;
   getWebhookData(data);
 
-  
 }
 
 
