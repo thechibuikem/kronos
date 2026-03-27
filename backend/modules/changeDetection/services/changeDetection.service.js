@@ -31,7 +31,7 @@ if (!requiredUser){
     active: true,
     events: ["push"],
     config: {
-      url: `${backendUrl}api/v1/changeDetection/webhook-data`, 
+      url: `${backendUrl}/api/v1/changeDetection/webhook-data`, 
       content_type: "json", 
       insecure_ssl: "0",
     },//settings on data from github
