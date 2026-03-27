@@ -178,8 +178,10 @@ try {
     throw new Error("webhook DNE @ removing web-hook Github.");
   }
 
-  webhookModel.deleteOne(requiredWebhook);
-    console.log("webhook deleted successfully @ mdb");
+// delete required webhook
+ await webhookModel.deleteOne({ _id: requiredWebhook._id });
+ console.log("webhook deleted successfully @ mdb");
+
 } catch (error) {
   throw new Error("error occured @ removing webhook mdb", error);
 }
