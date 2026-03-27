@@ -109,14 +109,14 @@ try{
   const requiredUser = await userModel.findOne({ refreshToken });
 
   if (!requiredUser) {
-    throw new Error("user could not be found when creating web-hook");
+    throw new Error("user DNE @ remove web-hook github");
   }
 
   //.2 validating kronos user
   const requiredRepo = await RepoModel.findOne({ repoId });
 
   if (!requiredRepo) {
-    throw new Error("repo DNE @ removing web-hook Github.");
+    throw new Error("repo DNE @ removing web-hook github.");
   }
 
   const requiredWebhook = await findWebhookMdb(
@@ -128,6 +128,8 @@ try{
     throw new Error("webhook DNE @ removing web-hook Github.");
   }
 
+console.log("")
+
   // .1 init octoKit
   const octokitClient = createOctokit(requiredUser.githubToken);
 
@@ -135,7 +137,7 @@ try{
   const repourl = `/repos/${requiredUser.username}/${requiredWebhook.repo}/hooks/${requiredWebhook.githubHookId}`;
   console.log("repourl @ rmWebhook");
 
-  await octokitClient.request(`DELETE ${repourl}`, {
+ const response = await octokitClient.request(`DELETE ${repourl}`, {
     owner: requiredUser.username,
     repo: requiredWebhook.repo,
     hook_id: requiredWebhook.githubHookId,
@@ -144,7 +146,7 @@ try{
     },
   });
 
-    console.log("webhook deleted successfully @ github")
+    console.log("webhook deleted successfully @ github",response)
 }catch(error){
   throw new Error("error occured @ adding webhook github", error);
 }

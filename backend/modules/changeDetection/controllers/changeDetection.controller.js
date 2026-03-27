@@ -24,8 +24,9 @@ export async function removeWebhookController(req, res) {
       throw new Error("cookie, param DNE @ remove webhook");
     }
 
-    await removeWebhookGithub(repoId, refreshToken);
+    console.log("starting process of removing webhooks")
 
+    await removeWebhookGithub(repoId, refreshToken);
     await removeWebhookMdb(repoId, refreshToken);
     res.status(204).send();
   } catch (err) {
