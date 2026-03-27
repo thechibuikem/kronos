@@ -121,7 +121,7 @@ try{
 
   const requiredWebhook = await findWebhookMdb(
     requiredRepo.repoName,
-    requiredUser,
+    refreshToken,
   );
 
   if (!requiredWebhook) {
@@ -147,6 +147,7 @@ console.log("")
   });
 
     console.log("webhook deleted successfully @ github",response)
+
 }catch(error){
   throw new Error(`error occured @ removing webhook github:${error}`);
 }
