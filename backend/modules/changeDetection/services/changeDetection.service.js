@@ -171,7 +171,7 @@ try {
 
   const requiredWebhook = await findWebhookMdb(
     requiredRepo.repoName,
-    requiredUser,
+    refreshToken,
   );
 
   if (!requiredWebhook) {
