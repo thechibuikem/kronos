@@ -6,7 +6,7 @@ import { addWebhookController, webhookDataController,removeWebhookController } f
 const router = express.Router()//creating router instance
 
 //=========routes for change detection service=====//
-router.get("/webhook", webhookDataController);
+router.post("/webhook-data", webhookDataController);
 router.post("/webhook",addWebhookController)
 router.delete("/webhook/:repoId",removeWebhookController);
 

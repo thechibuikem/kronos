@@ -1,18 +1,53 @@
 import {
+  addWebhookGithub,
   addWebhookMdb,
   findWebhookMdb,
-  getWebhookData,
   removeWebhookGithub,
   removeWebhookMdb,
 } from "../services/changeDetection.service.js";
-import { addWebhookGithub } from "../services/changeDetection.service.js";
+
+import { getWebhookData } from "../services/getWebhookData.service.js";
+
 
 // this controller would be mounted at the webhook
 export async function webhookDataController(req, res) {
   const data = req.body;
-  // const refreshToken = req.cookies.refreshToken;
   getWebhookData(data);
+
+  
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export async function removeWebhookController(req, res) {
   try {
