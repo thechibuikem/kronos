@@ -6,9 +6,7 @@ import jwt from "jsonwebtoken";
 
 export const addOauthUser = async (email, user,access_token) => {
   try {
-    const exitingOauthUser = await userModel.findOne({
-      $or: [{ userEmail: email }, { github_id: user.id }],
-    }); //find oauth user
+    const exitingOauthUser = await userModel.findOne({github_id: user.id ,}); //find oauth user
 
     //1. user DNE
     if (!exitingOauthUser) {
@@ -82,6 +80,10 @@ export const addOauthUser = async (email, user,access_token) => {
       ((exitingOauthUser.repos_url = user.repos_url),
         (exitingOauthUser.refreshToken = refreshToken));
       exitingOauthUser.githubToken = access_token;
+if (exitingOauthUser.email!==email){
+  exitingOauthUser.email = email
+} 
+
 
       // .3 Store refresh token in redis
       try {
