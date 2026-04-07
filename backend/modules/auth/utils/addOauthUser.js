@@ -87,7 +87,7 @@ if (existingOauthUser.userEmail!==email){
 
       // .3 Store refresh token in redis
       try {
-        redisClient.set(refreshToken, `refresh:${exitingOauthUser["_id"]}`, {
+        redisClient.set(refreshToken, `refresh:${existingOauthUser["_id"]}`, {
           EX: 60 * 60 * 24 * 30,
         });
       } catch (error) {
