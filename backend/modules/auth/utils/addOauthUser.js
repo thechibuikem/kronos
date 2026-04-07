@@ -80,8 +80,8 @@ export const addOauthUser = async (email, user,access_token) => {
       ((exitingOauthUser.repos_url = user.repos_url),
         (exitingOauthUser.refreshToken = refreshToken));
       exitingOauthUser.githubToken = access_token;
-if (exitingOauthUser.email!==email){
-  exitingOauthUser.email = email
+if (exitingOauthUser.userEmail!==email){
+  exitingOauthUser.userEmail = email
 } 
 
 
