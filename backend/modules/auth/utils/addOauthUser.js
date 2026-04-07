@@ -6,10 +6,10 @@ import jwt from "jsonwebtoken";
 
 export const addOauthUser = async (email, user,access_token) => {
   try {
-    const exitingOauthUser = await userModel.findOne({github_id: user.id ,}); //find oauth user
+    const existingOauthUser = await userModel.findOne({githubId: user.id ,}); //find oauth user
 
     //1. user DNE
-    if (!exitingOauthUser) {
+    if (!existingOauthUser) {
       //.1 create user instance
       const newUser = userModel({
         userEmail: email,
@@ -61,27 +61,27 @@ export const addOauthUser = async (email, user,access_token) => {
     }
 
     //2. user Exists
-    if (exitingOauthUser) {
+    if (existingOauthUser) {
       //.1 create tokens
       const accessToken = jwt.sign(
-        { userId: exitingOauthUser["_id"], roles: exitingOauthUser["roles"] },
+        { userId: existingOauthUser["_id"], roles: existingOauthUser["roles"] },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: "15m" },
       );
       const refreshToken = jwt.sign(
-        { userId: exitingOauthUser["_id"] },
+        { userId: existingOauthUser["_id"] },
         process.env.REFRESH_TOKEN_SECRET,
         {
           expiresIn: "30d",
         },
       );
       // .2 updating our saved user
-      exitingOauthUser.githubId = user.id;
-      ((exitingOauthUser.repos_url = user.repos_url),
-        (exitingOauthUser.refreshToken = refreshToken));
-      exitingOauthUser.githubToken = access_token;
-if (exitingOauthUser.userEmail!==email){
-  exitingOauthUser.userEmail = email
+      existingOauthUser.githubId = user.id;
+      ((existingOauthUser.repos_url = user.repos_url),
+        (existingOauthUser.refreshToken = refreshToken));
+      existingOauthUser.githubToken = access_token;
+if (existingOauthUser.userEmail!==email){
+  existingOauthUser.userEmail = email
 } 
 
 
@@ -97,10 +97,10 @@ if (exitingOauthUser.userEmail!==email){
         );
       }
       //6, saving exosting user to DB
-      await exitingOauthUser.save();
+      await existingOauthUser.save();
 
       return {
-        exitingOauthUser,
+        existingOauthUser,
         status: 200,
         data: {
           message: "User logged in successfully",
