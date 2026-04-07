@@ -6,47 +6,28 @@ import {
   removeWebhookMdb,
 } from "../services/changeDetection.service.js";
 
-import { getWebhookData } from "../services/getWebhookData.service.js";
+import {
+  getFileBasedWebhookData,
+  getLineBasedWebhookData,
+} from "../services/getWebhookData.service.js";
 
 
 // controller to read webhook data
 export async function webhookDataController(req, res) {
   const data = req.body;
-  getWebhookData(data);
+  if (!data){
+    throw new Error("webhook data @ webhook data controller");
+  }
+  const fileBasedWebhookData = getFileBasedWebhookData(data);
+  const lineBasedWebhookData = await getLineBasedWebhookData(data);
 
+  console.log(
+    "lineBasedWebhookData: ",
+    lineBasedWebhookData,
+    "\nfileBasedWebhookData",
+    fileBasedWebhookData,
+  );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export async function removeWebhookController(req, res) {
   try {
@@ -59,7 +40,6 @@ export async function removeWebhookController(req, res) {
     }
 
     console.log("starting process of removing webhooks")
-
     await removeWebhookGithub(repoId, refreshToken);
     await removeWebhookMdb(repoId, refreshToken);
     res.status(204).send();
