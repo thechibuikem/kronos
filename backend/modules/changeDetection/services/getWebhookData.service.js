@@ -38,7 +38,7 @@ try{
   }
   const octokitClient = createOctokit(requiredUser.githubToken);
 
-  const lineBasedWebhookData = await octokitClient.request(
+  const res = await octokitClient.request(
     `GET /repos/${data.sender.login}/${data.repository.name}/commits/${data.after}`,
     {
       owner: data.sender.login,
@@ -46,6 +46,8 @@ try{
       sha: data.after, // from your webhook JSON
     },
   );
+
+const lineBasedWebhookData = res.data
 
   if (!lineBasedWebhookData) {
     throw new Error("line based webhook data DNE @ get webhook data service");

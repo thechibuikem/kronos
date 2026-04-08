@@ -23,9 +23,9 @@ export async function webhookDataController(req, res) {
 
   console.log(
     "\n\nlineBasedWebhookData: ",
-    JSON.stringify(lineBasedWebhookData),
+    JSON.stringify(lineBasedWebhookData,null,2),
     "\n\nfileBasedWebhookData",
-    JSON.stringify(fileBasedWebhookData),
+    JSON.stringify(fileBasedWebhookData,null,2),
   );
 }
 
