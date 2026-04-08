@@ -18,14 +18,14 @@ export async function webhookDataController(req, res) {
   if (!data){
     throw new Error("webhook data @ webhook data controller");
   }
-  const fileBasedWebhookData = getFileBasedWebhookData(data);
+  // const fileBasedWebhookData = getFileBasedWebhookData(data);
   const lineBasedWebhookData = await getLineBasedWebhookData(data);
 
   console.log(
     "\n\nlineBasedWebhookData: ",
     JSON.stringify(lineBasedWebhookData,null,2),
     "\n\nfileBasedWebhookData",
-    JSON.stringify(fileBasedWebhookData,null,2),
+    // JSON.stringify(fileBasedWebhookData,null,2),
   );
 }
 
