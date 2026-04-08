@@ -47,20 +47,17 @@ try{
       sha: data.after, // from your webhook JSON
     },
   );
-
     if (!res) {
       throw new Error("res DNE @ get webhoook data service");
     }
 
-
+    // 
 const lineBasedWebhookData = {
   data:res.data
 }
-
   if (!lineBasedWebhookData) {
     throw new Error("line based webhook data DNE @ get webhook data service");
   }
-
 
   return lineBasedWebhookData;
 }catch(error){
