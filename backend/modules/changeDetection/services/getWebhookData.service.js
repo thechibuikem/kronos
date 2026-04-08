@@ -65,7 +65,7 @@ console.log("entire data @ get webhook data service",response)
 
   return lineBasedWebhookData;
 }catch(error){
-  throw new Error("unexpected error at get line based webhook data")
+  throw new Error("unexpected error at get line based webhook data", error)
 }
 
 }
