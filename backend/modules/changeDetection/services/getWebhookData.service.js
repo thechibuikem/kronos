@@ -38,6 +38,7 @@ try{
   }
   const octokitClient = createOctokit(requiredUser.githubToken);
 
+  // commit specific data
   const res = await octokitClient.request(
     `GET /repos/${data.sender.login}/${data.repository.name}/commits/${data.after}`,
     {
@@ -47,15 +48,18 @@ try{
     },
   );
 
-const response = res.data
+    if (!res) {
+      throw new Error("res DNE @ get webhoook data service");
+    }
+
+
+const lineBasedWebhookData = {
+  data:res.data
+}
 
   if (!lineBasedWebhookData) {
     throw new Error("line based webhook data DNE @ get webhook data service");
   }
-
-const lineBasedWebhookData = {
-  data:response
-}
 
 console.log("entire data @ get webhook data service",response)
 
