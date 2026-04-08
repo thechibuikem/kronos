@@ -47,11 +47,17 @@ try{
     },
   );
 
-const lineBasedWebhookData = res.data
+const response = res.data
 
   if (!lineBasedWebhookData) {
     throw new Error("line based webhook data DNE @ get webhook data service");
   }
+
+const lineBasedWebhookData = {
+  data:response.files
+}
+
+console.log("entire data @ get webhook data service",response)
 
   return lineBasedWebhookData;
 }catch(error){
