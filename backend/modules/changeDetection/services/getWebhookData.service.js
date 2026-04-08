@@ -61,7 +61,6 @@ const lineBasedWebhookData = {
     throw new Error("line based webhook data DNE @ get webhook data service");
   }
 
-console.log("entire data @ get webhook data service",response)
 
   return lineBasedWebhookData;
 }catch(error){
