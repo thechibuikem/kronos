@@ -22,10 +22,10 @@ export async function webhookDataController(req, res) {
   const lineBasedWebhookData = await getLineBasedWebhookData(data);
 
   console.log(
-    "lineBasedWebhookData: ",
-    lineBasedWebhookData,
-    "\nfileBasedWebhookData",
-    fileBasedWebhookData,
+    "\n\nlineBasedWebhookData: ",
+    JSON.stringify(lineBasedWebhookData),
+    "\n\nfileBasedWebhookData",
+    JSON.stringify(fileBasedWebhookData),
   );
 }
 
