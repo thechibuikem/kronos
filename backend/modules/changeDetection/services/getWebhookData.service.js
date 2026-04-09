@@ -40,7 +40,7 @@ export async function getWebhookData(data) {
 
     return enrichedCommits;
   } catch (error) {
-    throw new Error("unexpected error at file based webhook data", error);
+    throw new Error(`unexpected error at file based webhook data error ${error}`,);
   }
 }
 
