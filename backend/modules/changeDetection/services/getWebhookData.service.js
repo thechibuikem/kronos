@@ -76,35 +76,38 @@ if (!richer){
 export async function getRicherCommitData(commit, data, octokitClient) {
 
   try{
-  const owner = commit.author;
-  const repo = data.repository.name;
+    const owner = data.repository.owner.login; // Get owner login from webhook data
+    const repo = data.repository.name;
+    const sha = commit.id; // The commit SHA to fetch
 
-  const res = await octokitClient.request(
-    `GET /repos/${owner}/${commit.repo}/commits/${commit.ref}`,
-    {
-      owner: owner,
-      repo: repo,
-      ref: commit.id,
-      headers: {
-        "X-GitHub-Api-Version": "2026-03-10",
-      },
-    },
-  );
+        const res = await octokitClient.request(
+          `GET /repos/{owner}/{repo}/commits/{ref}`,
+          {
+            owner,
+            repo,
+            ref: sha,
+            headers: {
+              "X-GitHub-Api-Version": "2022-11-28",
+            },
+          },
+        );
 
-if (!res){
-  throw new Error ("res DNE")
-}
+   if (!res?.data?.files) {
+     throw new Error("No files data in commit response");
+   }
 
-console.log(res)
+    console.log(res);
 
-  // files extraction
-  return res.data.files.map((file) => ({
-    filename: file.filename,
-    additions: file.additions,
-    deletions: file.deletions,
-    changes: file.changes,
-  }));}
+    // files extraction
+    return res.data.files.map((file) => ({
+      filename: file.filename,
+      additions: file.additions,
+      deletions: file.deletions,
+      changes: file.changes,
+    }));
+  }
   catch(error){
+      console.error("Error at getRicherCommitData:", error.message);
     throw new Error("error at get richer commit data",error)
   }
 }
