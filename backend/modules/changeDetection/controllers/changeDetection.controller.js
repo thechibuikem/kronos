@@ -7,8 +7,7 @@ import {
 } from "../services/changeDetection.service.js";
 
 import {
-  getFileBasedWebhookData,
-  getLineBasedWebhookData,
+  getWebhookData,
 } from "../services/getWebhookData.service.js";
 
 
@@ -19,11 +18,11 @@ export async function webhookDataController(req, res) {
     throw new Error("webhook data @ webhook data controller");
   }
   // const fileBasedWebhookData = getFileBasedWebhookData(data);
-  const lineBasedWebhookData = await getLineBasedWebhookData(data);
+  const webhookData = await getWebhookData(data);
 
   console.log(
     "\n\nlineBasedWebhookData: ",
-    JSON.stringify(lineBasedWebhookData,null,2),
+    JSON.stringify(webhookData,null,2),
 
   );
 }
