@@ -40,14 +40,14 @@ export async function getWebhookData(data) {
 
     return enrichedCommits;
   } catch (error) {
-    throw new Error(`unexpected error at file based webhook data error ${error}`,);
+    throw new Error(`unexpected error ${error}`,);
   }
 }
 
 // helper function to get file-based data which webhook omits
 export async function getRicherCommitData(commit, data, octokitClient) {
   try {
-    const owner = data.repository.owner.login; 
+    const owner = data.repository.owner.login;
     const repo = data.repository.name;
     const sha = commit.id;
 
@@ -74,7 +74,6 @@ export async function getRicherCommitData(commit, data, octokitClient) {
       changes: file.changes,
     }));
   } catch (error) {
-    console.error("Error at getRicherCommitData:", error.message);
-    throw new Error("error at get richer commit data", error);
+    throw new Error(`unexpected error ${error}`);
   }
 }
