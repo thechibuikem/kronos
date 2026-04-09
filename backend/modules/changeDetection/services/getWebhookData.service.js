@@ -78,11 +78,14 @@ export async function getRicherCommitData(commit, data, octokitClient) {
   const repo = data.repository.name;
 
   const res = await octokitClient.request(
-    "GET /repos/{owner}/{repo}/commits/{ref}",
+    `GET /repos/${owner}/${commit.repo}/commits/${commit.ref}`,
     {
-      owner,
-      repo,
+      owner: owner,
+      repo: repo,
       ref: commit.id,
+      headers: {
+        "X-GitHub-Api-Version": "2026-03-10",
+      },
     },
   );
 
