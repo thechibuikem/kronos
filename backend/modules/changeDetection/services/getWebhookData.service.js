@@ -18,10 +18,20 @@ try {
 
     const commits = data.commits;
 
+if (!commits) {
+  throw new Error("commits DNE");
+}
+
+
  const enrichedCommits = await Promise.all(
   
   commits.map(async (commit) => {
      const richer = await getRicherCommitData(commit, data, octokitClient);
+
+if (!richer){
+  throw new Error ("richer DNE")
+}
+
 
      return {
        id: commit.id,
