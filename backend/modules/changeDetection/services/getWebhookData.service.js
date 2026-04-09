@@ -52,27 +52,6 @@ if (!richer){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   // const fileBasedWebhookData = data.commits.map((commit) => ({
   //   id: commit.id,
   //   message: commit.message,
@@ -93,20 +72,6 @@ if (!richer){
 
 
 
-// export async function getRicherCommitData(commit,octokitClient){
-//       const richerCommit = await octokitClient.request(
-//         `GET /repos/${commit.data}/${commit.repo}/commits/{commit.ref}`,
-//         {
-//           owner,
-//           repo,
-//           ref: commit.id,
-//         },
-//       );
-
-//       const filesChangedData = richerCommit.map(file =>file.files )
-
-//       return filesChangedData
-// }
 
 export async function getRicherCommitData(commit, data, octokitClient) {
   const owner = commit.author;
@@ -120,6 +85,12 @@ export async function getRicherCommitData(commit, data, octokitClient) {
       ref: commit.id,
     },
   );
+
+if (!res){
+  throw new Error ("res DNE")
+}
+
+console.log(res)
 
   // files extraction
   return res.data.files.map((file) => ({
@@ -135,6 +106,20 @@ export async function getRicherCommitData(commit, data, octokitClient) {
 
 
 
+// export async function getRicherCommitData(commit,octokitClient){
+//       const richerCommit = await octokitClient.request(
+//         `GET /repos/${commit.data}/${commit.repo}/commits/{commit.ref}`,
+//         {
+//           owner,
+//           repo,
+//           ref: commit.id,
+//         },
+//       );
+
+//       const filesChangedData = richerCommit.map(file =>file.files )
+
+//       return filesChangedData
+// }
 
 
 
