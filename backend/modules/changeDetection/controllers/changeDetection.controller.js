@@ -7,26 +7,32 @@ import {
 } from "../services/changeDetection.service.js";
 
 import {
-  getFileBasedWebhookData,
-  getLineBasedWebhookData,
+  getWebhookData,
 } from "../services/getWebhookData.service.js";
 
 
 // controller to read webhook data
 export async function webhookDataController(req, res) {
+  try{
   const data = req.body;
   if (!data){
     throw new Error("webhook data @ webhook data controller");
   }
-  const fileBasedWebhookData = getFileBasedWebhookData(data);
-  const lineBasedWebhookData = await getLineBasedWebhookData(data);
+  const webhookData = await getWebhookData(data);
 
   console.log(
-    "\n\nlineBasedWebhookData: ",
-    JSON.stringify(lineBasedWebhookData,null,2),
-    "\n\nfileBasedWebhookData",
-    JSON.stringify(fileBasedWebhookData,null,2),
+    "\nwebhook metrics: ",
+    JSON.stringify(webhookData,null,2),
+
   );
+  res.status(204).send
+  }
+catch(error){
+  
+res.status(500).send
+console.error(error)
+throw new Error("error at webhook data controller",error)
+}
 }
 
 export async function removeWebhookController(req, res) {

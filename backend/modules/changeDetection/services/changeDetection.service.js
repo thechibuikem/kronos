@@ -25,20 +25,21 @@ if (!requiredUser){
 
   // .4 registering webhook @ github
  const webhook = await octokitClient.request(repourl, {
-    owner: webhookData.owner,
-    repo: webhookData.repoName,
-    name: "web",
-    active: true,
-    events: ["push"],
-    config: {
-      url: `${backendUrl}/api/v1/changeDetection/webhook-data`, 
-      content_type: "json", 
-      insecure_ssl: "0",
-    },//settings on data from github
-    headers: {
-      "X-GitHub-Api-Version": "2022-11-28",
-    },
-  });
+   owner: webhookData.owner,
+   repo: webhookData.repoName,
+   name: "web",
+   active: true,
+   events: ["push"],
+   config: {
+     url: `${backendUrl}/api/v1/changeDetection/webhook-data`,
+     content_type: "json",
+     insecure_ssl: "0",
+     secret: process.env.WEBHOOK_SECRET,
+   }, //settings on data from github
+   headers: {
+     "X-GitHub-Api-Version": "2022-11-28",
+   },
+ });
 
   // .5 handling errors @ reg webhook
 if (!webhook){
