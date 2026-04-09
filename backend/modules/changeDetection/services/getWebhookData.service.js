@@ -66,7 +66,7 @@ if (!richer){
 
   // fileBasedWebhookData.forEach((data,index)=>{return {...data,file:filesChangedData[index]} }
 } catch (error) {
-  throw new Error("unexpected error at file based webhook data");
+  throw new Error("unexpected error at file based webhook data",error);
 }
 }
 
@@ -74,6 +74,8 @@ if (!richer){
 
 
 export async function getRicherCommitData(commit, data, octokitClient) {
+
+  try{
   const owner = commit.author;
   const repo = data.repository.name;
 
@@ -101,7 +103,10 @@ console.log(res)
     additions: file.additions,
     deletions: file.deletions,
     changes: file.changes,
-  }));
+  }));}
+  catch(error){
+    throw new Error("error at get richer commit data",error)
+  }
 }
 
 
