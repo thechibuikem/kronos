@@ -13,6 +13,7 @@ import {
 
 // controller to read webhook data
 export async function webhookDataController(req, res) {
+  try{
   const data = req.body;
   if (!data){
     throw new Error("webhook data @ webhook data controller");
@@ -24,7 +25,14 @@ export async function webhookDataController(req, res) {
     JSON.stringify(webhookData,null,2),
 
   );
-  res.status(204)
+  res.status(204).send
+  }
+catch(error){
+  
+res.status(500).send
+console.error(error)
+throw new Error("error at webhook data controller",error)
+}
 }
 
 export async function removeWebhookController(req, res) {
