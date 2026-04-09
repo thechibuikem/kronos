@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import connectDB from "./db.js";
 import { connectRedis } from "./redis.client.js"
 import { getUrls } from "./config.js";
+import { verifyWebhookSignature } from "./middlewares/webhook.middleware.js";
 import authRoutes from "../modules/auth/routes/authRoute.js";
 import repoListRoutes from "../modules/repoList/routes/repoListRoutes.js";
 import kronListRoutes from "../modules/kronList/routes/kronListRoutes.js";
@@ -38,7 +39,19 @@ const PORT = process.env.PORT || 5000;
 
 // 5. mounting middleware packages
 app.use(cors(corsOptions));
-app.use(express.json());
+
+app.use(
+  express.json({
+    verify: (req, res, buf) => {
+      if (req.url.includes("/webhook-data")) {
+        req.rawBody = buf;
+      }
+    },
+  }),
+);
+
+
+
 app.use(cookieParser());
 
 /**  
@@ -53,12 +66,10 @@ app.use((req, res, next) => {
   next();
 });
 
-
 //*. a test route directly in server.js
 app.get("/api", (req, res) => {
   res.send("Server is running");
 });
-
 
 // 7. mounting authentication endpoints
 app.use("/api/v1/auth", authRoutes);
@@ -71,9 +82,6 @@ app.use("/api/v1/kronList", kronListRoutes);
 
 //10. mounting change detection endpoints
 app.use("/api/v1/changeDetection", changeDetectionRoutes);
-
-
-
 
 // 11. starting server
 async function startServer() {
