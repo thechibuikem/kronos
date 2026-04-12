@@ -135,18 +135,23 @@ Kronos is organized into three layers:
 
 ## Tech Stack
 
-<!-- Frontend -->
-![React](https://img.shields.io/badge/react-%2320232A.svg?style=for-the-badge&logo=react&logoColor=61DAFB)
-![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
-![JavaScript](https://img.shields.io/badge/javascript-%23F7DF1E.svg?style=for-the-badge&logo=javascript&logoColor=black)
-![Tailwind](https://img.shields.io/badge/tailwind-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Vite](https://img.shields.io/badge/vite-%236646FF.svg?style=for-the-badge&logo=vite&logoColor=white)
 
 <!-- Backend -->
-![Node.js](https://img.shields.io/badge/node.js-%23339933.svg?style=for-the-badge&logo=node.js&logoColor=white)
-![Express.js](https://img.shields.io/badge/express.js-%23404D59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
-![MongoDB](https://img.shields.io/badge/mongodb-%2347A248.svg?style=for-the-badge&logo=mongodb&logoColor=white)
-![Redis](https://img.shields.io/badge/redis-%23DC382D.svg?style=for-the-badge&logo=redis&logoColor=white)
+  <!-- Backend Frameworks -->
+  <img alt="nodejs" width="40px" src="./icons/NodeJS-Dark.svg" />
+  <img alt="express" width="40px" src="./icons/ExpressJS-Dark.svg" />
+  <img alt="mongodb" width="40px" src="./icons/MongoDB.svg" />
+  <img alt="redis" width="40px" src="./icons/Redis-Dark.svg" />
+
+
+  <!-- Frontend awareness -->
+  <!-- API / Web -->
+  <img alt="react" width="40px" src="./icons/React-Dark.svg" />
+  <img alt="javascript" width="40px" src="./icons/JavaScript.svg" />
+  <img alt="typescript" width="40px" src="./icons/TypeScript.svg" />
+  <img alt="html" width="40px" src="./icons/HTML.svg" />
+  <img alt="css" width="40px" src="./icons/CSS.svg" />
+  <img alt="tailwind" width="40px" src="./icons/TailwindCSS-Dark.svg" />
 
 | Layer | Technology | Why |
 |---|---|---|
