@@ -138,20 +138,20 @@ Kronos is organized into three layers:
 
 <!-- Backend -->
   <!-- Backend Frameworks -->
-  <img alt="nodejs" width="40px" src="./icons/NodeJS-Dark.svg" />
-  <img alt="express" width="40px" src="./icons/ExpressJS-Dark.svg" />
-  <img alt="mongodb" width="40px" src="./icons/MongoDB.svg" />
-  <img alt="redis" width="40px" src="./icons/Redis-Dark.svg" />
+  <img alt="nodejs" width="40px" src="./docs/icons/NodeJS-Dark.svg" />
+  <img alt="express" width="40px" src="./docs/icons/ExpressJS-Dark.svg" />
+  <img alt="mongodb" width="40px" src="./docs/icons/MongoDB.svg" />
+  <img alt="redis" width="40px" src="./docs/icons/Redis-Dark.svg" />
 
 
   <!-- Frontend awareness -->
   <!-- API / Web -->
-  <img alt="react" width="40px" src="./icons/React-Dark.svg" />
-  <img alt="javascript" width="40px" src="./icons/JavaScript.svg" />
-  <img alt="typescript" width="40px" src="./icons/TypeScript.svg" />
-  <img alt="html" width="40px" src="./icons/HTML.svg" />
-  <img alt="css" width="40px" src="./icons/CSS.svg" />
-  <img alt="tailwind" width="40px" src="./icons/TailwindCSS-Dark.svg" />
+  <img alt="react" width="40px" src="./docs/icons/React-Dark.svg" />
+  <img alt="javascript" width="40px" src="./docs/icons/JavaScript.svg" />
+  <img alt="typescript" width="40px" src="./docs/icons/TypeScript.svg" />
+  <img alt="html" width="40px" src="./docs/icons/HTML.svg" />
+  <img alt="css" width="40px" src="./docs/icons/CSS.svg" />
+  <img alt="tailwind" width="40px" src="./docs/icons/TailwindCSS-Dark.svg" />
 
 | Layer | Technology | Why |
 |---|---|---|
