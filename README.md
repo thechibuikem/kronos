@@ -138,6 +138,8 @@ Kronos is organized into three layers:
 
 <!-- Backend -->
   <!-- Backend Frameworks -->
+
+  <p>
   <img alt="nodejs" width="40px" src="./docs/icons/NodeJS-Dark.svg" />
   <img alt="express" width="40px" src="./docs/icons/ExpressJS-Dark.svg" />
   <img alt="mongodb" width="40px" src="./docs/icons/MongoDB.svg" />
@@ -152,6 +154,7 @@ Kronos is organized into three layers:
   <img alt="html" width="40px" src="./docs/icons/HTML.svg" />
   <img alt="css" width="40px" src="./docs/icons/CSS.svg" />
   <img alt="tailwind" width="40px" src="./docs/icons/TailwindCSS-Dark.svg" />
+  </p>
 
 | Layer | Technology | Why |
 |---|---|---|
