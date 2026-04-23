@@ -5,24 +5,42 @@ import { logOutService } from "../../services/logoutService.js";
 vi.mock("../../../../core/redis.client.js")
 
 describe("logOutService", () => {
-  let refreshToken;
+
+    beforeEach(() => {
+        vi.clearAllMocks();
+         });
 
     it("should delete redis-refresh-token", async () => {
 
-    await redisClient.del.mockResolvedValue(undefined)
+       const refreshToken = "fake_token_xyz";
+
+
+       vi.mocked(redisClient.del).mockResolvedValue(1);
+
+       await logOutService(refreshToken);
+
+       expect(redisClient.del).toHaveBeenCalledWith(refreshToken);
 
  })
 
    // Internal server error
     
-   it("throw error if redis is doown", async () => {
+   it("throw error if redis is down", async () => {
+       const refreshToken = "fake_token_xyz";
 
-
-    await redisClient.del.mockRejectedValue(new Error("fail"));
+       vi.mocked(redisClient.del).mockRejectedValue(new Error("Redis down"));
  
+        await expect(logOutService(refreshToken)).rejects.toThrow("Redis down");
 
+        expect(redisClient.del).toHaveBeenCalledWith(refreshToken);
      });
    });
+
+
+
+
+
+
 
 
 
