@@ -1,29 +1,31 @@
-import { logOutService } from "../services/logoutService.js"
+import { logOutService } from "../services/logoutService.js";
 
+// passes refresh cookie to logOut service where we used it as a key in our TTL token for session management
+export async function logOut(req, res) {
+  const refreshCookie = req.cookies?.refreshToken;
 
-// log out controller gets our refresh cookie that we use to regenerate access token and passes it to logOut service where we used it as a key in our ttl token for session management
-export async function logOut(req,res) {
-const cookie = req.cookies
-const refreshCookie = cookie.refreshToken
+  if (!refreshCookie) {
+    return res.status(400).json({ error: "No refresh token provided" });
+  }
 
-console.log("refresh token", refreshCookie)
-
-try{
-    await logOutService(refreshCookie)
-}
-
-catch(error){
-    console.log("error while using redis clearer func",error)
-    }
-    finally{
-    res.clearCookie("refreshToken",{
-        httpOnly: true, // JS cannot access it
-        secure: false, // only over HTTPS in production
-        sameSite: "Lax",
+  try {
+    await logOutService(refreshCookie);
+      res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
         path: "/",
         maxAge: 30 * 24 * 60 * 60 * 1000,
-      }); //clear cookie from front-end
-    
-      res.sendStatus(200)
-    }
-}
+      });
+    return res.sendStatus(204)
+  } 
+  catch (error) {
+    console.error("Logout error:", error);
+    return res.status(500).json(
+      { "error": {
+          "message":"LOGOUT FAILED",
+          "code":"500"
+      } }
+    );
+  }
+}   
