@@ -10,16 +10,22 @@ export async function logOut(req, res) {
 
   try {
     await logOutService(refreshCookie);
-    res.clearCookie("refreshToken", {
-      httpOnly: true,
-      secure: false,
-      sameSite: "Lax",
-      path: "/",
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-    });
-    return res.status(200).json({ message: "Logged out successfully" });
-  } catch (error) {
+      res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+        path: "/",
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+      });
+    return res.sendStatus(204)
+  } 
+  catch (error) {
     console.error("Logout error:", error);
-    return res.status(500).json({ error: "Logout failed" });
+    return res.status(500).json(
+      { "error": {
+          "message":"LOGOUT FAILED",
+          "code":"500"
+      } }
+    );
   }
 }   
