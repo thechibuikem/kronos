@@ -5,7 +5,12 @@ export async function logOut(req, res) {
   const refreshCookie = req.cookies?.refreshToken;
 
   if (!refreshCookie) {
-    return res.status(400).json({ error: "No refresh token provided" });
+    return res.status(400).json({
+      error: {
+        message: "LOGOUT FAILED",
+        code: "USER_FORBIDDEN",
+      },
+    });
   }
 
   try {
@@ -24,7 +29,7 @@ export async function logOut(req, res) {
     return res.status(500).json(
       { "error": {
           "message":"LOGOUT FAILED",
-          "code":"500"
+          "code":"LOGOUT_FAILED"
       } }
     );
   }
