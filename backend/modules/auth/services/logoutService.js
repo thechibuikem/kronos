@@ -5,12 +5,16 @@ import { redisClient } from "../../../core/redis.client.js";
 export async function logOutService(refreshToken) {
 
 try{
-  //clear particular refresh token from reddis
  await redisClient.del(refreshToken);
 }
 catch(error){
-    console.log("error while updating redis at log out:",error)
-}
+      console.error({
+      message: "Logout service failed to delete refresh token",
+      location: "auth/logOutService",
+      error: error.message,
+    });
 
+    throw error; // important: propagate failure
+  }
 
 }
