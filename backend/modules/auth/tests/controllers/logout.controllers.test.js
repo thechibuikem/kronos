@@ -13,7 +13,7 @@ describe("logOutController", () => {
       cookies: { refreshToken: "fake_refresh_token_xyz" },
     };
     res = {
-      status: vi.fn().mockReturnValue(res),
+      status: vi.fn().mockReturnThis(),
       json: vi.fn(),
       clearCookie: vi.fn(),
       sendStatus: vi.fn(),
