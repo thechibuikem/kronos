@@ -23,29 +23,98 @@ export async function githubTokenService(code) {
     }),
   });
   // .2 validating token response
-  if (!tokenRes.ok) throw new Error("GitHub token request failed");
+  if (!tokenRes.ok){
+    const responseText = await tokenRes.text();
+    console.error({
+        message: "Github Token Request Failed",
+        location: "auth/oauthService",
+        error: responseText,
+      });
+    throw new Error("Github Token Request Failed");
+    } 
+      
 
   //.3 retrieving access token from token response
   const { access_token } = await tokenRes.json();
 
-console.log("\naccess Token @ oauthService",access_token,"\n" )
 
   //.4 Fetching user profile
   const userRes= await fetch("https://api.github.com/user", {
     headers: { Authorization: `Bearer ${access_token}` },
   })  
-  const user = await userRes.json();
-  console.log(user)
+
+if (!userRes.ok) {
+  const body = await userRes.text();
+
+  console.error({
+    message: "GitHub user fetch failed",
+    status: userRes.status,
+    error: body,
+  });
+
+  throw new Error(
+    "Failed to fetch user profile"
+  );
+}
+
+const user = await userRes.json();
+
+if (!user || typeof user !== "object" || !user.id) {
+  throw new Error(
+    "Invalid user data from provider"
+  );
+}
+
+
 
   //.5 Fetching user emails
-  const emailRes= await fetch("https://api.github.com/user/emails", {
+const emailRes= await fetch("https://api.github.com/user/emails", {
     headers: { Authorization: `Bearer ${access_token}` },
   })
-  const emails = await (emailRes).json();
-  const primary = emails.find((e) => e.primary && e.verified && e.email);
+
+if (!emailRes.ok) {
+  const body = await emailRes.text();
+
+  console.error({
+    message: "GitHub email fetch failed",
+    status: emailRes.status,
+    error: body,
+  });
+
+  throw new Error(
+    "Failed to fetch user emails",
+  );
+}
+
+const emails = await emailRes.json();
+
+if (!Array.isArray(emails)) {
+  throw new Error(
+    "Invalid email response format",
+  );
+}
+
+  const primary = emails.find(
+    (e) => e.primary && 
+    e.verified && 
+    e.email &&
+    typeof e.email === "string"
+  );
   
-  //  .6 validating & retrieving emails
-  if (!primary) throw new Error("No verified email");
+  // 
+if (!primary) {
+  console.error({
+    message: "No verified primary email found",
+    location: "auth/oauthService",
+    emailsCount: Array.isArray(emails) ? emails.length : null,
+  });
+
+  throw new Error(
+    "No verified primary email found",
+  );
+}
+
+
   const email = primary.email;
 
 
