@@ -57,9 +57,14 @@ if (!code){
     responseBody.acccessToken = result.data.acccessToken
   }
     return res.status(result.status).redirect(result.redirectUrl);
-  } catch (err) {
-    console.error(err);
-    // return res.redirect(process.env.PROJECT_BASE_URL);
-    res.send(err)
+  } 
+  catch (error) {
+    console.error("Oauth Error:",error);
+        return res.status(500).json({
+          error: {
+            message: "OAUTH FAILED",
+            code: "OAUTH_FAILED",
+          },
+        });
   }
 }
