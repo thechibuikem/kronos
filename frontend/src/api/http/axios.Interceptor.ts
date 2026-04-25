@@ -23,13 +23,11 @@ let failedQueue: any[] = [];
 const processQueue = (error: any, token: string | null = null) => {
   //.1 Loop through all queued promises.
   failedQueue.forEach((prom) => {
-    // .2 If refresh failed, sequentially reject all waiting requests.
-    if (error) prom.reject(error);
-    //.3 If refresh succeeded,sequentially  give them the new token.
-    else prom.resolve(token);
+    if (error)
+      prom.reject(error); // .2 sequentially reject all waiting requests, on failure
+    else prom.resolve(token); //.3 sequentially  waiting req new token, on success
   });
-  //Clear failedQueue
-  failedQueue = [];
+  failedQueue = []; //Clear failedQueue
 };
 
 // 7. axios request interceptor
@@ -41,9 +39,10 @@ api.interceptors.request.use(
     const token = state.authenticated.accessToken;
 
       console.log("Full auth state:", state.authenticated);
-      console.log("Token value:", token);
-      console.log("Token type:", typeof token);
-    console.log(config.headers)
+      // console.log("Token value:", token);
+      // console.log("Token type:", typeof token);
+    // console.log(config.headers)
+
     //.1.2 attach access-token to our request config if any 
     if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
@@ -54,9 +53,10 @@ api.interceptors.request.use(
 
 // 8. axios response interceptor
 api.interceptors.response.use(
-  // (config)=>{console.log(config.url)}
   // .1 return response immediately if successful
   (response) => response, 
+
+
   // .2 handling uncessful requests
   async (error) => {
     //.2.1 grab request that failed
@@ -80,10 +80,8 @@ api.interceptors.response.use(
 
       // Mark this request so we don't trigger infinite loops.
       originalRequest._retry = true;
-      // 
       isRefreshing = true;
       try {
-        // Call the backend refresh endpoint.
         const res = await api.post(
           `${backendUrl}/api/v1/auth/refresh-token`,
           {},
@@ -94,13 +92,12 @@ api.interceptors.response.use(
         // Save the new access-token to Redux.
         store.dispatch(setAccessToken(newAccessToken));
 
-
         // Resolve all queued requests using the new token.
         processQueue(null, newAccessToken);
         isRefreshing = false;
 
         // Retry the failed request that triggered the refresh.
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        originalRequest.headers.authorization = `Bearer ${newAccessToken}`;
         return api(originalRequest);
       } catch (refreshError) {
         // Refresh failed (maybe refresh-token expired).
