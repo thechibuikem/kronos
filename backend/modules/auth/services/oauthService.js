@@ -126,7 +126,7 @@ if (!primary) {
   );
 
   // front-end redirect uri
-  const redirectUrl = `${frontendUrl}/dashboard`;
+const redirectUrl = `${frontendUrl}/dashboard?token=${data.accessToken}`;
 
   return { redirectUrl, data, status };
 }
