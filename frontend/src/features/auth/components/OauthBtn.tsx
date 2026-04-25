@@ -23,7 +23,7 @@ function OauthBtn() {
 
     if (token) {
       dispatch(setAccessToken(token))
-      window.location.reload();
+    window.history.replaceState({}, document.title, window.location.pathname);
     }
   }, []);
 
