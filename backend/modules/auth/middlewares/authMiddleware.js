@@ -3,10 +3,11 @@ import jwt from "jsonwebtoken";
 export default function authMiddleware(req, res, next) {
 
   // 1. Access the header
+console.error(req.headers)
   const authHeader = req.headers.Authorization;
 
   //2. Check if auth Header is absent
-  if (!authHeader) {
+  if (!authHeader || typeof authHeader !== "string") {
     console.log("No token provided at AuthMiddleWare")
     return res
       .status(401)
