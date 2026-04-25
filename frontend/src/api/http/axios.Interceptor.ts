@@ -97,7 +97,7 @@ api.interceptors.response.use(
         isRefreshing = false;
 
         // Retry the failed request that triggered the refresh.
-        originalRequest.headers.authorization = `Bearer ${newAccessToken}`;
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return api(originalRequest);
       } catch (refreshError) {
         // Refresh failed (maybe refresh-token expired).
