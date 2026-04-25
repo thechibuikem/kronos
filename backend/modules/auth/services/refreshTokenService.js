@@ -2,12 +2,17 @@ import { getRefreshTokenFromRedis } from "../../../core/redis.client.js";
 import jwt from "jsonwebtoken"
 
 export async function refreshTokenService(refreshToken) {
-  const storedUserId = await getRefreshTokenFromRedis(refreshToken);//checking if user is still logged in.
+  const storedUserId = await getRefreshTokenFromRedis(refreshToken);
 
   // 1. guarding our protected routes against unregistered users
   if (!storedUserId) {
-    console.log("no token available at refresh-roken (redis)");
-    return {
+    console.error({
+      message: "no token available at refresh-roken (redis)",
+      location: "auth/refreshTokenController",
+      error: "no token available at refresh-roken (redis)",
+    });
+    
+      return {
       status: 401,
       error: {
         message: "invalid Refresh token",
@@ -15,8 +20,7 @@ export async function refreshTokenService(refreshToken) {
     };
   }
 
-
-  //2. sign new access token and send to client for authentication
+  //2. sign new access token
   const accessToken = jwt.sign({ userId: storedUserId }, process.env.ACCESS_TOKEN_SECRET, {
     expiresIn: "15mins",
   }); //refresh Token

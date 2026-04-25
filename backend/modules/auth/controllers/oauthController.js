@@ -40,9 +40,9 @@ if (!code){
   
     const result = await githubTokenService(code);
 
-  if (result.status == 200){
+  if (result.status === 200){
   res.cookie("refreshToken", result.data.refreshToken, {
-      httpOnly: true, // JS cannot access it
+      httpOnly: true,
       secure: isProduction,
       sameSite: "None",
       path:"/",
@@ -50,12 +50,12 @@ if (!code){
     });
   }
 
-  const responseBody = {}
+  // const responseBody = {}
 
-  //update responseBody if there's an access token in response
-  if (result.data.acccessToken){
-    responseBody.acccessToken = result.data.acccessToken
-  }
+  // //update responseBody if there's an access token in response
+  // if (result.data.acccessToken){
+  //   responseBody.acccessToken = result.data.acccessToken
+  // }
     return res.status(result.status).redirect(result.redirectUrl);
   } 
   catch (error) {
