@@ -4,7 +4,7 @@ export default function authMiddleware(req, res, next) {
 
   // 1. Access the header
 console.error(req.headers)   
-  const authHeader = req.headers.Authorization;
+  const authHeader = req.headers.authorization;
 
   //2. Check if auth Header is absent
   if (!authHeader || typeof authHeader !== "string") {
