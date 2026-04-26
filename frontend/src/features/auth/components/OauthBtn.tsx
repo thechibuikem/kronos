@@ -15,18 +15,6 @@ const {backendUrl}= getUrls()
 // 3. functional component
 function OauthBtn() {
 
-  const dispatch = useDispatch()
-  //3. on-mount side-effect that watches retrievs that token from url-param key if any
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
-
-    if (token) {
-      dispatch(setAccessToken(token))
-    window.history.replaceState({}, document.title, window.location.pathname);
-    }
-  }, []);
-
   // function that runs on click of signUp With Github btn
   const handleOauthClick = async (e: React.FormEvent) => {
     e.preventDefault();

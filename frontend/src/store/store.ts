@@ -7,8 +7,8 @@ import allKronSliceReducer from "../features/kronList/slices/allKron.Slice"
 //redux store holding all shared states
 export const store = configureStore({
   reducer: {
-    existingUser: isExistingUserReducer,
-    authenticated: isAuthenticatedReducer,
+    existingUser:isExistingUserReducer,
+    authenticated:isAuthenticatedReducer,
     repoList: allRepoListReducer,
     KronList:allKronSliceReducer,
   // isLoading:isLoadingReducer,
