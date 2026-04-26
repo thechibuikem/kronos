@@ -21,7 +21,7 @@ if (result.data.accessToken){
 }
 
   if (result.status === 200) {
-     res.status(result.status).json({responseBody});
+     res.status(result.status).json(responseBody);
 
   } else if (result.status === 401) {
     return res.status(401).json({
