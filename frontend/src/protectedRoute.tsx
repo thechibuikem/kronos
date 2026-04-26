@@ -40,7 +40,7 @@ useOAuthToken()
       }
     }
     validate();
-  }, [dispatch]);
+  }, []);
 
   // use effect to get all repos
   useEffect(() => {
