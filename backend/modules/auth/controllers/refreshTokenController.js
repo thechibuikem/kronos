@@ -5,8 +5,6 @@ export async function checkToken(req,res) {
     // 1. extract refersh token from request cookies
   const refreshToken = req.cookies.refreshToken;
 
-
-
   if (!refreshToken || typeof refreshToken !== "string") return res.status(401).json(
     { error: {message: "No refresh token in cookies",
       code:"INVALID_TOKEN"
@@ -23,7 +21,7 @@ if (result.data.accessToken){
 }
 
   if (result.status === 200) {
-     res.status(result.status).json({data:responseBody});
+     res.status(result.status).json({responseBody});
 
   } else if (result.status === 401) {
     return res.status(401).json({
