@@ -6,38 +6,86 @@ import { deleteKron } from "../service/kronListService.js";
  //1. controller to get all users krons from mongoDb
 export async function getAllkronsController(req,res){
   const refreshToken = req.cookies.refreshToken;//refresh token cookie
-     if (!refreshToken) {
-       throw new Error("refreshToken unavailable @ get krons controller");
-     }
+    if (!refreshToken || typeof refreshToken !== "string")
+      return res
+        .status(401)
+        .json({
+          error: {
+            message: "No refresh token in cookies",
+            code: "INVALID_TOKEN",
+          },
+        });
+
   const user = await getMDBUserThroughRefreshToken(refreshToken);//retrieving user using refresh token
   const allKrons =  await getKronsFromMDB(user)
-  console.log(allKrons)
-  res.json({ type: "krons", allKrons: allKrons }).status(200);
+
+const responseBody = {};
+// preparing my response body
+if (allKrons) {
+  responseBody.krons = allKrons;
+}
+
+
+  res.status(200).json({ data:responseBody });
 }
 
 
 //2. controller to add a new kron to mdb
  export async function addKronsController(req, res) {
-// 2.1 getting payload
-console.log("payload @ addKron",req.body)
+   // 2.1 getting payload
 
+
+  //  input validation
    const { kronData } = req.body;
 
-   console.log("kronData itself",kronData)
-   if (!kronData){
-    throw new Error("kronData unavailable @ add krons controller")
+   if (!kronData) {
+     throw new Error("krondata unavailable");
+          return res.status(400).json({
+        error: { message: "kronData required", code: "INVALID_PAYLOAD" }
+      })
    }
+
+   const { githubOwnerId, repoId } = kronData;
+
+   if (typeof githubOwnerId !== "string" || !githubOwnerId.trim()) {
+    throw new Error("githubOwnerId invalid");
+     return res.status(400).json({
+       error: {
+         message: "githubOwnerId must be non-empty string",
+         code: "INVALID_GITHUB_OWNER_ID",
+       },
+     });
+   }
+
+   if (typeof repoId !== "string" || !repoId.trim()) {
+    throw new Error("repoId invalid");
+     return res.status(400).json({
+       error: {
+         message: "repoId must be non-empty string",
+         code: "INVALID_REPO_ID",
+       },
+     });
+   }
+
    // 2.2 consuming service
-try{
-   await addKron(kronData)
-res.status(201).json({message:"created"})
-}
-// 2.3 error handling
-   catch(error){
-    console.error("error occured @ kron addition controller", error);
-    res.status(500).json({error:error});
+   try {
+     await addKron(kronData);
+     return res.status(201).json({
+       data: {
+         message: "Kron created successfully",
+       },
+     });
+
+   } catch (error) {
+     console.error("Kron Creation Error: ",error)
+     return res.status(500).json({
+       error: {
+         message: "Failed to create kron",
+         code: "ADD_KRON_FAILED",
+       },
+     });;
    }
-}
+ }
  
 
 //3.controller to remove kron from mdb
@@ -45,17 +93,34 @@ export async function deleteKronController(req,res)
 // 3.1 getting params
 {
 const {repoId} = req.params
-   if (!repoId) {
-     throw new Error("repoId unavailable @ delete krons controller");
+   if (!repoId||typeof repoId !== "string") {
+     throw new Error("repoId invalid");
+     return res
+       .status(401)
+       .json({
+         error: {
+           message: "repoId is invalid",
+           code: "INVALID_REPOID",
+         },
+       });
    }
    // 3.2 consuming service 
    try {
      await deleteKron(repoId);
-     res.status(204).end();
+     res.status(204).json({
+       data: {
+         message: "Kron deleted successfully",
+       },
+     });;
    } catch (error) {
      // 3.3 error handling
-     console.error("error occured @ kron deletion controller", error);
-     res.status(500).json({error:error});
+     console.error("kron deletion controller", error);
+     res.status(500).json({
+       error: {
+         message: "Failed to delete kron",
+         code: "DELETE_KRON_FAILED",
+       }
+     });
    }
 }
 
