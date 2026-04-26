@@ -39,10 +39,6 @@ api.interceptors.request.use(
     const token = state.authenticated.accessToken;
 
       console.log("Full auth state:", state.authenticated);
-      // console.log("Token value:", token);
-      // console.log("Token type:", typeof token);
-    // console.log(config.headers)
-
     //.1.2 attach access-token to our request config if any 
     if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
@@ -77,10 +73,10 @@ api.interceptors.response.use(
           Promise.reject(err);
       }}
 
-
-      // Mark this request so we don't trigger infinite loops.
+      // avoiding infinite loops
       originalRequest._retry = true;
       isRefreshing = true;
+      
       try {
         const res = await api.post(
           `${backendUrl}/api/v1/auth/refresh-token`,
@@ -88,6 +84,10 @@ api.interceptors.response.use(
         );
 
         const newAccessToken = res.data.accessToken;
+
+console.log("new access token at fe :",newAccessToken)
+console.log(res.data)
+
 
         // Save the new access-token to Redux.
         store.dispatch(setAccessToken(newAccessToken));
