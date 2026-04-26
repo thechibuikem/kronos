@@ -83,7 +83,7 @@ api.interceptors.response.use(
           {},
         );
 
-        const newAccessToken = res.data.accessToken;
+        const newAccessToken = res.data.data.accessToken;
 
 
         // Save the new access-token to Redux.
