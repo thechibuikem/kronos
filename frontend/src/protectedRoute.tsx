@@ -6,13 +6,17 @@ import { type RootState } from "./store/store";
 import api from "./api/http/axios.Interceptor"; //interceptor instance
 import { useAllReposHandler } from "./features/repositories/handlers/allRepo.Handlers";
 import { useAllKronsHandler } from "./features/kronList/handlers/allKrons.Handlers";
+import { useOAuthToken } from "./hooks/useOauthToken";
+
 
 interface ProtectedRouteProps {
   children: ReactNode;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const reduxToken = useSelector(
+useOAuthToken()
+
+  const accessToken = useSelector(
     (state: RootState) => state.authenticated.accessToken
   );
   const dispatch = useDispatch();
@@ -36,7 +40,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
       }
     }
     validate();
-  }, [reduxToken, dispatch]);
+  }, [dispatch]);
 
   // use effect to get all repos
   useEffect(() => {
