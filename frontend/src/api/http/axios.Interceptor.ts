@@ -85,9 +85,6 @@ api.interceptors.response.use(
 
         const newAccessToken = res.data.accessToken;
 
-console.log("new access token at fe :",newAccessToken)
-console.log(res.data)
-
 
         // Save the new access-token to Redux.
         store.dispatch(setAccessToken(newAccessToken));
