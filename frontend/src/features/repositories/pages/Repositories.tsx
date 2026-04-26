@@ -3,7 +3,7 @@ import RepoList from "@/features/repositories/components/RepoList";
 import { useFetchRepos } from "@/hooks/useFetchRepos";
 
 //2. functional component
-function Repositories() {
+function Repos() {
 useFetchRepos()
   return (
     <section className="flex md:p-8 bg-gradient-to-r from-blue-950 to-blue-100 h-full min-h-screen relative w-screen">
@@ -13,4 +13,4 @@ useFetchRepos()
   );
 }
 
-export default Repositories;
+export default Repos;

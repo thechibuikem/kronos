@@ -3,7 +3,7 @@ import KronList from "../components/KronList";
 import { useFetchKrons } from "@/hooks/useFetchKrons";
 
 
-function Update() {
+function Krons() {
 useFetchKrons()  
 
   return (
@@ -14,4 +14,4 @@ useFetchKrons()
   );
 }
 
-export default Update
+export default Krons

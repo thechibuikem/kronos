@@ -1,7 +1,7 @@
 import LoginPage from "./features/auth/pages/LoginPage";
 import Dashboard from "./features/home/pages/Dashboard";
-import Update from "./features/kronList/pages/Krons";
-import Repositories from "./features/repositories/pages/Repositories";
+import Krons from "./features/kronList/pages/Krons";
+import Repos from "./features/repositories/pages/Repositories";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./protectedRoute";
 import PublicRoute from "./PublicRoute";
@@ -35,19 +35,19 @@ function App() {
         />
         {/* protected update route */}
         <Route
-          path="/update"
+          path="/krons"
           element={
             <ProtectedRoute>
-              <Update />
+              <Krons />
             </ProtectedRoute>
           }
         />
         {/* protected repositories route */}
         <Route
-          path="/repositories"
+          path="/repos"
           element={
             <ProtectedRoute>
-              <Repositories />
+              <Repos />
             </ProtectedRoute>
           }
         />
