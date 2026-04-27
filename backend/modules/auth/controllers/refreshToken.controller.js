@@ -1,19 +1,11 @@
-import { refreshTokenService } from "../services/refreshTokenService.js";
+import { refreshTokenService } from "../services/refreshToken.service.js";
 
-export async function checkToken(req,res) {
+export async function generateAccessToken(req,res) {
   try{
     // 1. extract refersh token from request cookies
   const refreshToken = req.cookies.refreshToken;
-
-  if (!refreshToken || typeof refreshToken !== "string") return res.status(401).json(
-    { error: {message: "No refresh token in cookies",
-      code:"INVALID_TOKEN"
-    } });
-
-
   // refresh token service
-  const result = await refreshTokenService(refreshToken);
-
+const result = await refreshTokenService(refreshToken);
 const responseBody = {}
 // preparing my response body
 if (result.data.accessToken){

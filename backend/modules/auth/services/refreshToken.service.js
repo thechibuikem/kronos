@@ -1,5 +1,5 @@
 import { getRefreshTokenFromRedis } from "../../../core/redis.client.js";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 
 export async function refreshTokenService(refreshToken) {
   const storedUserId = await getRefreshTokenFromRedis(refreshToken);
@@ -11,9 +11,9 @@ export async function refreshTokenService(refreshToken) {
       location: "auth/refreshTokenController",
       error: "no token available at refresh-roken (redis)",
     });
-    
-      return {
-      status: 401,
+
+    return {
+      // status: 401,
       error: {
         message: "invalid Refresh token",
       },
@@ -21,12 +21,16 @@ export async function refreshTokenService(refreshToken) {
   }
 
   //2. sign new access token
-  const accessToken = jwt.sign({ userId: storedUserId }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "15mins",
-  }); //refresh Token
+  const accessToken = jwt.sign(
+    { userId: storedUserId },
+    process.env.ACCESS_TOKEN_SECRET,
+    {
+      expiresIn: "15mins",
+    },
+  ); //refresh Token
 
   return {
-    status: 200,
+    // status: 200,
     data: {
       message: "User Logged in successfully",
       accessToken: `${accessToken}`,

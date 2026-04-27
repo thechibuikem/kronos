@@ -7,9 +7,9 @@ import connectDB from "./db.js";
 import { connectRedis } from "./redis.client.js"
 import { getUrls } from "./config.js";
 import { verifyWebhookSignature } from "./middlewares/webhook.middleware.js";
-import authRoutes from "../modules/auth/routes/authRoute.js";
-import repoListRoutes from "../modules/repoList/routes/repoListRoutes.js";
-import kronListRoutes from "../modules/kronList/routes/kronListRoutes.js";
+import authRoutes from "../modules/auth/routes/auth.route.js";
+import repoRoutes from "../modules/repos/routes/repo.routes.js";
+import kronRoutes from "../modules/krons/routes/krons.route.js";
 import changeDetectionRoutes from "../modules/changeDetection/routes/changeDetection.routes.js";
 
 dotenv.config();
@@ -75,10 +75,10 @@ app.get("/api", (req, res) => {
 app.use("/api/v1/auth", authRoutes);
 
 // 8. mounting watchlist endpoints
-app.use("/api/v1/watchList", repoListRoutes);
+app.use("/api/v1/repos", repoRoutes);
 
 // 9. mounting kronlist endpoints
-app.use("/api/v1/kronList", kronListRoutes);
+app.use("/api/v1/krons", kronRoutes);
 
 //10. mounting change detection endpoints
 app.use("/api/v1/changeDetection", changeDetectionRoutes);

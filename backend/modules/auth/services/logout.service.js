@@ -14,7 +14,7 @@ catch(error){
       error: error.message,
     });
 
-    throw error; // important: propagate failure
+    throw error;
   }
 
 }
