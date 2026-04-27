@@ -5,16 +5,6 @@ import { deleteKron } from "../service/krons.service.js";
 
  //1. controller to get all users krons from mongoDb
 export async function getAllkronsController(req,res){
-  const refreshToken = req.cookies.refreshToken;//refresh token cookie
-    if (!refreshToken || typeof refreshToken !== "string")
-      return res
-        .status(401)
-        .json({
-          error: {
-            message: "No refresh token in cookies",
-            code: "INVALID_TOKEN",
-          },
-        });
 
   const user = await getMDBUserThroughRefreshToken(refreshToken);//retrieving user using refresh token
   const allKrons =  await getKronsFromMDB(user)
