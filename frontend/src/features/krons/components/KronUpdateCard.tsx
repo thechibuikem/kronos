@@ -24,7 +24,7 @@ console.log(repoId)
     try{
       setIsLoading(true)
       await axios.delete(
-            `${backendUrl}/api/v1/kronList/kron/${repoId}`,
+            `${backendUrl}/api/v1/krons/kron/${repoId}`,
       { withCredentials: true });
 
       await axios.delete(`${backendUrl}/api/v1/changeDetection/webhook/${repoId}`,{withCredentials:true});

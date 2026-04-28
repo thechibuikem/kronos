@@ -1,6 +1,6 @@
-import KronCard from "../../kronList/components/KronCard"
-import { type kronType } from "../../kronList/components/KronCard"
-import AddKron from "../../kronList/components/AddKron"
+import KronCard from "../../krons/components/KronCard"
+import { type kronType } from "../../krons/components/KronCard"
+import AddKron from "../../krons/components/AddKron"
 
 function KronList() {
 const kronLimit:number = 4

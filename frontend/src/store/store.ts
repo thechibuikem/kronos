@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import isExistingUserReducer from "../features/auth/slices/ExistingUser.Slice"; 
 import isAuthenticatedReducer from "../features/auth/slices/Authenthicated.Slice"
 import allRepoListReducer from "../features/repositories/slices/allRepo.Slice"
-import allKronSliceReducer from "../features/kronList/slices/allKron.Slice"
+import allKronSliceReducer from "../features/krons/slices/allKron.Slice"
 
 //redux store holding all shared states
 export const store = configureStore({

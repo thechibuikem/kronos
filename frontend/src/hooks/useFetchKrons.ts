@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "./hooks";
 
-import { useAllKronsHandler } from "@/features/kronList/handlers/allKrons.Handlers";
+import { useAllKronsHandler } from "@/features/krons/handlers/allKrons.Handlers";
 import type { RootState } from "@/store/store";
 
 export function useFetchKrons() {

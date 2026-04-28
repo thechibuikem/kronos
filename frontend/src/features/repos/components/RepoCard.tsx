@@ -1,8 +1,8 @@
 import axios from "axios";
 import { Card } from "@/features/home/ui/card"
 import { IoIosAdd } from "react-icons/io";
-import { useAllKronsHandler } from "@/features/kronList/handlers/allKrons.Handlers";
-import { type Kron } from "@/features/kronList/slices/allKron.Slice";
+import { useAllKronsHandler } from "@/features/krons/handlers/allKrons.Handlers";
+import { type Kron } from "@/features/krons/slices/allKron.Slice";
 import { Loader } from "@/features/loading/components/preloader";
 import { getUrls } from "@/config.ts";
 const { backendUrl } = getUrls();
@@ -41,7 +41,7 @@ function RepoCard({ repoName, repoUrl, githubOwnerId, repoId, owner
 
 // adding kron to kronList
       await axios.post(
-        `${backendUrl}/api/v1/kronList/kron`,
+        `${backendUrl}/api/v1/krons/kron`,
       {kronData},
         { withCredentials: true }
       );
