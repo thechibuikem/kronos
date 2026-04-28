@@ -1,6 +1,6 @@
 import TopBar from "../../home/components/TopBar"
-import RepoWrapper from "@/features/repositories/components/RepoWrapper";
-import { useAllReposHandler } from "@/features/repositories/handlers/allRepo.Handlers"; 
+import RepoWrapper from "@/features/repos/components/RepoWrapper";
+import { useAllReposHandler } from "@/features/repos/handlers/allRepo.Handlers"; 
 
 
 //the main part in our respositories page 

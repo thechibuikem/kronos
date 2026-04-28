@@ -1,5 +1,5 @@
 import VerticalNavigation from "@/features/home/components/VerticalNavigation";
-import RepoList from "@/features/repositories/components/RepoList";
+import RepoList from "@/features/repos/components/RepoList";
 import { useFetchRepos } from "@/hooks/useFetchRepos";
 
 //2. functional component

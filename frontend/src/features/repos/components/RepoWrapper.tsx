@@ -1,7 +1,7 @@
-import RepoCard from "@/features/repositories/components/RepoCard";
+import RepoCard from "@/features/repos/components/RepoCard";
 import { Loader } from "@/features/loading/components/preloader";
 // import AddKronUpdateCard from "./AddKronUpdateCard";
-import { useAllReposHandler } from "@/features/repositories/handlers/allRepo.Handlers";
+import { useAllReposHandler } from "@/features/repos/handlers/allRepo.Handlers";
 
 function RepoWrapper() {
   // const kronLimit: number = 30;

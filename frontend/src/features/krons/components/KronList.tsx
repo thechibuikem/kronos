@@ -2,7 +2,7 @@
 import TopBar from "../../home/components/TopBar"
 import KronWrapper from "./KronWrapper";
 import { useAllKronsHandler } from "../handlers/allKrons.Handlers";
-import type { Repo } from "@/features/repositories/slices/allRepo.Slice";
+import type { Repo } from "@/features/repos/slices/allRepo.Slice";
 
 
 // 3. main functional component

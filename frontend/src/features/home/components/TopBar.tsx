@@ -1,7 +1,6 @@
 import Introtext from "./Introtext";
 import SearchComponent from "./SearchComponent";
-import { type Repo } from "@/features/repositories/slices/allRepo.Slice";
-// import { useAllReposHandler } from "@/features/watchlist/handlers/allRepo.Handlers";
+import { type Repo } from "@/features/repos/slices/allRepo.Slice";
 
 
 interface TopBarProps{
