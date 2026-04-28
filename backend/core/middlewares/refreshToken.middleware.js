@@ -15,7 +15,7 @@ export function verifyrefreshToken(req, res, next) {
         },
       });
 
-   jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
      if (err)
        return res
          .status(401)
