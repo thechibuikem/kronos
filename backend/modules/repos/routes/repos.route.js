@@ -1,5 +1,5 @@
 import express from "express"
-import { getAllReposController } from "../controller/repoListController.js"
+import { getAllReposController } from "../controller/repos.controller.js"
 import { verifyrefreshToken } from "../../../core/middlewares/refreshToken.middleware.js"
 
 const router = express.Router()//creating router instance
