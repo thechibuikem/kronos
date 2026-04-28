@@ -2,7 +2,7 @@
 import {
   githubOauthService,
   githubTokenService,
-} from "../services/oauthService.js";
+} from "../services/oauth.service.js";
 
 const isProduction = process.env.MODE === "remote"
 
