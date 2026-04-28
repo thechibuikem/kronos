@@ -51,7 +51,7 @@ return webhook.data.id
 }
 // .7 error handling
 catch(error){
-  throw new Error ("error occured @ adding webhook github",error)
+  throw new Error ("error occured at adding webhook github",error)
 }
 }
 // service to check if webhook already exists
@@ -59,7 +59,7 @@ export async function findWebhookMdb(repoName,refreshToken){
   // .1 validating kronos user
 const requiredUser = await userModel.findOne({refreshToken})
 if (!requiredUser){
-  throw new Error ("required user DNE @ findWebhookMdb")
+  throw new Error ("required user DNE at findWebhookMdb")
 }
 
 // .2 locate webhook in our mdb collection 
@@ -76,7 +76,7 @@ return requiredWebhook
 export async function addWebhookMdb(refreshToken, webhookData, hookId) {
   // .1 validating that hookId exists
   if (!hookId) {
-    throw new Error("hookId unavailable @ addwebhookMdb");
+    throw new Error("hookId unavailable at addwebhookMdb");
   }
 
   //.2 validating kronos user
@@ -112,7 +112,7 @@ try{
   const requiredRepo = await RepoModel.findOne({ repoId });
 
   if (!requiredRepo) {
-    throw new Error("repo DNE @ removing web-hook github.");
+    throw new Error("repo DNE at removing web-hook github.");
   }
 
   // .3 validating hooks existence
@@ -121,7 +121,7 @@ try{
     refreshToken,
   );
   if (!requiredWebhook) {
-    throw new Error("webhook DNE @ removing web-hook Github.");
+    throw new Error("webhook DNE at removing web-hook github.");
   }
 
   // .5 init octoKit
@@ -129,7 +129,7 @@ try{
 
   // .6 create repourl
   const repourl = `/repos/${requiredUser.username}/${requiredWebhook.repo}/hooks/${requiredWebhook.githubHookId}`;
-  console.log("repourl @ rmWebhook");
+
 
   //.7 deleting hook @ github 
  await octokitClient.request(`DELETE ${repourl}`, {
@@ -143,7 +143,7 @@ try{
 
 }catch(error){
   // .8 error-handling
-  throw new Error(`error occured @ removing webhook github:${error}`);
+  throw new Error(`error occured at removing webhook github:${error}`);
 }
 }
 
@@ -159,7 +159,7 @@ try {
   //.2 validating kronos user
   const requiredRepo = await RepoModel.findOne({ repoId });
   if (!requiredRepo) {
-    throw new Error("repo DNE @ removing web-hook Github.");
+    throw new Error("repo DNE at removing web-hook Github.");
   }
 
   // .3 validating hooks existence
@@ -168,16 +168,14 @@ try {
     refreshToken,
   );
   if (!requiredWebhook) {
-    throw new Error("webhook DNE @ removing web-hook Github.");
+    throw new Error("webhook DNE at removing web-hook Github.");
   }
 
 //.4 delete required webhook @mdb
  await webhookModel.deleteOne({ _id: requiredWebhook._id });
- console.log("webhook deleted successfully @ mdb");
-
+ console.log("webhook deleted successfully at mdb");
 } catch (error) {
-  // .5 error-handling
-  throw new Error("error occured @ removing webhook mdb", error);
+  throw new Error("error occured at removing webhook mdb", error);
 }
 }
 
