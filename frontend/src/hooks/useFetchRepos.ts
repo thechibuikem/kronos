@@ -1,13 +1,13 @@
 // src/hooks/useOAuthToken.ts
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector,useAppDispatch } from "./hooks";
 import { useAllReposHandler } from "@/features/repositories/handlers/allRepo.Handlers";
 import type { RootState } from "@/store/store";
 
 export function useFetchRepos() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
    let { getRepos } = useAllReposHandler();
-  const isAuthorized = useSelector(
+  const isAuthorized = useAppSelector(
     (state: RootState) => state.authenticated.isAuthorized,
   );
 

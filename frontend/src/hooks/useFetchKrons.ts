@@ -1,13 +1,14 @@
-// src/hooks/useOAuthToken.ts
+
 import { useEffect } from "react";
-import { useSelector,useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from "./hooks";
+
 import { useAllKronsHandler } from "@/features/kronList/handlers/allKrons.Handlers";
 import type { RootState } from "@/store/store";
 
 export function useFetchKrons() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   let { getKrons } = useAllKronsHandler();
-  const isAuthorized = useSelector(
+  const isAuthorized = useAppSelector(
     (state: RootState) => state.authenticated.isAuthorized,
   );
 

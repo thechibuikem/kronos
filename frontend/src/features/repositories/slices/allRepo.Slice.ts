@@ -19,8 +19,7 @@ export const fetchAllRepos = createAsyncThunk("allRepos/fetchAllRepos",
 async ()=>{
   const url = `${backendUrl}/api/v1/watchList/repos`;
   const response = await axios.get(url, { withCredentials: true });
-console.log(response.data)
-  return response.data.allRepos; //array of repos
+  return response.data.data.repos; //array of repos
 }
 )
 const initialState: Repo [] = []
