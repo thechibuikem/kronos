@@ -12,12 +12,9 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-
   useOAuthToken()
-
   const dispatch = useDispatch();
   const [checking, setChecking] = useState(true);
-
   const isAuthorized = useSelector((state:RootState)=>state.authenticated.isAuthorized)
   
 
@@ -27,10 +24,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     async function validate() {
       try {
         await api.post("/api/v1/auth/validate-token");
-        console.log("nigga it worked!"); // If it succeeds, token is valid
         dispatch(setIsAuthorized(true));
       } catch {
-        console.log("nigga it ain't working."); // If it fails, redirect to login
         dispatch(setIsAuthorized(false));
       } finally {
         setChecking(false);

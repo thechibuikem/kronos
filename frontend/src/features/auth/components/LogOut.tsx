@@ -6,7 +6,7 @@ import { getUrls } from "@/config";
 const { frontendUrl, backendUrl } = getUrls()
 
  function LogOut() {
-    const state = store.getState();
+    // const state = store.getState();
     const endpoint =`${backendUrl}/api/v1/auth/logout`;
 
     const handleLogOut = async ()=>{
