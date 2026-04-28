@@ -5,17 +5,27 @@ import { deleteKron } from "../service/krons.service.js";
 
  //1. controller to get all users krons from mongoDb
 export async function getAllkronsController(req,res){
+try{
 
-  const user = await getMDBUserThroughRefreshToken(refreshToken);//retrieving user using refresh token
-  const allKrons =  await getKronsFromMDB(user)
+  const user = await getMDBUserThroughRefreshToken(refreshToken); //retrieving user using refresh token
+  const allKrons = await getKronsFromMDB(user);
 
-const responseBody = {};
-// preparing my response body
-if (allKrons) {
-  responseBody.krons = allKrons;
+  const responseBody = {};
+  // preparing my response body
+  if (allKrons) {
+    responseBody.krons = allKrons;
+  }
+
+  res.status(200).json({ data: responseBody });
+}catch(error){
+   console.error("kron deletion controller", error);
+   res.status(500).json({
+     error: {
+       message: "Failed to fetch krons",
+       code: "GET_KRONS_FAILED",
+     },
+   });
 }
-
-  res.status(200).json({ data:responseBody });
 }
 
 
@@ -103,7 +113,7 @@ const {repoId} = req.params
      console.error("kron deletion controller", error);
      res.status(500).json({
        error: {
-         message: "Failed to delete kron",
+         message: "Failed to delete krons",
          code: "DELETE_KRON_FAILED",
        }
      });
