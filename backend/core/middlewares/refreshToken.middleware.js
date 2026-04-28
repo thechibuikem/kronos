@@ -6,6 +6,7 @@ export function verifyrefreshToken(req, res, next) {
     const refreshToken = req.cookies.refreshToken
 
   if (!refreshToken || typeof refreshToken !== "string")
+    console.error("RefreshToken unavailable, at refreshToken middleware")
     return res
       .status(401)
       .json({
@@ -17,6 +18,7 @@ export function verifyrefreshToken(req, res, next) {
 
    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
      if (err)
+    console.error("RefreshToken invalid, at refreshToken middleware");
        return res
          .status(401)
          .json({

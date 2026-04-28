@@ -6,16 +6,12 @@ export async function generateAccessToken(req,res) {
   const refreshToken = req.cookies.refreshToken;
   // refresh token service
 const result = await refreshTokenService(refreshToken);
-const responseBody = {}
-// preparing my response body
-if (result.data.accessToken){
-  responseBody.accessToken = result.data.accessToken
-}
+  if (result.data) {
+     res.status(200).json({data:{
+      accessToken:result.data.accessToken}
+    });
 
-  if (result.status === 200) {
-     res.status(result.status).json({data:responseBody});
-
-  } else if (result.status === 401) {
+  } else if (result.error) {
     return res.status(401).json({
       error:{
       message:result.error.message,
