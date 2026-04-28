@@ -53,15 +53,15 @@ const refreshToken = req.cookies.refreshToken
      });
    }
 
-   if (typeof repoId !== "string" || !repoId.trim()) {
-    console.error("repoId must be non-empty string");
-     return res.status(400).json({
-       error: {
-         message: "repoId must be non-empty string",
-         code: "INVALID_REPO_ID",
-       },
-     });
-   }
+if (typeof repoId !== "number" || Number.isNaN(repoId)) {
+  console.error("repoId must be a valid number");
+  return res.status(400).json({
+    error: {
+      message: "repoId must be a valid number",
+      code: "INVALID_REPO_ID",
+    },
+  });
+}
 
    // 2.2 consuming service
    try {
