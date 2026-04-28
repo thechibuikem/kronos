@@ -9,7 +9,7 @@ export async function getKronByRepoId(repoId) {
 //2. kron Input validator
 export async function kronValidator (githubOwnerId,repoId,limit) {  
 const kron = await KronModel.findOne({githubOwnerId,repoId})
-const userKrons = await KronModel.findOne({githubOwnerId})
+const userKrons = await KronModel.find({githubOwnerId})
 if (kron){
        console.error({
          message: "cannot add duplicate krons",
@@ -26,8 +26,7 @@ if (kron){
       
 }
 
-
-else if (userKrons.length >= limit){
+if (userKrons.length >= limit){
        console.error({
          message: `cannot add > ${limit-1} krons`,
          location: "krons/krons.service.js",
