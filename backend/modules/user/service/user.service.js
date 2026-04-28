@@ -1,4 +1,4 @@
-import { userModel } from "../models/userModel.js"
+import { userModel } from "../models/user.model.js"
 
 export async function getMDBUserThroughRefreshToken(refreshToken) {
 const user = await userModel.findOne({refreshToken})

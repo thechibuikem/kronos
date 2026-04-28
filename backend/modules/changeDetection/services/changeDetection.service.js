@@ -1,8 +1,8 @@
 import { getUrls } from "../../../core/config.js"
 import { createOctokit } from "../../../core/octokit.client.js"
-import { RepoModel } from "../../repoList/models/repoModel.js"
-import { userModel } from "../../user/models/userModel.js"
-import { webhookModel } from "../models/webhookModel.js"
+import { RepoModel } from "../../repos/models/repos.model.js"
+import { userModel } from "../../user/models/user.model.js"
+import { webhookModel } from "../models/webhook.model.js"
 
 // . Get backend-url
 const {backendUrl} = getUrls()

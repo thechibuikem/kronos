@@ -1,5 +1,5 @@
 // access_token means github access token while accessToken is jwt's access token
-import { userModel } from "../../user/models/userModel.js";
+import { userModel } from "../../user/models/user.model.js";
 import { redisClient } from "../../../core/redis.client.js";
 import jwt from "jsonwebtoken";
 
