@@ -21,8 +21,7 @@ export const fetchAllKrons = createAsyncThunk(
   async () => {
     const url = `${backendUrl}/api/v1/krons/krons`;
     const response = await axios.get(url, { withCredentials: true });
-    console.log("my krons from backend", response.data.data.krons); //array of repos
-    return response.data.allKrons; //array of repos
+    return response.data.data.krons; //array of repos
   },
 );
 
