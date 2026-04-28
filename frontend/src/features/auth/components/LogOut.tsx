@@ -1,14 +1,16 @@
 import { FaPowerOff } from "react-icons/fa6";
 import { baseBackendUrl } from "@/App";
 import axios from "axios";
+import { getUrls } from "@/config";
+const { frontendUrl, backendUrl } = getUrls()
 
  function LogOut() {
 
-    const endpoint =`${baseBackendUrl}api/v1/auth/logout`;
+    const endpoint =`${backendUrl}api/v1/auth/logout`;
 
     const handleLogOut = async ()=>{
     await axios.post(endpoint,{},{withCredentials:true})
-    window.location.reload()
+    window.location.href = frontendUrl
     }
 
   return (

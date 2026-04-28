@@ -4,7 +4,6 @@ import { logOutService } from "../services/logout.service.js";
 export async function logOut(req, res) {
   const refreshToken = req.cookies?.refreshToken;
 
-
   try {
     await logOutService(refreshToken);
       res.clearCookie("refreshToken", {
