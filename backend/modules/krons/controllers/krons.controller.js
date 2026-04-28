@@ -6,7 +6,7 @@ import { deleteKron } from "../service/krons.service.js";
  //1. controller to get all users krons from mongoDb
 export async function getAllkronsController(req,res){
 try{
-
+const refreshToken = req.cookies.refreshToken
   const user = await getMDBUserThroughRefreshToken(refreshToken); //retrieving user using refresh token
   const allKrons = await getKronsFromMDB(user);
 
@@ -18,7 +18,7 @@ try{
 
   res.status(200).json({ data: responseBody });
 }catch(error){
-   console.error("kron deletion controller", error);
+   console.error("get krons controller", error);
    res.status(500).json({
      error: {
        message: "Failed to fetch krons",
