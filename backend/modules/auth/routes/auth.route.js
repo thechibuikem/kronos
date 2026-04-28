@@ -1,6 +1,6 @@
 import rateLimit from "express-rate-limit"
 import bearerMiddleware from "../../../core/middlewares/auth.middleware.js";
-import { githubOauth, githubCallback } from "../controllers/oauthController.js";
+import { githubOauth, githubCallback } from "../controllers/oauth.controller.js";
 import { generateAccessToken } from "../controllers/refreshToken.controller.js";
 import express from 'express'
 import { logOut } from "../controllers/logout.controller.js";
