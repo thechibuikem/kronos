@@ -6,7 +6,7 @@ const { frontendUrl, backendUrl } = getUrls()
 
  function LogOut() {
 
-    const endpoint =`${backendUrl}api/v1/auth/logout`;
+    const endpoint =`${backendUrl}/api/v1/auth/logout`;
 
     const handleLogOut = async ()=>{
     await axios.post(endpoint,{},{withCredentials:true})
