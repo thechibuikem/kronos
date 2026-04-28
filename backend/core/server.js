@@ -8,7 +8,7 @@ import { connectRedis } from "./redis.client.js"
 import { getUrls } from "./config.js";
 import { verifyWebhookSignature } from "./middlewares/webhook.middleware.js";
 import authRoutes from "../modules/auth/routes/auth.route.js";
-import repoRoutes from "../modules/repos/routes/repo.routes.js";
+import repoRoutes from "../modules/repos/routes/repos.route.js";
 import kronRoutes from "../modules/krons/routes/krons.route.js";
 import changeDetectionRoutes from "../modules/changeDetection/routes/changeDetection.routes.js";
 
