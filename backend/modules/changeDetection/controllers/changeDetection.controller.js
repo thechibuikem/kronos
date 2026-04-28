@@ -39,19 +39,21 @@ export async function removeWebhookController(req, res) {
   try {
     const refreshToken = req.cookies.refreshToken;
     const { repoId } = req.params;
-    // const {webhookData} = req.body
 
-    if (!refreshToken || !repoId) {
+    if (!repoId) {
       throw new Error("cookie, param DNE @ remove webhook");
     }
-
-    console.log("starting process of removing webhooks")
     await removeWebhookGithub(repoId, refreshToken);
     await removeWebhookMdb(repoId, refreshToken);
     res.status(204).send();
   } catch (err) {
-    console.error(err)
-    return res.status(500).json({ error: err.message });
+       console.error("webhook deletion controller", error);
+       res.status(500).json({
+         error: {
+           message: "Failed to remove webhook",
+           code: "DELETE_WEBHOOK_FAILED",
+         },
+       });
   }
 }
 
@@ -62,8 +64,8 @@ export async function addWebhookController(req, res) {
     const refreshToken = req.cookies.refreshToken;
 
     // ,2 validate payload and cookie
-    if (!refreshToken || !webhookData) {
-      throw new Error("cookie or payload unavailable @ addWebhookController");
+    if (!webhookData) {
+      throw new Error("payload unavailable at addWebhookController");
     }
 
     // .3 validate kronos isn't already watching
@@ -72,20 +74,37 @@ export async function addWebhookController(req, res) {
       refreshToken,
     );
     if (!requiredWebhook) {
-      // .4 watch kron & hold hookId
       const hookId = await addWebhookGithub(webhookData, refreshToken);
 
       // .5 keep track of our watcher webhook @ mdb
       await addWebhookMdb(refreshToken, webhookData, hookId);
 
       //.6 alert client on success
-      res.status(201).json({ message: "kron added successfully" });
+      res.status(201).json({
+        data:{ 
+          message: "kron added successfully" 
+        }
+      });
     }
     // .7
     else {
-      res.status(409).json({ error: "kron already exists" });
+     console.error("webhhook already exists");
+      res.status(409).json({
+        error: {
+          message: "Failed to add webhook",
+          code: "ADD_WEBHOOK_FAILED",
+        },
+      });
+
+
     }
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
+  } catch (error) {
+     console.error("webhook addition controller", error);
+         res.status(500).json({
+           error: {
+             message: "Failed to add webhook",
+             code: "ADD_WEBHOOK_FAILED",
+           },
+         });
   }
 }
