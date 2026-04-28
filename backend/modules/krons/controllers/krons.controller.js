@@ -7,7 +7,7 @@ import { deleteKron } from "../service/krons.service.js";
 export async function getAllkronsController(req,res){
 try{
 const refreshToken = req.cookies.refreshToken
-  const user = await getMDBUserThroughRefreshToken(refreshToken); //retrieving user using refresh token
+  const user = await getMDBUserThroughRefreshToken(refreshToken);
   const allKrons = await getKronsFromMDB(user);
 
   const responseBody = {};
