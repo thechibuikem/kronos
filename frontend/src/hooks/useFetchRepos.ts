@@ -1,7 +1,7 @@
 // src/hooks/useOAuthToken.ts
 import { useEffect } from "react";
 import { useAppSelector,useAppDispatch } from "./hooks";
-import { useAllReposHandler } from "@/features/repositories/handlers/allRepo.Handlers";
+import { useAllReposHandler } from "@/features/repos/handlers/allRepo.Handlers";
 import type { RootState } from "@/store/store";
 
 export function useFetchRepos() {
