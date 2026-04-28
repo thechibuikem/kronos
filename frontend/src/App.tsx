@@ -1,7 +1,7 @@
 import LoginPage from "./features/auth/pages/LoginPage";
 import Dashboard from "./features/home/pages/Dashboard";
 import Krons from "./features/krons/pages/Krons";
-import Repos from "./features/repositories/pages/Repositories";
+import Repos from "./features/repos/pages/Repositories";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./protectedRoute";
 import PublicRoute from "./PublicRoute";
