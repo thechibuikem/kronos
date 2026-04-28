@@ -27,7 +27,7 @@ export async function githubTokenService(code) {
     const responseText = await tokenRes.text();
     console.error({
         message: "Github Token Request Failed",
-        location: "auth/oauthService",
+        location: "auth/oauth.service.js",
         error: responseText,
       });
     throw new Error("Github Token Request Failed");
@@ -48,7 +48,7 @@ if (!userRes.ok) {
 
   console.error({
     message: "GitHub user fetch failed",
-    status: userRes.status,
+    location: "auth/oauth.service.js",
     error: body,
   });
 
@@ -77,7 +77,7 @@ if (!emailRes.ok) {
 
   console.error({
     message: "GitHub email fetch failed",
-    status: emailRes.status,
+    location: "auth/oauth.service.js",
     error: body,
   });
 
@@ -105,7 +105,7 @@ if (!Array.isArray(emails)) {
 if (!primary) {
   console.error({
     message: "No verified primary email found",
-    location: "auth/oauthService",
+    location: "auth/oauth.service.js",
     emailsCount: Array.isArray(emails) ? emails.length : null,
   });
 
@@ -114,9 +114,7 @@ if (!primary) {
   );
 }
 
-
   const email = primary.email;
-
 
  // .7 signing up or signing in 
   const { status, data } = await addOauthUser(
