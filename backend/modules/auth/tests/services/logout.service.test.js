@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { redisClient } from "../../../../core/redis.client.js";
-import { logOutService } from "../../services/logoutService.js";
+import { logOutService } from "../../services/logout.service.js";
 
 vi.mock("../../../../core/redis.client.js")
 

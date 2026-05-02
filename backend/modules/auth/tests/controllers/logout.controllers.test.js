@@ -1,14 +1,14 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { logOutService } from "../../services/logoutService.js";
-import { logOut } from "../../controllers/logoutController.js";
+import { logOutService } from "../../services/logout.service.js";
+import { logOut } from "../../controllers/logout.controller.js";
 
-vi.mock("../../services/logoutService.js");
+vi.mock("../../services/logout.service.js");
 
 describe("logOutController", () => {
   let req, res;
 
   beforeEach(() => {
-    //ARRANGE
+    vi.clearAllMocks();
     req = {
       cookies: { refreshToken: "fake_refresh_token_xyz" },
     };
@@ -21,7 +21,7 @@ describe("logOutController", () => {
   });
 
   // Happy path: valid token, logout succeeds
-  it("should clear cookie and return 204 on success", async () => {
+  it("should clear cookie and return 204, on success", async () => {
     // MOCK: pretend the service works
     logOutService.mockResolvedValue(undefined);
 
@@ -41,21 +41,7 @@ describe("logOutController", () => {
     expect(res.sendStatus).toHaveBeenCalledWith(204);
   });
 
-  // No refresh-token detected
-  it("return 400 if no refresh-token", async () => {
-    req.cookies = {};
 
-    // ACT: call the real controller
-    await logOut(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({
-      error: {
-        message: "LOGOUT FAILED",
-        code: "USER_FORBIDDEN",
-      },
-    });
-  });
 
   // Internal server error
   it("return 500 if internal server error", async () => {

@@ -1,17 +1,18 @@
 import { addOauthUser } from "../utils/addOauthUser.js";
 import { getUrls } from "../../../core/config.js"
 
-// 0. destructuring backend url from getUrls getter function.
-const {frontendUrl,backendUrl}= getUrls()
-
 
 //1. Initial service to knock at github's door.
 export function githubOauthService() {
+
+  const {backendUrl} = getUrls()
   return `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&redirect_uri=${backendUrl}/api/v1/auth/github/callback&scope=user:email,repo`; 
 }
 
 //2. callback function to get github token using code
 export async function githubTokenService(code) {
+  const { frontendUrl } = getUrls();
+
   // .1 post request submitting code to get token response
   const tokenRes = await fetch(`https://github.com/login/oauth/access_token`, {
     method: "POST",

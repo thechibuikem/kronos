@@ -1,64 +1,63 @@
-// controllers/oauth.controller.js
-import {
-  githubOauthService,
-  githubTokenService,
-} from "../services/oauth.service.js";
-
-const isProduction = process.env.MODE === "remote"
+  // controllers/oauth.controller.js
+  import {
+    githubOauthService,
+    githubTokenService,
+  } from "../services/oauth.service.js";
 
 
-//1. controller to get temporary github code
-export async function githubOauth(req, res) {
-  try {
-    const url = githubOauthService();//url to get github temporary code
-    return res.redirect(url); 
-  } catch (error) {
-    console.error("OAuth Init error:", error);
-    
-    return res.status(500).json({ error:  {
-    "message":"oAuth initialization failed",
-    "code":"OAUTH_INIT_FAILED"
-  } });
+
+  //1. controller to get temporary github code
+  export function githubOauth(req, res) {
+    try {
+      const url = githubOauthService();//url to get github temporary code
+      return res.redirect(url); 
+    } catch (error) {
+      console.error("OAuth Init error:", error);
+      
+      return res.status(500).json({ error:  {
+      "message":"oAuth initialization failed",
+      "code":"OAUTH_INIT_FAILED"
+    } });
   }
-}
+  }
 
-//2. controller to get githubToken from code.
-export async function githubCallback(req, res) {
-  const code = req.query.code;
+  //2. controller to get githubToken from code.
+  export async function githubCallback(req, res) {
+    const isProduction = process.env.MODE === "remote"
+    const code = req.query.code;
 
-if (!code){
-   return res.status(400).json({
-     error: {
-       message: "OAuth authentication failed",
-       code: "OAUTH_FLOW_FAILED",
-     },
-   });
-}
-
-
-  try {
-  
-    const result = await githubTokenService(code);
-
-  if (result.status === 200){
-  res.cookie("refreshToken", result.data.refreshToken, {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: "None",
-      path:"/",
-      maxAge: 30 * 24 * 60 * 60 * 1000,
+  if (!code){
+    return res.status(400).json({
+      error: {
+        message: "OAuth authentication failed",
+        code: "OAUTH_FLOW_FAILED",
+      },
     });
   }
 
-    return res.status(result.status).redirect(result.redirectUrl);
-  } 
-  catch (error) {
-    console.error("Oauth Error:",error);
-        return res.status(500).json({
-          error: {
-            message: "OAUTH FAILED",
-            code: "OAUTH_FAILED",
-          },
-        });
+
+    try {
+    
+      const result = await githubTokenService(code);
+    if (result.status === 200){
+    res.cookie("refreshToken", result.data.refreshToken, {
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: "None",
+        path:"/",
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+      });
+    }
+
+      return res.status(result.status).redirect(result.redirectUrl);
+    } 
+    catch (error) {
+      console.error("Oauth Error:",error);
+          return res.status(500).json({
+            error: {
+              message: "OAUTH FAILED",
+              code: "OAUTH_FAILED",
+            },
+          });
+    }
   }
-}
