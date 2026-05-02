@@ -1,18 +1,16 @@
-> Part of Kronos -> Developer Productivity Guardian
-
 ---
 name: Write Tests
-
-about: Contribute unit tests for a module
-
-title: "Tests: [Module Name]"
-
+about: Contribute unit tests for a service and controller
+title: "Tests: [Service and Controller Name]"
 labels: "good first issue, tests"
-
 ---
 
-## Module
-[e.g., krons service, repos module]
+> Part of Kronos -> Developer Productivity Guardian
+## What to test
+Check open issues labeled `tests` for modules needing coverage. Each issue specifies:
+- Module/file to test
+- Functions and cases to cover
+- Example test structure
 
 ## Test structure to follow
 Use Vitest + mocks. Follow this pattern:

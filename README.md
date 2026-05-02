@@ -276,7 +276,7 @@ Visit `http://localhost:5173`
 
 ## Contributing
 
-Contributions are not open yet — but they will be soon. If you're interested in contributing, watch the repo and stay tuned.
+Contributing are now open see — [contributors.md](CONTRIBUTING.md)
 
 ---
 
