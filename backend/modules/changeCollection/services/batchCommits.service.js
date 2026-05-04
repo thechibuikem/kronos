@@ -5,6 +5,6 @@ export async function storeCommitBatch(commits) {
 
   // Store each commit as JSON string
   for (const commit of commits) {
-    await client.lPush(key, JSON.stringify(commit));
+    await redisClient.lPush(key, JSON.stringify(commit));
   }
 }
