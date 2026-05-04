@@ -1,6 +1,5 @@
-import cron from "node-cron"
+import cron from "node-cron";
 import { redisClient } from "../../../core/redis.client.js";
-
 
 export async function collectChanges() {
   // Get all user keys from Redis
@@ -26,5 +25,6 @@ export async function collectChanges() {
   }
 }
 
-
-cron.schedule("* * * * *", collectChanges);
+export function startCollectChangesCron() {
+  cron.schedule("*/3 * * * *", collectChanges);
+}

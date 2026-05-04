@@ -6,7 +6,10 @@ import dotenv from "dotenv";
 import connectDB from "./db.js";
 import { connectRedis } from "./redis.client.js"
 import { getUrls } from "./config.js";
+import { startCollectChangesCron } from "../modules/changeCollection/jobs/commitCollection.job.js";
 import { verifyWebhookSignature } from "./middlewares/webhook.middleware.js";
+import { analysisQueue } from "./queue/analysis.queue.js";
+
 import authRoutes from "../modules/auth/routes/auth.route.js";
 import repoRoutes from "../modules/repos/routes/repos.route.js";
 import kronRoutes from "../modules/krons/routes/krons.route.js";
@@ -88,7 +91,7 @@ async function startServer() {
   try {
     await connectDB();
     await connectRedis();
-    // await startCronJobs();
+    startCollectChangesCron(); // Add this line
 
     app.listen(PORT, () => {
       console.log(`Server running on port:${backendUrl}`);
