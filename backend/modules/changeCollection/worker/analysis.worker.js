@@ -12,9 +12,17 @@ analysisQueue.process(async (job) => {
   // await saveInsights(userID, insights);
 
   // Clear Redis list
-  await redisClient.del(`kron:${userID}:commits`);
+ const deleted = await redisClient.del(`kron:${userID}:commits`);
 
-  return { success: true, userID, insightCount: insights.length };
+ if (deleted) {
+   console.log("Commits cleared");
+ } else {
+   console.log("Nothing to delete");
+ }
+
+return
+
+  // return { success: true, userID, insightCount: insights.length };
 });
 
 analysisQueue.on("completed", (job) => {

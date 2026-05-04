@@ -27,4 +27,4 @@ export async function collectChanges() {
 }
 
 
-cron.schedule("0 */6 * * *", collectChanges);
+cron.schedule("* * * * *", collectChanges);
