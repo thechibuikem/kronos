@@ -49,7 +49,7 @@ In the age of AI, it is easy for developers to hop between side projects endless
 Kronos is organized into three layers:
 
 
- ![diagram](./docs/architecture/systemDiagramV2.png)
+ ![systemdiagram](./docs/architecture/systemDiagramV2.png)
 
 
 
