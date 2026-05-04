@@ -18,6 +18,11 @@ export async function collectChanges() {
     // Parse commits back to objects
     const commitObjects = commits.map((commit) => JSON.parse(commit));
 
+    console.log(
+      "About to queue:",
+      JSON.stringify({ userID, commits: commitObjects }),
+  );
+
     // Queue analysis job
     await analysisQueue.add({
       userID,
