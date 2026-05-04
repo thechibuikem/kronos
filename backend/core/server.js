@@ -9,7 +9,7 @@ import { getUrls } from "./config.js";
 import { startCollectChangesCron } from "../modules/changeCollection/jobs/commitCollection.job.js";
 import { verifyWebhookSignature } from "./middlewares/webhook.middleware.js";
 import { analysisQueue } from "./queue/analysis.queue.js";
-
+import { analysisWorker } from "../modules/changeCollection/worker/analysis.worker.js";
 import authRoutes from "../modules/auth/routes/auth.route.js";
 import repoRoutes from "../modules/repos/routes/repos.route.js";
 import kronRoutes from "../modules/krons/routes/krons.route.js";

@@ -8,7 +8,7 @@ import { Worker } from "bullmq";
 
 
 
-const analysisWorker = new Worker(
+export const analysisWorker = new Worker(
   "analysis-queue",
   async (job) => {
     const { userID, commits } = job.data;
