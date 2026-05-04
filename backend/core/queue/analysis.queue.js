@@ -1,10 +1,14 @@
-  import {Queue} from 'bullmq'
+import { Queue } from "bullmq";
 
-  export const analysisQueue = new Queue("analysis-queue", {
-    connection: {
-      host: process.env.REDIS_HOST,
-      port: parseInt(process.env.REDIS_PORT),
-      password: process.env.REDIS_PASSWORD,
-      username: "default",
-    },
-  });
+export const analysisQueue = new Queue("analysis-queue", {
+  connection: {
+    host: process.env.REDIS_HOST,
+    port: parseInt(process.env.REDIS_PORT),
+    password: process.env.REDIS_PASSWORD,
+    username: "default",
+  },
+});
+
+analysisQueue.client.on("ready", () => {
+  console.log("Analysis queue connected 🌟");
+});
