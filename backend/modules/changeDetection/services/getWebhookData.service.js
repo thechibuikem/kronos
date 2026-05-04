@@ -29,10 +29,11 @@ export async function getWebhookData(data) {
         }
 
         return {
-          id: commit.id,
+          userId:requiredUser._id,
+          commitId: commit.id,
           message: commit.message,
           timestamp: commit.timestamp,
-          author: commit.author?.username,
+          // author: commit.author?.username,
           files: richer, // enriched data
         };
       }),
