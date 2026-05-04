@@ -8,7 +8,3 @@ export const analysisQueue = new Queue("analysis-queue", {
     username: "default",
   },
 });
-
-analysisQueue.client.on("ready", () => {
-  console.log("Analysis queue connected 🌟");
-});
