@@ -1,5 +1,6 @@
 import cron from "node-cron";
 import { redisClient } from "../../../core/redis.client.js";
+import { analysisQueue } from "../../../core/queue/analysis.queue.js";
 
 export async function collectChanges() {
   // Get all user keys from Redis
