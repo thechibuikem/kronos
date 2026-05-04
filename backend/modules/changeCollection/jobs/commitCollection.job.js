@@ -18,16 +18,26 @@ export async function collectChanges() {
     // Parse commits back to objects
     const commitObjects = commits.map((commit) => JSON.parse(commit));
 
-    console.log(
-      "About to queue:",
-      JSON.stringify({ userID, commits: commitObjects }),
-  );
 
-    // Queue analysis job
-    await analysisQueue.add({
-      userID,
-      commits: commitObjects,
-    });
+
+    try {
+      console.log("Attempting to queue:", {
+        userID,
+        commitCount: commitObjects.length,
+        firstCommit: commitObjects[0],
+      });
+
+      await analysisQueue.add({
+        userID,
+        commits: commitObjects,
+      });
+
+      console.log("✓ Successfully queued");
+    } catch (err) {
+      console.error("✗ Queue.add() failed:", err.message);
+      console.error("Full error:", err);
+    }
+
   }
 }
 

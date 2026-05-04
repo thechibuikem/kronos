@@ -4,10 +4,6 @@ import { redisClient } from "../../../core/redis.client.js";
 import { Worker } from "bullmq";
 
 
-
-
-
-
 export const analysisWorker = new Worker(
   "analysis-queue",
   async (job) => {
@@ -44,7 +40,8 @@ analysisWorker.on("failed", (job, err) => {
   console.error(`✗ Job ${job.id} failed:`, err.message);
 });
 
-
-
+analysisWorker.on("error", (err) => {
+  console.error("Worker error:", err.message);
+});
   
   
