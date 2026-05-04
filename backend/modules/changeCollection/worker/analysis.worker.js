@@ -1,6 +1,5 @@
 import { analysisQueue,redisClient } from "../../../core/queue/analysis.queue.js";
 // const { analyzeWithGemini } = require("../services/analyticalEngine");
-import { redisClient } from "../../../core/redis.client.js";
 import { Worker } from "bullmq";
 
 
