@@ -249,7 +249,7 @@ VITE_LOCAL_FRONTEND_URL=http://localhost:5173
 VITE_REMOTE_FRONTEND_URL=https://kronos.com
 ```
 
-> Generate some random strings with:
+> Generate some random string with:
 > ```bash
 > node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 > ```
