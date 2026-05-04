@@ -1,4 +1,6 @@
-import {Queue} from "bull"
+import pkg from "bull"
+const {Queue} = pkg
+
 
 export const analysisQueue = new Queue("analysis-queue", {
   redis: {
