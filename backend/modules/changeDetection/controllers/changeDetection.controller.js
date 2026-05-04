@@ -6,10 +6,9 @@ import {
   removeWebhookMdb,
 } from "../services/changeDetection.service.js";
 
-import {
-  getWebhookData,
-} from "../services/getWebhookData.service.js";
+import { getWebhookData } from "../services/getWebhookData.service.js";
 
+import { storeCommitBatch } from "../../changeCollection/services/batchCommits.service.js";
 
 // controller to read webhook data
 export async function webhookDataController(req, res) {
@@ -23,8 +22,10 @@ export async function webhookDataController(req, res) {
   console.log(
     "\nwebhook metrics: ",
     JSON.stringify(webhookData,null,2),
-
   );
+
+  await storeCommitBatch(webhookData)
+
   res.status(204).send
   }
 catch(error){
