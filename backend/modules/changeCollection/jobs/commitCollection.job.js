@@ -8,7 +8,7 @@ export async function collectChanges() {
 
   for (const key of keys) {
     // Extract userID from key
-    const userID = key.split(":")[1];
+    const userId = key.split(":")[1];
 
     // Fetch all commits for this user
     const commits = await redisClient.lRange(key, 0, -1);
@@ -20,7 +20,7 @@ export async function collectChanges() {
 
 
     const jobData = {
-    userID,
+    userId,
     commits: commitObjects,
   };
 
@@ -35,15 +35,17 @@ export async function collectChanges() {
 
 
     try {
+    
+    
       console.log("Attempting to queue:", {
-        userID,
+        userId,
         commitCount: commitObjects.length,
         firstCommit: commitObjects[0],
       });
 
 
-    const stringifiedJobData = JSON.stringify(jobData)
-    await analysisQueue.add("analyze",stringifiedJobData);
+    // const stringifiedJobData = JSON.stringify(jobData)
+    await analysisQueue.add("analyze",jobData);
     console.log("✓ Successfully queued");
     } catch (err) {
       console.error("✗ Queue.add() failed:", err.message);
