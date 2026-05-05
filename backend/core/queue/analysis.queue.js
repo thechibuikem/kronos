@@ -7,6 +7,10 @@ export const analysisQueue = new Queue("analysis-queue", {
     password: process.env.REDIS_PASSWORD,
     username: "default",
   },
+  defaultJobOptions: {
+    removeOnComplete: true, // Auto-delete after completion
+    removeOnFail: false, // Keep failed jobs for debugging
+  },
 });
 
 

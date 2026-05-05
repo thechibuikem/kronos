@@ -19,23 +19,22 @@ export async function collectChanges() {
     const commitObjects = commits.map((commit) => JSON.parse(commit));
 
 
-    const jobData = {
-    userId,
-    commits: commitObjects,
-  };
+      const jobData = {
+      userId,
+      commits: commitObjects,
+    };
 
-  // Verify it's JSON-serializable
-  try {
-    JSON.stringify(jobData);
-  } catch (e) {
-    console.error("Job data not serializable:", e);
-    continue;
-  }
+    // Verify it's JSON-serializable
+    try {
+      JSON.stringify(jobData);
+    } catch (e) {
+      console.error("Job data not serializable:", e);
+      continue;
+    }
 
 
 
     try {
-    
     
       console.log("Attempting to queue:", {
         userId,
@@ -49,12 +48,11 @@ export async function collectChanges() {
     console.log("✓ Successfully queued");
     } catch (err) {
       console.error("✗ Queue.add() failed:", err.message);
-      // console.error("Full error:", err);
     }
 
   }
 }
 
 export function startCollectChangesCron() {
-  cron.schedule("*/3 * * * *", collectChanges);
+  cron.schedule("*/5 * * * *", collectChanges);
 }
