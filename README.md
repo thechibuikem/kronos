@@ -288,7 +288,7 @@ This project is licensed under the [CC BY-NC 4.0](https://creativecommons.org/li
 
 ## Demo
 
-**Coming soon.**
+**Coming soon...**
 
 ---
 
