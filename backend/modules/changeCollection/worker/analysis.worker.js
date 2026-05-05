@@ -7,8 +7,8 @@ import { Worker } from "bullmq";
 export const analysisWorker = new Worker(
   "analysis-queue",
   async (job) => {
-consol3.log("job\n", job);
-consol3.log("job data\n", job.data);
+console.log("job\n", job);
+console.log("job data\n", job.data);
 
     const { stringifiedJobData } = job.data;
     const jobData = JSON.parse(stringifiedJobData)
