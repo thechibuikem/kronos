@@ -35,7 +35,7 @@ export async function collectChanges() {
       console.log("✓ Successfully queued");
     } catch (err) {
       console.error("✗ Queue.add() failed:", err.message);
-      console.error("Full error:", err);
+      // console.error("Full error:", err);
     }
 
   }
