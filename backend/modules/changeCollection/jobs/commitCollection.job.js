@@ -43,10 +43,9 @@ export async function collectChanges() {
       });
 
 
-    await analysisQueue.add(jobData);
-      
-
-      console.log("✓ Successfully queued");
+    const stringifiedJobData = JSON.stringify(jobData)
+    await analysisQueue.add("analyze",stringifiedJobData);
+    console.log("✓ Successfully queued");
     } catch (err) {
       console.error("✗ Queue.add() failed:", err.message);
       // console.error("Full error:", err);
