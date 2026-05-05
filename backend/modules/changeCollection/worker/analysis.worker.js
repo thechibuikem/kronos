@@ -7,9 +7,9 @@ import { Worker } from "bullmq";
 export const analysisWorker = new Worker(
   "analysis-queue",
   async (job) => {
-    const { userID, commits } = job.data;
-    const commitObjects = JSON.parse(commits)
-    console.log(`Processing batch for ${userID}`);
+    const { stringifiedJobData } = job.data;
+    const jobData = JSON.parse(stringifiedJobData)
+    console.log(`Processing batch for ${jobData.userID}`);
 
     // Send to Gemini
     // const insights = await analyzeWithGemini(commits);
