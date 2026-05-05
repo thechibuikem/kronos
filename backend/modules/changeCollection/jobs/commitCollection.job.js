@@ -44,7 +44,10 @@ export async function collectChanges() {
 
 
     // const stringifiedJobData = JSON.stringify(jobData)
-    await analysisQueue.add("analyze",jobData);
+    await analysisQueue.add("analyze", jobData, {
+      removeOnComplete: true,
+      removeOnFail: true,
+    });
     console.log("✓ Successfully queued");
     } catch (err) {
       console.error("✗ Queue.add() failed:", err.message);
