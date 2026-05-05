@@ -1,10 +1,16 @@
 import { Queue } from "bullmq";
 
+import { redisClient } from "../redis.client.js";
+
+// export const analysisQueue = new Queue("analysis-queue", {
+//   connection: {
+//     host: process.env.REDIS_HOST,
+//     port: parseInt(process.env.REDIS_PORT),
+//     password: process.env.REDIS_PASSWORD,
+//     username: "default",
+//   },
+// });
+
 export const analysisQueue = new Queue("analysis-queue", {
-  connection: {
-    host: process.env.REDIS_HOST,
-    port: parseInt(process.env.REDIS_PORT),
-    password: process.env.REDIS_PASSWORD,
-    username: "default",
-  },
+  connection: redisClient,
 });
