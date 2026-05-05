@@ -12,7 +12,7 @@ console.log("job data\n", job.data);
 
     const { stringifiedJobData } = job.data;
     // const jobData = JSON.parse(stringifiedJobData)
-    console.log(`Processing batch for ${jobData.userID}`);
+    console.log(`Processing batch for ${job.data.userID}`);
 
     // Send to Gemini
     // const insights = await analyzeWithGemini(commits);
