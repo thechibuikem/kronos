@@ -7,6 +7,9 @@ import { Worker } from "bullmq";
 export const analysisWorker = new Worker(
   "analysis-queue",
   async (job) => {
+consol3.log("job\n", job);
+consol3.log("job data\n", job.data);
+
     const { stringifiedJobData } = job.data;
     const jobData = JSON.parse(stringifiedJobData)
     console.log(`Processing batch for ${jobData.userID}`);
@@ -20,6 +23,7 @@ export const analysisWorker = new Worker(
     // Clear Redis
     await redisClient.del(`kron:${userID}:commits`);
 
+  console.group("it got to the deleting from redis part")
     return { success: true };
   },
   {
