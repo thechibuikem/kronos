@@ -29,7 +29,7 @@ export async function collectChanges() {
 
       await analysisQueue.add({
         userID,
-        commits: commitObjects,
+        commits: JSON.stringify(commitObjects),
       });
 
       console.log("✓ Successfully queued");

@@ -8,7 +8,7 @@ export const analysisWorker = new Worker(
   "analysis-queue",
   async (job) => {
     const { userID, commits } = job.data;
-
+    const commitObjects = JSON.parse(commits)
     console.log(`Processing batch for ${userID}`);
 
     // Send to Gemini
