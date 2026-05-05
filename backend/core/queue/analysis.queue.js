@@ -7,6 +7,18 @@ export const analysisQueue = new Queue("analysis-queue", {
     password: process.env.REDIS_PASSWORD,
     username: "default",
   },
+  defaultJobOptions: {
+    attempts: 3, // Retry 3 times total
+    backoff: {
+      type: "exponential",
+      delay: 2000, // Start at 2s, exponential backoff
+    },
+    removeOnComplete: true,
+    removeOnFail: false, // Delete failed jobs too
+  },
+  settings: {
+    streamLimitSize: 0, // Disable event stream entirely
+  },
 });
 
 
