@@ -11,7 +11,7 @@ console.log("job\n", job);
 console.log("job data\n", job.data);
 
     const { stringifiedJobData } = job.data;
-    const jobData = JSON.parse(stringifiedJobData)
+    // const jobData = JSON.parse(stringifiedJobData)
     console.log(`Processing batch for ${jobData.userID}`);
 
     // Send to Gemini
@@ -21,7 +21,7 @@ console.log("job data\n", job.data);
     // await saveInsights(userID, insights);
 
     // Clear Redis
-    await redisClient.del(`kron:${userID}:commits`);
+    await redisClient.del(`kron:${job.data.userID}:commits`);
 
   console.group("it got to the deleting from redis part")
     return { success: true };
