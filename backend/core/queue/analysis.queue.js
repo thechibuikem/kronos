@@ -9,11 +9,3 @@ export const analysisQueue = new Queue("analysis-queue", {
   },
 });
 
-analysisQueue.client.on("ready", () => {
-  console.log("Analysis queue connected 🌟");
-});
-
-
-analysisQueue.client.on("error", (err) => {
-  console.error("Queue connection error:", err);
-});
