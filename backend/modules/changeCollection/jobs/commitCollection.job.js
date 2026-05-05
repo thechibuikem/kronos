@@ -19,6 +19,21 @@ export async function collectChanges() {
     const commitObjects = commits.map((commit) => JSON.parse(commit));
 
 
+    const jobData = {
+    userID,
+    commits: commitObjects,
+  };
+
+  // Verify it's JSON-serializable
+  try {
+    JSON.stringify(jobData);
+  } catch (e) {
+    console.error("Job data not serializable:", e);
+    continue;
+  }
+
+
+
 
     try {
       console.log("Attempting to queue:", {
@@ -27,10 +42,9 @@ export async function collectChanges() {
         firstCommit: commitObjects[0],
       });
 
-      await analysisQueue.add({
-        userID,
-        commits: JSON.stringify(commitObjects),
-      });
+
+    await analysisQueue.add(jobData);
+      
 
       console.log("✓ Successfully queued");
     } catch (err) {
