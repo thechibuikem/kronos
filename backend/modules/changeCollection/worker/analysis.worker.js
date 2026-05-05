@@ -10,7 +10,9 @@ export const analysisWorker = new Worker(
 console.log("job\n", job);
 console.log("job data\n", job.data);
 
-    const { stringifiedJobData } = job.data;
+    let { stringifiedJobData } = job.data;
+    stringifiedJobData = JSON.parse(stringifiedJobData)
+    console.log(stringifiedJobData)
     // const jobData = JSON.parse(stringifiedJobData)
     console.log(`Processing batch for ${job.data.userID}`);
 
