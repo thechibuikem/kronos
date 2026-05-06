@@ -16,9 +16,6 @@ export const analysisQueue = new Queue("analysis-queue", {
     removeOnComplete: true,
     removeOnFail: false, // Delete failed jobs too
   },
-  settings: {
-    streamLimitSize: 0, // Disable event stream entirely
-  },
 });
 
 
