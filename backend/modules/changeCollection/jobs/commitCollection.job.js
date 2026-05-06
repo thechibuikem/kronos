@@ -49,8 +49,8 @@ export async function collectChanges() {
       removeOnFail: true,
     });
     console.log("✓ Successfully queued");
-    } catch (err) {
-      console.error("✗ Queue.add() failed:", err.message);
+    } catch (error) {
+      console.error("✗ Queue.add() failed:", error.message);
     }
 
   }

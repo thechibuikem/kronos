@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import connectDB from "./db.js";
 import { connectRedis } from "./redis.client.js"
 import { getUrls } from "./config.js";
+// import { startTrimQueueStreamCron } from "../modules/changeCollection/jobs/trimQueueStream.job.js";
 import { startCollectChangesCron } from "../modules/changeCollection/jobs/commitCollection.job.js";
 import { verifyWebhookSignature } from "./middlewares/webhook.middleware.js";
 import { analysisQueue } from "./queue/analysis.queue.js";
@@ -92,7 +93,7 @@ async function startServer() {
     await connectDB();
     await connectRedis();
     startCollectChangesCron(); // Add this line
-
+    // startTrimQueueStreamCron();
     app.listen(PORT, () => {
       console.log(`Server running on port:${backendUrl}`);
     });
