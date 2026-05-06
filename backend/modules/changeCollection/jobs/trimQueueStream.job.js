@@ -3,7 +3,7 @@ import { analysisQueue } from "../../../core/queue/analysis.queue.js";
 
  async function trimQueueStream() {
     try{
-        await analysisQueue.client.xtrim("bull:analysis-queue:events", "MAXLEN", "~", 5);
+        await analysisQueue.trimEvents(3)
     }catch(error){
         console.error("queue stream clearing failed: ",error.message)
     }
