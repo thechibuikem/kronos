@@ -110,26 +110,27 @@ Kronos is organized into three layers:
 - Webhook signature verification middleware: reads `X-Hub-Signature-256` from the GitHub request header, computes an HMAC-SHA256 hash of the raw body using `WEBHOOK_SECRET`, does a length check, then uses `crypto.timingSafeEqual()` for constant-time comparison — preventing both spoofed payloads and timing attacks
 - Commit data enrichment via secondary GitHub API call (`getRicherCommitData`) — GitHub's webhook payload omits file-level diff data by design; Kronos fetches it explicitly via Octokit, adding `filename`, `additions`, `deletions`, and `changes` per file
 - Enriched commit data held in memory (transient) — Change Collection picks it up from here for processing
+
+### 4 Change Collection System
+ ![diagram](./docs/architecture/kronosChangeCollectionFlow.svg)
+- `storeCommitBatch` stores enriched commits per user in Redis under `kron:{userId}:commits` as a JSON list
+- Cron job runs every 6 hours (`0 */6 * * *`), scans all `kron:*:commits` keys, skips empty keys, batches commits per user
+- Jobs pushed to BullMQ (`analysis-queue`) with 3 retry attempts and exponential backoff starting at 2 seconds
+- BullMQ Worker picks up each job, processes the commit batch, clears the Redis key after completion
+- Failed jobs retained in BullMQ for inspection — not silently dropped
+- Analytical Engine integration stubbed and ready — `analyzeWithGemini` and `saveInsights` calls are next
 ---
 
 ## What's Next
 
-### 1 Change Collection System
-- Cron job (every 6 hours) harvests enriched commit data
-- Forwards to Analytical Engine for processing
-- End-of-day and midday summary collection windows
-
-### 2 Analytical Engine
+### 1 Analytical Engine
 - Diff analysis: files changed, lines added/removed, commit patterns, module focus
 - Gemini 2 integration for AI-generated text insights
 - Analysis results persisted to MongoDB with timestamps
 
-### 3 Notification System
+### 2 Notification System
 - Post-analysis alerts when insights are ready
 - Periodic summaries (daily rollup + midday sprint summary)
-
-### 4 Visualizations
-- Interactive charts for activity trends, module focus, coding patterns
 
 ---
 
@@ -144,15 +145,15 @@ Kronos is organized into three layers:
   <img alt="express" width="40px" src="./docs/icons/ExpressJS-Dark.svg" />
   <img alt="mongodb" width="40px" src="./docs/icons/MongoDB.svg" />
   <img alt="redis" width="40px" src="./docs/icons/Redis-Dark.svg" />
+  <img alt="redis" width="40px" src="./docs/icons/Github-Dark.svg" />
+  <img alt="javascript" width="40px" src="./docs/icons/JavaScript.svg" />
+  <img alt="bullmq" width="39px" height='40px' src="./docs/icons/bullmq.webp" />
 
 
   <!-- Frontend awareness -->
   <!-- API / Web -->
-  <img alt="react" width="40px" src="./docs/icons/React-Dark.svg" />
-  <img alt="javascript" width="40px" src="./docs/icons/JavaScript.svg" />
   <img alt="typescript" width="40px" src="./docs/icons/TypeScript.svg" />
-  <img alt="html" width="40px" src="./docs/icons/HTML.svg" />
-  <img alt="css" width="40px" src="./docs/icons/CSS.svg" />
+  <img alt="react" width="40px" src="./docs/icons/React-Dark.svg" />
   <img alt="tailwind" width="40px" src="./docs/icons/TailwindCSS-Dark.svg" />
   </p>
 
@@ -161,7 +162,8 @@ Kronos is organized into three layers:
 | Frontend | React + TypeScript + Vite | Fast dev experience, type safety |
 | Backend | Node.js + Express | Event-driven, fits webhook architecture |
 | Database | MongoDB | Flexible schema for evolving commit data structures |
-| Cache / Queue | Redis | Repo list caching, refresh token storage
+| Cache / Queue | Redis | Repo list caching, refresh token storage, transient commit data |
+| Job Queue | BullMQ | Reliable job processing with retries, exponential backoff, and worker management |
 | Auth | GitHub OAuth2 | Users already live on GitHub — zero friction login |
 | Enrichment | Octokit (GitHub API) | File-level diff data not included in webhook payloads |
 | AI | Gemini 2 | LLM for generating productivity insights from preprocessed commit data |

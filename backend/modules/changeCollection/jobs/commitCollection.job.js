@@ -44,10 +44,7 @@ export async function collectChanges() {
 
 
     // const stringifiedJobData = JSON.stringify(jobData)
-    await analysisQueue.add("analyze", jobData, {
-      removeOnComplete: true,
-      removeOnFail: true,
-    });
+    await analysisQueue.add("analyze", jobData);
     console.log("✓ Successfully queued");
     } catch (error) {
       console.error("✗ Queue.add() failed:", error.message);
@@ -57,5 +54,5 @@ export async function collectChanges() {
 }
 
 export function startCollectChangesCron() {
-  cron.schedule("*/5 * * * *", collectChanges);
+  cron.schedule("0 */6 * * *", collectChanges);
 }
