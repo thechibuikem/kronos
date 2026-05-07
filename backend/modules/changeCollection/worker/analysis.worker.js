@@ -38,12 +38,20 @@ analysisWorker.on("completed", (job) => {
   console.log(`✓ Job ${job.id} completed`);
 });
 
-analysisWorker.on("failed", (job, err) => {
-  console.error(`✗ Job ${job.id} failed:`, err.message);
+analysisWorker.on("failed", (job, error) => {
+  console.error({
+    message: `✗ Job ${job.id} failed:`,
+    location: "change-collection/analysis.worker.js",
+    error: error.message,
+  });
 });
 
-analysisWorker.on("error", (err) => {
-  console.error("Worker error:", err.message);
+analysisWorker.on("error", (error) => {
+     console.error({
+       message:"worker error",
+       location: "change-collection/analysis.worker.js",
+       error: error.message,
+     });
 });
   
   
