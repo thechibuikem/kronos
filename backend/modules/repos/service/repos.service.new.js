@@ -14,7 +14,11 @@ export async function getReposFromGithub(user) {
   });
 
   //checking response
-  if (!response.ok) {
+
+  if (response.status === 200) {
+    return response;
+  }
+
     console.error({
       message: "repositories from github, is not okay",
       location: "repos/repos.service.js",
@@ -25,14 +29,8 @@ export async function getReposFromGithub(user) {
       error: {
         message: "repositories from github, is not okay",
       },
-    };
-  }
-
-  if (response.status === 200) {
-    return response;
-  }
 }
-
+}
 
 // function to get all Repos
 export async function getRepos(user) {

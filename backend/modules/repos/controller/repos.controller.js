@@ -11,10 +11,10 @@ export async function getAllReposController(req, res) {
   res.status(200).json({ data: responseBody });
   }
   catch(error){
-     console.error("kron deletion controller", error);
+     console.error("get repos controller", error);
      res.status(500).json({
        error: {
-         message: "Failed to fetch repos",
+         message: "Failed to get repos",
          code: "GET_REPOS_FAILED",
        },
      });
