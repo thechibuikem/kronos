@@ -18,7 +18,7 @@ export async function getReposFromGithub(user) {
     console.error({
       message: "repositories from github, is not okay",
       location: "repos/repos.service.js",
-      error: "repositories from github, is not okay",
+      error: response,
     });
 
     return {
