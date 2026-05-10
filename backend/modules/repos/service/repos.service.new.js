@@ -14,8 +14,6 @@ export async function getReposFromGithub(user) {
   });
 
   //checking response
-
-  console.log("response from github:\n",response)
   if (response.status === 200) {
     return response;
   }
@@ -35,7 +33,7 @@ export async function getReposFromGithub(user) {
 
 // function to get all Repos
 export async function getRepos(user) {
-  const TTL = 86400; // 24 hours
+  const TTL = 60*60*24; // 24 hours
   const redisRepoKey = `user:${user.id}:repos`;
   const cached = await redisClient.get(redisRepoKey);
 
@@ -67,7 +65,7 @@ export async function getRepos(user) {
     ); // inject in new repos
 
     // ========= UPDATING REDIS ==========//
-    await redisClient.setex(redisRepoKey,TTL, JSON.stringify(repoList));
+    await redisClient.set(redisRepoKey, JSON.stringify(repoList),{EX:TTL});
 
     return repoList; // returning repos to client
   }
