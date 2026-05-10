@@ -10,8 +10,6 @@ export async function getReposFromGithub(githubToken, etag) {
     },
   });
 
-
-
   if (response.status === 304) {
     return response; // No changes
   }
@@ -49,6 +47,8 @@ export async function getRepos(user) {
   const redisRepoKey = `user:${user.id}:repos`; 
   const redisEtag = await redisClient.get(redisEtagKey); //checking redis for etag
   let etag = redisEtag || "";
+
+
   const response = await getReposFromGithub(user.githubToken, etag);
   console.log("response status: ", response.status);
 

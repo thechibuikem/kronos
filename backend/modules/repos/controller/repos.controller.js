@@ -1,4 +1,4 @@
-import { getRepos, getReposFromRedis } from "../service/repos.service.js";
+import { getRepos } from "../service/repos.service.new.js";
 import { getMDBUserThroughRefreshToken } from "../../user/service/user.service.js";
 
 // getting all krons from mdb
@@ -7,12 +7,7 @@ export async function getAllReposController(req, res) {
   const refreshToken = req.cookies.refreshToken;
   const user = await getMDBUserThroughRefreshToken(refreshToken); //retrieving user using refresh token
   const allRepos = await getRepos(user); //all our repos, following cache-aside rules
-  const responseBody = {};
-  // preparing my response body
-  if (allRepos) {
-    responseBody.repos = allRepos;
-  }
-
+  const responseBody = { repos:allRepos};
   res.status(200).json({ data: responseBody });
   }
   catch(error){

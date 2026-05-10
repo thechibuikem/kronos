@@ -1,0 +1,76 @@
+import { redisClient } from "../../../core/redis.client.js";
+import { RepoModel } from "../models/repos.model.js";
+import { createOctokit } from "../../../core/octokit.client.js";
+
+//service to get list of repositories from github
+export async function getReposFromGithub(user) {
+  const octokitClient = createOctokit(user.githubToken);
+
+  const response = await octokit.request(`GET /users/${user.username}/repos`, {
+    username: user.username,
+    headers: {
+      "X-GitHub-Api-Version": "2026-03-10",
+    },
+  });
+
+  //checking response
+  if (!response.ok) {
+    console.error({
+      message: "repositories from github, is not okay",
+      location: "repos/repos.service.js",
+      error: "repositories from github, is not okay",
+    });
+
+    return {
+      error: {
+        message: "repositories from github, is not okay",
+      },
+    };
+  }
+
+  if (response.status === 200) {
+    return response;
+  }
+}
+
+
+// function to get all Repos
+export async function getRepos(user) {
+  const TTL = 86400; // 24 hours
+  const redisRepoKey = `user:${user.id}:repos`;
+  const cached = await redisClient.get(redisRepoKey);
+
+  if (cached) {
+    return JSON.parse(cached);
+  }
+
+  // ========= HANDLING CACHE MISS ==========//
+
+  const response = await getReposFromGithub(user);
+  //===If something had changed in the etag===
+  if (response.status === 200) {
+    const repoData = await response.json();
+    const repoList = repoData.map((e) => ({
+      repoId: e.id,
+      repoUrl: e.html_url,
+      repoName: e.name,
+      githubOwnerId: user.id,
+      isPrivate: e.private,
+      owner: e.owner.login,
+    })); // prepared repoList
+
+    // ========= UPDATING MONGODB ==========//
+    await RepoModel.deleteMany({ githubOwnerId: user.id });
+    await Promise.all(
+      repoList.map((repo) => {
+        const newRepo = new RepoModel(repo);
+        return newRepo.save();
+      }),
+    ); // inject in new repos
+
+    // ========= UPDATING REDIS ==========//
+    await redisClient.setex(redisRepoKey,TTL, JSON.stringify(repoList));
+
+    return repoList; // returning repos to client
+  }
+}
