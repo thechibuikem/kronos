@@ -48,7 +48,7 @@ export async function getRepos(user) {
   const response = await getReposFromGithub(user);
   //===If something had changed in the etag===
   if (response.status === 200) {
-    const repoList = response.map((e) => ({
+    const repoList = response.data.map((e) => ({
       repoId: e.id,
       repoUrl: e.html_url,
       repoName: e.name,
