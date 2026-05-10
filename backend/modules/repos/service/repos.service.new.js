@@ -6,7 +6,7 @@ import { createOctokit } from "../../../core/octokit.client.js";
 export async function getReposFromGithub(user) {
   const octokitClient = createOctokit(user.githubToken);
 
-  const response = await octokit.request(`GET /users/${user.username}/repos`, {
+  const response = await octokitClient.request(`GET /users/${user.username}/repos`, {
     username: user.username,
     headers: {
       "X-GitHub-Api-Version": "2026-03-10",
