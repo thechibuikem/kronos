@@ -16,6 +16,7 @@ export async function getReposFromGithub(user) {
   //checking response
 
   if (response.status === 200) {
+    console.log("response from github",response)
     return response;
   }
 
