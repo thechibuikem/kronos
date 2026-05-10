@@ -1,72 +1,52 @@
 import { redisClient } from "../../../core/redis.client.js";
 import { RepoModel } from "../models/repos.model.js";
+import { createOctokit } from "../../../core/octokit.client.js";
 
 //service to get list of repositories from github
-export async function getReposFromGithub(githubToken, etag) {
-  let response = await fetch("https://api.github.com/user/repos", {
+export async function getReposFromGithub(user) {
+  const octokitClient = createOctokit(user.githubToken);
+
+  const response = await octokitClient.request(`GET /users/${user.username}/repos`, {
+    username: user.username,
     headers: {
-      Authorization: `Bearer ${githubToken}`,
-      "If-None-Match": etag || "",
+      "X-GitHub-Api-Version": "2026-03-10",
     },
   });
 
-  if (response.status === 304) {
-    return response; // No changes
-  }
-
   //checking response
-  if (!response.ok) {
-     console.error({
-        message: "repositories from github, is not okay",
-        location: "repos/repos.service.js",
-        error: "required kron, does not exist at mongoDB",
-      });
-
-      
-      return {
-        error: {
-          message: "required kron, does not exist",
-        },
-      };
-      
+  if (response.status === 200) {
+    return response;
   }
 
-  return response;
-}
+    console.error({
+      message: "repositories from github, is not okay",
+      location: "repos/repos.service.js",
+      error: response,
+    });
 
-// get repos from redis
-export async function getReposFromRedis(user) {
-  const redisRepoKey = `user:${user.githubId}:repos`;
-  const data = await redisClient.get(redisRepoKey); //redis repos
-  return data ? JSON.parse(data) : [];
+    return {
+      error: {
+        message: "repositories from github, is not okay",
+      },
+}
 }
 
 // function to get all Repos
 export async function getRepos(user) {
-  const redisEtagKey = `user:${user.id}:etag`;
-  const redisRepoKey = `user:${user.id}:repos`; 
-  const redisEtag = await redisClient.get(redisEtagKey); //checking redis for etag
-  let etag = redisEtag || "";
+  const TTL = 60*60*24; // 24 hours
+  const redisRepoKey = `user:${user.id}:repos`;
+  const cached = await redisClient.get(redisRepoKey);
 
-
-  const response = await getReposFromGithub(user.githubToken, etag);
-  console.log("response status: ", response.status);
-
-  //=== if nothing changes===
-  if (response.status == 304) {
-    const redisRepos = await redisClient.get(redisRepoKey);
-    if (!redisRepos) {
-      const githubRepos = await RepoModel.find({ githubOwnerId: user.id }); 
-      return githubRepos;
-    }
-    return JSON.parse(redisRepos);
+  if (cached) {
+    return JSON.parse(cached);
   }
 
+  // ========= HANDLING CACHE MISS ==========//
+
+  const response = await getReposFromGithub(user);
   //===If something had changed in the etag===
-  else if (response.status == 200) {
-    etag = response.headers.get("etag"); //retrieving etag from response
-    const repoData = await response.json();
-    const repoList = repoData.map((e) => ({
+  if (response.status === 200) {
+    const repoList = response.data.map((e) => ({
       repoId: e.id,
       repoUrl: e.html_url,
       repoName: e.name,
@@ -75,22 +55,17 @@ export async function getRepos(user) {
       owner: e.owner.login,
     })); // prepared repoList
 
-
     // ========= UPDATING MONGODB ==========//
-    await RepoModel.deleteMany({ githubOwnerId: user.id });//delete all client owned repo
-    
+    await RepoModel.deleteMany({ githubOwnerId: user.id });
     await Promise.all(
       repoList.map((repo) => {
         const newRepo = new RepoModel(repo);
-        return newRepo.save(); // returns a promise
+        return newRepo.save();
       }),
     ); // inject in new repos
 
-
-
     // ========= UPDATING REDIS ==========//
-    await redisClient.set(redisRepoKey, JSON.stringify(repoList));
-    await redisClient.set(redisEtagKey, etag);
+    await redisClient.set(redisRepoKey, JSON.stringify(repoList),{EX:TTL});
 
     return repoList; // returning repos to client
   }

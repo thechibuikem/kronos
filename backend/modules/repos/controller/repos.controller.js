@@ -1,4 +1,4 @@
-import { getRepos } from "../service/repos.service.new.js";
+import { getRepos } from "../service/repos.service.js";
 import { getMDBUserThroughRefreshToken } from "../../user/service/user.service.js";
 
 // getting all krons from mdb
