@@ -11,8 +11,10 @@ export function getMetrics (commits){
   const totalChurn = totalAdds + totalDeletes;
   const deletionRatio = totalDeletes / totalChurn;
   const additionRatio = totalAdds / totalChurn;
-  const filesChangedCount = getUniqueFiles(commits).size;
-  const rewriteCount = getRewriteFiles(commits, 2).length;
+  // const filesChangedCount = getUniqueFiles(commits).size;
+  // const rewriteCount = getRewriteFiles(commits, 2).length;
+  const filesChanged = getUniqueFiles(commits);
+  const rewriteFiles = getRewriteFiles(commits, 2)
   const messages = getMessages(commits)
 
 return {
@@ -21,8 +23,10 @@ return {
   totalChurn,
   deletionRatio,
   additionRatio,
-  filesChangedCount,
-  rewriteCount,
+  filesChanged,
+  rewriteFiles,
+  // filesChangedCount,
+  // rewriteCount,
   messages,
 };
 }
@@ -34,8 +38,10 @@ export function heuristicEngine(metrics) {
     totalChurn,
     deletionRatio,
     additionRatio,
-    filesChangedCount,
-    rewriteCount,
+    filesChanged,
+    rewriteFiles,
+    // filesChangedCount,
+    // rewriteCount,
     messages,
   } = metrics;
 
@@ -58,11 +64,11 @@ const SEVERITY = {
   }
 
   // Rule 2: File rewrite thrashing
-  if (rewriteCount > 3) {
+  if (rewriteFiles.length > 3) {
     flags.push({
       pattern: "rewrite_thrashing",
       severity: SEVERITY.high,
-      reason: `Touched ${rewriteCount} files multiple times. Unclear intent.`,
+      reason: `Touched ${rewriteFiles.length} files multiple times. Unclear intent.`,
     });
   }
 
@@ -76,11 +82,11 @@ const SEVERITY = {
   }
 
   // Rule 4: File scatter
-  if (filesChangedCount > 10) {
+  if (filesChanged.size > 10) {
     flags.push({
       pattern: "file_scatter",
       severity: SEVERITY.low,
-      reason: `Changed ${filesChangedCount} files. Scattered focus.`,
+      reason: `Changed ${filesChanged.size} files. Scattered focus.`,
     });
   }
 
@@ -102,41 +108,4 @@ const SEVERITY = {
         : SEVERITY.none, 
   };
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  

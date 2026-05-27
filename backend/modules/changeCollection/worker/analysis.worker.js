@@ -1,8 +1,7 @@
+import { Worker } from "bullmq";
 import { analysisQueue } from "../../../core/queue/analysis.queue.js";
 import { redisClient } from "../../../core/redis.client.js";
-// const { analyzeWithGemini } = require("../services/analyticalEngine");
-import { Worker } from "bullmq";
-
+import { analyze } from "../../analytical-engine/services/analyse.js";
 
 export const analysisWorker = new Worker(
   "analysis-queue",
@@ -13,7 +12,7 @@ export const analysisWorker = new Worker(
     console.log(`Processing batch for ${userId}`);
 
     // Send to Gemini
-    // const insights = await analyzeWithGemini(commits);
+    const insights = await analyze(commits);
 
     // Persist to MongoDB
     // await saveInsights(userID, insights);

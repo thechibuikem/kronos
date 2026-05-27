@@ -4,9 +4,16 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
 
-async function geminiAnalyze(commits, flags) {
+export async function flaggedAgent(metrics, flags) {
+  const {
+    messages,
+  } = metrics;
+
   const flagSummary = flags
-    .map((f) => `[${f.severity.toUpperCase()}] ${f.pattern}: ${f.reason}`)
+    .map(
+      (flag) =>
+        `[${flag.severity.toUpperCase()}] ${flag.pattern}: ${flag.reason}`,
+    )
     .join("\n");
 
   const prompt = `You are a developer productivity coach. Analyze this 6-hour coding session.
@@ -15,12 +22,12 @@ Detected patterns (severity flagged):
 ${flagSummary}
 
 Commit messages:
-${commits.map((c) => `- ${c.message}`).join("\n")}
+${messages.map((message) => `- ${message}`).join("\n")}
 
 Your job: 
 1. Explain the core pattern you see
 2. Give ONE actionable suggestion to improve next time
-Keep it 2-3 sentences, direct.`;
+Keep it 1-2 sentences, direct.`;
 
   const response = await ai.models.generateContent({
     model: "gemini-2.0-flash",
