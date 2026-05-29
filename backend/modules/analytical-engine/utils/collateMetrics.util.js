@@ -65,6 +65,6 @@ export function getMessages(commits) {
   return messages;
 }
 
-const total = arr.reduce((sum, obj) => sum + obj.price, 0);
+// const total = arr.reduce((sum, obj) => sum + obj.price, 0);
 
 
