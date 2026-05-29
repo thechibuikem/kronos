@@ -3,7 +3,7 @@ import { flaggedAgent } from "../agents/flagged.agent.js";
 import { unflaggedAgent } from "../agents/unflagged.agent.js";
 
 
-export function analyze(commits){
+export async function analyze(commits){
   const metrics = getMetrics(commits)
   const heuristics = heuristicEngine(metrics)
 
