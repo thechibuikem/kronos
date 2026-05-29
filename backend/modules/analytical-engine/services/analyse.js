@@ -4,16 +4,19 @@ import { unflaggedAgent } from "../agents/unflagged.agent.js";
 
 
 export function analyze(commits){
-const metrics = getMetrics(commits)
-const heuristics = heuristicEngine(metrics)
+  const metrics = getMetrics(commits)
+  const heuristics = heuristicEngine(metrics)
 
-if (heuristic.isFlagged) {
-  // send to Gemini for analysis
-  const insight = await flaggedAgent(metrics, heuristic.flags);
-} else {
-  // send template email
-  const insight = await unflaggedAgent(metrics);
-}
+  if (heuristic.isFlagged) {
+    // send to Gemini for analysis
+    const insight = await flaggedAgent(metrics, heuristic.flags);
+    console.log("AI's flagged insight",insight)
+  } else {
+    // send template email
+    const insight = await unflaggedAgent(metrics);
+    console.log("AI's unflagged insight",insight)
+
+  }
 }
 
 
