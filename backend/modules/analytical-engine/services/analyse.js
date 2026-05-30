@@ -7,9 +7,9 @@ export async function analyze(commits){
   const metrics = getMetrics(commits)
   const heuristics = heuristicEngine(metrics)
 
-  if (heuristic.isFlagged) {
+  if (heuristics.isFlagged) {
     // send to Gemini for analysis
-    const insight = await flaggedAgent(metrics, heuristic.flags);
+    const insight = await flaggedAgent(metrics, heuristics.flags);
     console.log("AI's flagged insight",insight)
   } else {
     // send template email
