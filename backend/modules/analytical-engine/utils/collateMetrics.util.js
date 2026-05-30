@@ -12,7 +12,7 @@ export function getUniqueFiles(commits) {
 export function collateMetrics(commits, metric) {
   const collatedMetrics = [];
 
-  function getFileMetrics(metric) {
+  function getFileMetrics(commit,metric) {
     const totalMetric = commit.files.reduce(
       (sum, file) => sum + (file[metric] || 0),
       0,
@@ -21,7 +21,7 @@ export function collateMetrics(commits, metric) {
   }
 
   commits.forEach((commit) => {
-    const totaladdsPerCommit = getFileMetrics(metric);
+    const totaladdsPerCommit = getFileMetrics(commit,metric);
     collatedMetrics.push(totaladdsPerCommit);
   });
 
