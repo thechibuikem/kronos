@@ -5,14 +5,20 @@ import {
   getMessages
 } from "../utils/collateMetrics.util.js";
 
+export const SEVERITY = {
+  none: 0,
+  low: 1,
+  medium: 2,
+  high: 3,
+};
+
+
 export function getMetrics (commits){
   const totalAdds = collateMetrics(commits, "additions");
   const totalDeletes = collateMetrics(commits, "deletions");
   const totalChurn = totalAdds + totalDeletes;
   const deletionRatio = totalDeletes / totalChurn;
   const additionRatio = totalAdds / totalChurn;
-  // const filesChangedCount = getUniqueFiles(commits).size;
-  // const rewriteCount = getRewriteFiles(commits, 2).length;
   const filesChanged = getUniqueFiles(commits);
   const rewriteFiles = getRewriteFiles(commits, 2)
   const messages = getMessages(commits)
@@ -25,8 +31,6 @@ return {
   additionRatio,
   filesChanged,
   rewriteFiles,
-  // filesChangedCount,
-  // rewriteCount,
   messages,
 };
 }
@@ -40,17 +44,9 @@ export function heuristicEngine(metrics) {
     additionRatio,
     filesChanged,
     rewriteFiles,
-    // filesChangedCount,
-    // rewriteCount,
     messages,
   } = metrics;
 
-const SEVERITY = {
-  none: 0,
-  low: 1,
-  medium: 2,
-  high: 3,
-};
 
   const flags = [];
 

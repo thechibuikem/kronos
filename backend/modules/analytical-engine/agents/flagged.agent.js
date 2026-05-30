@@ -1,4 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
+import { SEVERITY } from "../services/analyse-batch.service.js";
+
+
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
@@ -11,12 +14,18 @@ export async function flaggedAgent(metrics, flags) {
 
   const flagSummary = flags
     .map(
-      (flag) =>
-        `[${flag.severity.toUpperCase()}] ${flag.pattern}: ${flag.reason}`,
+      (flag) =>{
+
+        const key = Object.keys(SEVERITY).find(key=>flags[key]=== flag.severity)
+        
+       return `[${key}] ${flag.pattern}: ${flag.reason}` }
     )
     .join("\n");
 
-  const prompt = `You are a developer productivity coach. Analyze this 6-hour coding session.
+
+
+
+const prompt = `You are a developer productivity coach. Analyze this 6-hour coding session.
 
 Detected patterns (severity flagged):
 ${flagSummary}
