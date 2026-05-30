@@ -6,8 +6,8 @@ import {
 } from "../utils/collateMetrics.util.js";
 
 export function getMetrics (commits){
-  const totalAdds = collateMetrics(commits, additions);
-  const totalDeletes = collateMetrics(commits, deletions);
+  const totalAdds = collateMetrics(commits, "additions");
+  const totalDeletes = collateMetrics(commits, "deletions");
   const totalChurn = totalAdds + totalDeletes;
   const deletionRatio = totalDeletes / totalChurn;
   const additionRatio = totalAdds / totalChurn;

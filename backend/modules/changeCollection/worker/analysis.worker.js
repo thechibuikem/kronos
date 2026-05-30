@@ -8,14 +8,13 @@ export const analysisWorker = new Worker(
   async (job) => {
     console.log("job data\n", job.data);
 
-    let { userId,commits } = job.data;
+    let { userId, commits } = job.data;
     console.log(`Processing batch for ${userId}`);
 
     // Send to Gemini
     const insights = await analyze(commits);
 
     // Persist to MongoDB
-    // await saveInsights(userID, insights);
 
     // Clear Redis
     await redisClient.del(`kron:${userId}:commits`);
