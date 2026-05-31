@@ -12,7 +12,7 @@ export const analysisWorker = new Worker(
     console.log(`Processing batch for ${userId}`);
 
     // Send to Gemini
-    const insights = await analyze(commits);
+    // const insights = await analyze(commits);
 
     // Persist to MongoDB
 
