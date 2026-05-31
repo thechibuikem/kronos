@@ -1,16 +1,31 @@
-import { userModel } from "../models/user.model.js"
+import { userModel } from "../models/user.model.js";
 
 export async function getMDBUserThroughRefreshToken(refreshToken) {
-const user = await userModel.findOne({refreshToken})
-// guard incase there's no user
-if (!user){
-console.error({
-  message: "Failed to fetch user",
-  location: "user/user.service.js",
-  error: user,
-});
-throw new Error("Failed to fetch user");
+  const user = await userModel.findOne({ refreshToken });
+  // guard incase there's no user
+  if (!user) {
+    console.error({
+      message: "Failed to fetch user",
+      location: "user/user.service.js",
+      error: user,
+    });
+    throw new Error("Failed to fetch user");
+  }
+
+  return user;
 }
 
-return user
+export async function getUserFromUserId(userId) {
+  const user = await userModel.findOne({ _id:userId });
+  // guard incase there's no user
+  if (!user) {
+    console.error({
+      message: "Failed to fetch user",
+      location: "user/user.service.js",
+      error: user,
+    });
+    throw new Error("Failed to fetch user");
+  }
+
+  return user;
 }

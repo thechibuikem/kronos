@@ -2,6 +2,7 @@ import { Worker } from "bullmq";
 import { analysisQueue } from "../../../core/queue/analysis.queue.js";
 import { redisClient } from "../../../core/redis.client.js";
 import { analyze } from "../../analytical-engine/services/analyse.js";
+import { sendMail } from "../../notification-system/services/sendmail.service.js";
 
 export const analysisWorker = new Worker(
   "analysis-queue",
@@ -14,12 +15,15 @@ export const analysisWorker = new Worker(
     // Send to Gemini
     // const insights = await analyze(commits);
 
+    // send mail
+    // const mail = await sendMail(userId,insights);
+
     // Persist to MongoDB
 
     // Clear Redis
     await redisClient.del(`kron:${userId}:commits`);
 
-    console.log("it got to the deleting from redis part")
+    console.log("it got to the deleting from redis part");
     return { success: true };
   },
   {
