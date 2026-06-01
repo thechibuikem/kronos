@@ -5,12 +5,14 @@ const ai = new GoogleGenAI({
 });
 
 export async function unflaggedAgent(metrics) {
+  let uniqueFiles = metrics.filesChanged
+  uniqueFiles = [...uniqueFiles]
   const prompt = `You are a developer productivity coach. Summarize this developer's 6-hour session in 1-2 sentences. Neutral tone.
 
   <STATS>
     - Added: ${metrics.totalAdds} lines
     - Deleted: ${metrics.totalDeletes} lines
-    - Files changed: ${metrics.filesChanged.join(", ")}
+    - Files changed: ${uniqueFiles.join(", ")} 
     - Commits: ${metrics.messages.join(", ")}
   </STATS>
 
