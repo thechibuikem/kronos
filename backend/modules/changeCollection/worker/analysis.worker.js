@@ -13,22 +13,20 @@ export const analysisWorker = new Worker(
 
     // Send to Gemini
     const insights = await analyze(commits);
+    console.log("\nAI's insight",insights)
 
-if (insights.tip){
-  // send mail using tip format
-}
-else if (insights.summary){
-  // send mail using summary format
-}
-
-
+    // if (insights.tip) {
+    //   // send mail using tip format
+    // } else if (insights.summary) {
+    //   // send mail using summary format
+    // }
 
     // Persist to MongoDB
 
     // Clear Redis
     await redisClient.del(`kron:${userId}:commits`);
 
-    console.log("it got to the deleting from redis part")
+    console.log("it got to the deleting from redis part");
     return { success: true };
   },
   {
