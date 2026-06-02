@@ -5,7 +5,7 @@ export function getUniqueFiles(commits) {
       uniqueFiles.add(file.filename);
     });
   });
-  return uniqueFiles;
+  return uniqueFiles ;
 }
 
 // field = "commit.files.x"
