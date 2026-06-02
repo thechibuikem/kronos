@@ -30,7 +30,8 @@ export async function sendMail(userId,insights) {
  });
 
   if (error) {
-    return error
+    // return error
+    console.log (error)
   }
   
   return { data };
