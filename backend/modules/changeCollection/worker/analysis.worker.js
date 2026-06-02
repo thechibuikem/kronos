@@ -16,14 +16,10 @@ export const analysisWorker = new Worker(
     const insights = await analyze(commits);
     console.log("\nAI's insight",insights)
 
-    // if (insights.tip) {
-    //   // send mail using tip format
-    // } else if (insights.summary) {
-    //   // send mail using summary format
-    // }
 
     // send mail
-    // const mail = await sendMail(userId,insights);
+    const mail = await sendMail(userId,insights);
+    console.log("mail at analysis-worker",mail)
 
     // Persist to MongoDB
 
