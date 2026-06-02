@@ -24,8 +24,9 @@ export async function sendMail(userId,insights) {
 
 
  const { data, error } = await resend.emails.send({
-   from: `${generateName()} from Kronos`,
-   to: receiverEmail,
+  //  from: `${generateName()} from Kronos <onboarding@resend.dev>`,
+   from:"Kronos <onboarding@resend.dev>",
+   to: [receiverEmail],
    subject: "Productivity Report",
    html: content,
  });
