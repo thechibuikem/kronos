@@ -13,8 +13,8 @@ export const analysisWorker = new Worker(
     console.log(`Processing batch for ${userId}`);
 
     // Send to Gemini
-    // const insights = await analyze(commits);
-    console.log("\nAI's insight",insights)
+    const insights = await analyze(commits);
+    // console.log("\nAI's insight",insights)
 
 
     // send mail

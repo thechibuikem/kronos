@@ -11,12 +11,12 @@ export async function analyze(commits){
     // send to Gemini for analysis
     const insights = await flaggedAgent(metrics, heuristics.flags);
     return insights;
-    // console.log("AI's flagged insight",insight)
+    console.log("AI's flagged insight",insight)
   } else {
     // send template email
     const insights = await unflaggedAgent(metrics);
     return insights;
-    // console.log("AI's unflagged insight",insight)
+    console.log("AI's unflagged insight",insight)
 
   }
 }
