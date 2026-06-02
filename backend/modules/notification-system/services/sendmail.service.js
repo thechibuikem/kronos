@@ -20,8 +20,9 @@ export async function sendMail(userId,insights) {
         <p>${insights.tip}</p>
         <p>${insights.explanation}</p>
       `
-    }
-  
+
+
+
  const { data, error } = await resend.emails.send({
    from: `${generateName()} from Kronos`,
    to: [receiverEmail],
@@ -29,14 +30,18 @@ export async function sendMail(userId,insights) {
    html: content,
  });
 
-  if (error) {
-    // return error
-    console.log (error)
-  }
-  
-  return { data };
+ if (error) {
+   // return error
+   return error;
+ }
 
-console.log("email sent successfully")
+ return { data };
+
+ console.log("email sent successfully");
+
+
+    }
+  
 
 // app.listen(3000, () => {
 //   console.log("Listening on http://localhost:3000");
