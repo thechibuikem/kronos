@@ -13,12 +13,12 @@ export const analysisWorker = new Worker(
     console.log(`Processing batch for ${userId}`);
 
     // Send to Gemini
-    const insights = await analyze(commits);
+    // const insights = await analyze(commits);
     // console.log("\nAI's insight",insights)
 
 
     // send mail
-    const mail = await sendMail(userId,insights);
+    // const mail = await sendMail(userId,insights);
     console.log("mail at analysis-worker",mail)
 
     // Persist to MongoDB
