@@ -38,7 +38,7 @@ export async function flaggedAgent(metrics, flags) {
       - Length: Each Explanation must be 8-20 words maximum
       - Length: Each Tip must be 8-30 words maximum
       - Relevance: Tips must directly relate to developer-data
-      - Tone: Use friendly, actionable language (e.g., "Try this" not "You must")
+      - Tone: Use friendly, conversational, actionable language (e.g., "Try this" not "You must")
       - Impact: Focus on HIGH-IMPACT actions that meaningfully improve productivity
       - Specificity: Avoid generic advice, be developer-data contextual and precise
     </TIP_REQUIREMENTS>

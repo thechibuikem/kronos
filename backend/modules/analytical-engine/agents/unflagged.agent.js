@@ -16,9 +16,10 @@ export async function unflaggedAgent(metrics) {
     - Commits: ${metrics.messages.join(", ")}
   </STATS>
 
-  <TIP_REQUIREMENTS>
+  <SUMMARY_REQUIREMENTS>
     -Just factual summary. No coaching, no judgment.
-  </TIP_REQUIREMENTS>
+      - Tone: Use friendly, conversational language
+  </SUMMARY_REQUIREMENTS>
 
     <OUTPUT_FORMAT>
       Strictly return ONLY a valid JSON object in this exact format with no additional text:
