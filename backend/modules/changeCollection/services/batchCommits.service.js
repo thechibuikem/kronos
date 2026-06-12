@@ -1,13 +1,13 @@
 import { redisClient } from "../../../core/redis.client.js";
 
-export async function storeCommitBatch(commits) {
-  const key = `kron:${commits[0].userId}:commits`;
+// export async function storeCommitBatch(commits) {
+//   const key = `kron:${commits[0].userId}:commits`;
 
-  // Store each commit as JSON string
-  for (const commit of commits) {
-    await redisClient.lPush(key, JSON.stringify(commit));
-  }
-}
+//   // Store each commit as JSON string
+//   for (const commit of commits) {
+//     await redisClient.lPush(key, JSON.stringify(commit));
+//   }
+// }
 
 // export async function storeCommitBatch(commits) {
 //   const userId = commits[0].userId;
