@@ -5,7 +5,7 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
 
-export async function flaggedAgent(metrics, flags) {
+export async function flaggedAgent(kronName, metrics, flags) {
   const { messages } = metrics;
 
   const flagSummary = flags
@@ -21,10 +21,9 @@ export async function flaggedAgent(metrics, flags) {
   const prompt = ` You are a developer productivity coach. Analyze this 6-hour coding session
 
     <DEVELOPER_DATA>
-      Detected patterns (severity flagged):
-      Commit messages:
-      ${messages.map((message) => `- ${message}`).join("\n")}
-      ${flagSummary}
+      repository name: ${kronName}
+      Detected patterns (severity flagged): ${flagSummary}
+      Commit messages: ${messages.map((message) => `- ${message}`).join("\n")}
 
     </DEVELOPER_DATA>
 
@@ -40,7 +39,7 @@ export async function flaggedAgent(metrics, flags) {
       - Relevance: Tips must directly relate to developer-data
       - Tone: Use friendly, conversational, actionable language (e.g., "Try this" not "You must")
       - Impact: Focus on HIGH-IMPACT actions that meaningfully improve productivity
-      - Specificity: Avoid generic advice, be developer-data contextual and precise
+      - Specificity: Avoid generic advice, be DEVELOPER-DATA contextual and precise
     </TIP_REQUIREMENTS>
 
     <OUTPUT_FORMAT>
@@ -60,7 +59,7 @@ export async function flaggedAgent(metrics, flags) {
     },
   });
 
-  return JSON.parse(response.text)
+  return JSON.parse(response.text);
 }
 
 

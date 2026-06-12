@@ -21,18 +21,19 @@ export async function getWebhookData(data) {
 
     // takes in commit from commits array and modifes it to include more specific file-based data.
     const enrichedCommits = await Promise.all(
-      commits.map(async (commit) => {
-        const richer = await getRicherCommitData(commit, data, octokitClient);
+      data.map(async (datum) => {
+        const richer = await getRicherCommitData(data,octokitClient);
 
         if (!richer) {
           throw new Error("richer DNE");
         }
 
         return {
+          kronId:datum.repository.id,
           userId:requiredUser._id,
-          commitId: commit.id,
-          message: commit.message,
-          timestamp: commit.timestamp,
+          commitId: datum.commit.id,
+          message: datum.commit.message,
+          timestamp: datum.commit.timestamp,
           // author: commit.author?.username,
           files: richer, // enriched data
         };
@@ -46,11 +47,11 @@ export async function getWebhookData(data) {
 }
 
 // helper function to get file-based data which webhook omits
-export async function getRicherCommitData(commit, data, octokitClient) {
+export async function getRicherCommitData(data, octokitClient) {
   try {
     const owner = data.repository.owner.login;
     const repo = data.repository.name;
-    const sha = commit.id;
+    const sha = data.commit.id;
 
     const res = await octokitClient.request(
       `GET /repos/{owner}/{repo}/commits/{ref}`,

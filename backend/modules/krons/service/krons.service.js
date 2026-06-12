@@ -76,3 +76,7 @@ export async function addKron(kronData) {
     throw err;
   }
 }
+
+export async function getKron(id) {
+  return KronModel.findOne({ repoId: id }).populate("repo");
+}

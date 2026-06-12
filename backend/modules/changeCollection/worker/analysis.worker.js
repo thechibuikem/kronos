@@ -9,11 +9,11 @@ export const analysisWorker = new Worker(
   async (job) => {
     console.log("job data\n", job.data);
 
-    let { userId, commits } = job.data;
+    let { userId, kronName, commits } = job.data;
     console.log(`Processing batch for ${userId}`);
 
     // Send to Gemini
-    const insights = await analyze(commits);
+    const insights = await analyze(kronName, commits);
     // console.log("\nAI's insight",insights)
 
 

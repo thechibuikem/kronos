@@ -1,16 +1,21 @@
 import cron from "node-cron";
 import { redisClient } from "../../../core/redis.client.js";
 import { analysisQueue } from "../../../core/queue/analysis.queue.js";
+import { getKron } from "../../krons/service/krons.service.js";
 
 export async function collectChanges() {
   // Get all user keys from Redis
-  const keys = await redisClient.keys("kron:*:commits");
+  const keys = await redisClient.keys("kron:*:*:commits");
 
   for (const key of keys) {
     // Extract userID from key
     const userId = key.split(":")[1];
+    const kronId = key.split(":")[2];
+    const kron = await getKron(kronId);
+    const kronName = kron.repo.repoName
 
-    // Fetch all commits for this user
+
+    // Fetch all commits for this user, under this kron
     const commits = await redisClient.lRange(key, 0, -1);
 
     if (commits.length === 0) continue;
@@ -18,9 +23,9 @@ export async function collectChanges() {
     // Parse commits back to objects
     const commitObjects = commits.map((commit) => JSON.parse(commit));
 
-
       const jobData = {
       userId,
+      kronName,
       commits: commitObjects,
     };
 
@@ -34,16 +39,16 @@ export async function collectChanges() {
 
 
 
+// add to queue for the actual analysis
     try {
-    
-      console.log("Attempting to queue:", {
-        userId,
-        commitCount: commitObjects.length,
-        firstCommit: commitObjects[0],
-      });
+      // console.log("Attempting to queue:", {
+      //   userId,
+      //   kronId
+      //   commitCount: commitObjects.length,
+      //   firstCommit: commitObjects[0],
+      // });
 
 
-    // const stringifiedJobData = JSON.stringify(jobData)
     await analysisQueue.add("analyze", jobData);
     console.log("✓ Successfully queued");
     } catch (error) {
