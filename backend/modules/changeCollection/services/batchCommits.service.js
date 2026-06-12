@@ -34,7 +34,7 @@ export async function storeCommitBatch(commits) {
 //   }
 // }
 
-export async function storeCommitBatchV1(commits) {
+export async function storeCommitBatch(commits) {
   const key = `kron:${commits[0].userId}:${commits[0].kronId}:commits`;
 
   // Store each commit as JSON string
