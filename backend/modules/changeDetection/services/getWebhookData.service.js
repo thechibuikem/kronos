@@ -27,7 +27,7 @@ export async function getWebhookData(data) {
     const enrichedCommits = await Promise.all(
       commits.map(
         async (commit) => {
-        sha = commit.id
+        const sha = commit.id
         const richer = await getRicherCommitData(sha, data, octokitClient);
 
         if (!richer) {
