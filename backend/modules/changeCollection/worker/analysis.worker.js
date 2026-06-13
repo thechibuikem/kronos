@@ -9,7 +9,7 @@ export const analysisWorker = new Worker(
   async (job) => {
     console.log("job data\n", job.data);
 
-    let { userId, kronName, commits } = job.data;
+    let { userId, kronId, kronName, commits } = job.data;
     console.log(`Processing batch for ${userId}`);
 
     // Send to Gemini
@@ -24,7 +24,7 @@ export const analysisWorker = new Worker(
     // Persist to MongoDB
 
     // Clear Redis
-    await redisClient.del(`kron:${userId}:commits`);
+    await redisClient.del(`kron:${userId}:${kronId}:commits`);
 
     console.log("it got to the deleting from redis part");
     return { success: true };

@@ -25,6 +25,7 @@ export async function collectChanges() {
 
       const jobData = {
       userId,
+      kronId,
       kronName,
       commits: commitObjects,
     };
