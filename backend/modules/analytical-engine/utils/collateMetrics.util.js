@@ -21,8 +21,8 @@ export function collateMetrics(commits, metric) {
   }
 
   commits.forEach((commit) => {
-    const totaladdsPerCommit = getFileMetrics(commit,metric);
-    collatedMetrics.push(totaladdsPerCommit);
+    const totalAddsPerCommit = getFileMetrics(commit,metric);
+    collatedMetrics.push(totalAddsPerCommit);
   });
 
   const total = collatedMetrics.reduce((sum, value) => sum + value, 0);
