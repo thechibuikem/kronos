@@ -2,7 +2,6 @@ import { createOctokit } from "../../../core/octokit.client.js";
 import { userModel } from "../../user/models/user.model.js";
 
 //2. Service to respond to webhook response provider.
-//2. Service to respond to webhook response provider.
 export async function getWebhookData(data) {
   try {
     if (!data) {

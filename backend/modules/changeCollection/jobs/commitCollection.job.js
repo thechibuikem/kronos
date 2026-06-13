@@ -41,14 +41,6 @@ export async function collectChanges() {
 
 // add to queue for the actual analysis
     try {
-      // console.log("Attempting to queue:", {
-      //   userId,
-      //   kronId
-      //   commitCount: commitObjects.length,
-      //   firstCommit: commitObjects[0],
-      // });
-
-
     await analysisQueue.add("analyze", jobData);
     console.log("✓ Successfully queued");
     } catch (error) {
