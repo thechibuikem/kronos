@@ -25,14 +25,14 @@ export async function webhookDataController(req, res) {
   );
 
   await storeCommitBatch(webhookData)
-  
+
 
   res.status(204).send
   }
 catch(error){
   
-res.status(500).send
-console.error(error)
+  console.error(error)
+// res.status(500).send
 throw new Error("error at webhook data controller\n",error)
 }
 }
