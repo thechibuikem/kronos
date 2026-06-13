@@ -51,7 +51,7 @@ export async function getWebhookData(data) {
   }
 }
 
-// helper function to get file-based data which webhook commits
+// get file-based data which webhook commits
 export async function getRicherCommitData(sha, data, octokitClient) {
   try {
     const owner = data.repository.owner.login;
