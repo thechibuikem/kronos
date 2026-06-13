@@ -11,10 +11,11 @@ export async function getWebhookData(data) {
     if (!requiredUser) {
       throw new Error("user not found");
     }
-
     const octokitClient = createOctokit(requiredUser.githubToken);
-console.log(data)
+
+  console.log(data)
     const commits = data.commits;
+    const repository = data.repository;
     if (!commits) {
       throw new Error("commits DNE");
     }
@@ -33,8 +34,8 @@ console.log(data)
         }
 
         return {
-          kronId:data.repository.id,
-          userId:requiredUser._id,
+          kronId: repository.id,
+          userId: requiredUser._id,
           commitId: commit.id,
           message: commit.message,
           timestamp: commit.timestamp,
