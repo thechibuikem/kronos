@@ -32,7 +32,7 @@ catch(error){
   
 res.status(500).send
 console.error(error)
-throw new Error("error at webhook data controller",error)
+throw new Error("error at webhook data controller/",error)
 }
 }
 
