@@ -25,6 +25,7 @@ export async function webhookDataController(req, res) {
   );
 
   await storeCommitBatch(webhookData)
+  
 
   res.status(204).send
   }
