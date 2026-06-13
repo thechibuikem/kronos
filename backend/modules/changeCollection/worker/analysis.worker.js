@@ -53,9 +53,10 @@ analysisWorker.on("failed", (job, error) => {
 
 analysisWorker.on("error", (error) => {
      console.error({
-       message:"worker error",
+       message: "worker error",
        location: "change-collection/analysis.worker.js",
-       error: error.message,
+       //  error: error.message,
+        error: error,
      });
 });
   
