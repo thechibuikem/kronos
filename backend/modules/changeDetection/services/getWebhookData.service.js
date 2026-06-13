@@ -13,13 +13,13 @@ export async function getWebhookData(data) {
     }
     const octokitClient = createOctokit(requiredUser.githubToken);
 
-  console.log(data)
+    console.log(data)
     const commits = data.commits;
     const repository = data.repository;
     if (!commits) {
       throw new Error("commits DNE");
     }
-        if (!data.repository) {
+    if (!data.repository) {
       throw new Error("data.repository DNE");
     }
 
@@ -27,7 +27,8 @@ export async function getWebhookData(data) {
     const enrichedCommits = await Promise.all(
       commits.map(
         async (commit) => {
-        const richer = await getRicherCommitData(data, octokitClient);
+        sha = commit.id
+        const richer = await getRicherCommitData(sha, data, octokitClient);
 
         if (!richer) {
           throw new Error("richer DNE");
@@ -51,12 +52,10 @@ export async function getWebhookData(data) {
 }
 
 // helper function to get file-based data which webhook commits
-export async function getRicherCommitData(data, octokitClient) {
+export async function getRicherCommitData(sha, data, octokitClient) {
   try {
     const owner = data.repository.owner.login;
     const repo = data.repository.name;
-    const sha = data.commit.id;
-
     const res = await octokitClient.request(
       `GET /repos/{owner}/{repo}/commits/{ref}`,
       {
