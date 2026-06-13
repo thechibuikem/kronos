@@ -13,10 +13,13 @@ export async function getWebhookData(data) {
     }
 
     const octokitClient = createOctokit(requiredUser.githubToken);
-
+console.log(data)
     const commits = data.commits;
     if (!commits) {
       throw new Error("commits DNE");
+    }
+        if (!data.repository) {
+      throw new Error("data.repository DNE");
     }
 
     // takes in commit from commits array and modifes it to include more specific file-based data.

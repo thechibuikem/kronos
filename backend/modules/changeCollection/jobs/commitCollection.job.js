@@ -8,7 +8,7 @@ export async function collectChanges() {
   const keys = await redisClient.keys("kron:*:*:commits");
 
   for (const key of keys) {
-    // Extract userID from key
+    // Extract credentials from key
     const userId = key.split(":")[1];
     const kronId = key.split(":")[2];
     const kron = await getKron(kronId);
