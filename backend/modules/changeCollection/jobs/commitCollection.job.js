@@ -23,9 +23,9 @@ export async function collectChanges() {
     // Parse commits back to objects
     const commitObjects = commits.map((commit) => JSON.parse(commit));
 
-    console.log(commitObjects)
+    console.log("logging commit objects",commitObjects)
 
-    
+
       const jobData = {
       userId,
       kronId,
