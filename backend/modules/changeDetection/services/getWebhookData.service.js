@@ -38,7 +38,6 @@ console.log(data)
           commitId: commit.id,
           message: commit.message,
           timestamp: commit.timestamp,
-          // author: commit.author?.username,
           files: richer, // enriched data array
         };
       }),
