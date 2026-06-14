@@ -5,7 +5,7 @@ import { redisClient } from "../../../core/redis.client.js";
 export async function logOutService(refreshToken) {
 
 try{
- await redisClient.del(refreshToken);
+ await redisClient.del(`refresh:${refreshToken}`);
 }
 catch(error){
       console.error({

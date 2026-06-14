@@ -46,7 +46,6 @@ export async function githubTokenService(code) {
 
 if (!userRes.ok) {
   const body = await userRes.text();
-
   console.error({
     message: "GitHub user fetch failed",
     location: "auth/oauth.service.js",
@@ -75,7 +74,6 @@ const emailRes= await fetch("https://api.github.com/user/emails", {
 
 if (!emailRes.ok) {
   const body = await emailRes.text();
-
   console.error({
     message: "GitHub email fetch failed",
     location: "auth/oauth.service.js",
