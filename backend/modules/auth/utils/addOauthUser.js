@@ -39,8 +39,8 @@ export const addOauthUser = async (email, user,access_token) => {
 
       //.4 storing refresh token in redis 'w' TTL
 
-console.log("refreshToken\n", typeof refreshToken);
-console.log("newUserId\n", typeof newUser["_id"]);
+console.log("refreshToken\n @ add new user", typeof refreshToken);
+console.log("newUserId\n @ add new user", typeof newUser["_id"]);
       try{
       redisClient.set(`refresh:${refreshToken}`, newUser["_id"], {
         EX: 60 * 60 * 24 * 30,
@@ -90,6 +90,10 @@ console.log("newUserId\n", typeof newUser["_id"]);
       } 
 
       // .3 Store refresh token in redis
+
+console.log("refreshToken\n @ add existing user", typeof refreshToken);
+console.log("newUserId\n @ add existing user", typeof newUser["_id"]);
+
       try {
         // Before generating new tokens for existing user:
         if (existingOauthUser.refreshToken) {
