@@ -1,40 +1,26 @@
-//1. importing dependencies
-
 import { FaGithub } from "react-icons/fa";
-import { Button } from "@/features/home/ui/button";
-import { useEffect } from "react";
-import { getUrls } from "@/config";
 import { useDispatch } from "react-redux";
 import { setAccessToken } from "../slices/Authenthicated.Slice";
+import { getUrls } from "@/config";
 
+const { backendUrl } = getUrls();
 
-
-// 2. destructuring backend url
-const {backendUrl}= getUrls()
-
-// 3. functional component
 function OauthBtn() {
-
-  // function that runs on click of signUp With Github btn
   const handleOauthClick = async (e: React.FormEvent) => {
     e.preventDefault();
-    const endpoint = `${backendUrl}/api/v1/auth/github`;
-    //first going to github oauth stuff
-    window.location.href = endpoint;
+    window.location.href = `${backendUrl}/api/v1/auth/github`;
   };
 
-  {
-    /* oauth button */
-  }
   return (
-    <Button
-      variant="outline"
-      className="w-full hover:bg-[#00000020] hover:shadow-md cursor-pointer"
+    <button
       onClick={handleOauthClick}
+      className="w-full flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl
+        bg-[#111118] border border-[#1e293b] text-[#e2e8f0] text-sm font-medium
+        hover:border-[#06b6d4] hover:bg-[#0d1117] transition-all duration-150 cursor-pointer"
     >
-      <FaGithub/>
-      Continue With Github
-    </Button>
+      <FaGithub className="text-lg" />
+      Continue with GitHub
+    </button>
   );
 }
 
