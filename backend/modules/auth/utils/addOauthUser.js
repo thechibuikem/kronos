@@ -1,12 +1,13 @@
 // access_token means github access token while accessToken is jwt's access token
-import { userModel } from "../../user/models/user.model.js";
 import { redisClient } from "../../../core/redis.client.js";
 import jwt from "jsonwebtoken";
+import { userModel } from "../../user/models/user.model.js";
+import { getUserFromGithubId } from "../../user/service/user.service.js";
 
 
 export const addOauthUser = async (email, user,access_token) => {
   try {
-    const existingOauthUser = await userModel.findOne({githubId: user.id ,}); //find oauth user
+    const existingOauthUser = await getUserFromGithubId(user.id); //find oauth user.
 
     //1. user DNE
     if (!existingOauthUser) {
@@ -36,13 +37,16 @@ export const addOauthUser = async (email, user,access_token) => {
 
       //.3 assigning refreshToken to new user
       newUser.refreshToken = refreshToken;
+      await newUser.save();
+
+      // .retrieve new user's objectId 
+
 
       //.4 storing refresh token in redis 'w' TTL
-
 console.log("refreshToken\n @ add new user", typeof refreshToken);
 console.log("newUserId\n @ add new user", typeof newUser["_id"]);
       try{
-      redisClient.set(`refresh:${refreshToken}`, newUser["_id"], {
+      redisClient.set(`refresh:${refreshToken}`, newUser["_id"].toString(), {
         EX: 60 * 60 * 24 * 30,
       }); 
       }catch(error){
@@ -62,7 +66,6 @@ console.log("newUserId\n @ add new user", typeof newUser["_id"]);
         },
       };
     }
-
     //2. user Exists
     if (existingOauthUser) {
       //.1 create tokens
@@ -79,27 +82,27 @@ console.log("newUserId\n @ add new user", typeof newUser["_id"]);
           expiresIn: "30d",
         },
       );
-      // .2 updating our saved user
-      existingOauthUser.githubId = user.id;
-      existingOauthUser.repos_url = user.repos_url,
-      existingOauthUser.refreshToken = refreshToken;
-      existingOauthUser.githubToken = access_token;
 
-      if (existingOauthUser.userEmail!== email){
-        existingOauthUser.userEmail = email
+    //.3 updating our saved user
+    existingOauthUser.githubId = user.id;
+    existingOauthUser.repos_url = user.repos_url,
+    existingOauthUser.refreshToken = refreshToken;
+    existingOauthUser.githubToken = access_token;
+
+    if (existingOauthUser.userEmail!== email){
+      existingOauthUser.userEmail = email
       } 
 
       // .3 Store refresh token in redis
-
-console.log("refreshToken\n @ add existing user", typeof refreshToken);
-console.log("newUserId\n @ add existing user", typeof newUser["_id"]);
+      // console.log("refreshToken\n @ add existing user", typeof refreshToken);
+      // console.log("newUserId\n @ add existing user", typeof existingOauthUser["_id"]);
 
       try {
         // Before generating new tokens for existing user:
         if (existingOauthUser.refreshToken) {
           await redisClient.del(`refresh:${existingOauthUser.refreshToken}`);
         }
-        redisClient.set(`refresh:${refreshToken}`, existingOauthUser["_id"], {
+        redisClient.set(`refresh:${refreshToken}`, existingOauthUser["_id"].toString(), {
           EX: 60 * 60 * 24 * 30,
         });
       } catch (error) {
@@ -109,10 +112,8 @@ console.log("newUserId\n @ add existing user", typeof newUser["_id"]);
         );
       }
 
-
       //6, saving exosting user to DB
       await existingOauthUser.save();
-
       return {
         existingOauthUser,
         status: 200,

@@ -40,7 +40,7 @@ export async function githubTokenService(code) {
 
 
   //.4 Fetching user profile
-  const userRes= await fetch("https://api.github.com/user", {
+  const userRes = await fetch("https://api.github.com/user", {
     headers: { Authorization: `Bearer ${access_token}` },
   })  
 

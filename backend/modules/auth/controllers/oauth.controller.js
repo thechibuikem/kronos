@@ -10,10 +10,12 @@
   export function githubOauth(req, res) {
     try {
       const url = githubOauthService();//url to get github temporary code
-      return res.redirect(url); 
+      // return res.status(200).json({
+      //   gurl: url,
+      // });
+      return res.redirect(url)
     } catch (error) {
       console.error("OAuth Init error:", error);
-      
       return res.status(500).json({ error:  {
       "message":"oAuth initialization failed",
       "code":"OAUTH_INIT_FAILED"
@@ -37,8 +39,7 @@
 
 
     try {
-    
-      const result = await githubTokenService(code);
+    const result = await githubTokenService(code);
     if (result.status === 200){
     res.cookie("refreshToken", result.data.refreshToken, {
         httpOnly: true,
