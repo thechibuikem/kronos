@@ -1,17 +1,16 @@
 import TopBar from "./TopBar";
 import KronList from "./HomeKronList";
-import ChartAndAnalysis from "../../analysis/components/ChartAndAnalysis";
+import StatusStrip from "./StatusStrip";
 import { useAllReposHandler } from "@/features/repos/handlers/allRepo.Handlers";
-
 
 function Layout() {
   const { repos } = useAllReposHandler();
 
   return (
-    <section className="w-fit h-fit grid grid-rows-[minmax(0,50px)_minmax(0,400px)_minmax(0,fit)]">
-      <TopBar searchArray={repos}/>
+    <section className="w-full h-fit flex flex-col gap-y-7 px-4 md:px-10 py-7 max-w-[1100px]">
+      <TopBar searchArray={repos} />
+      <StatusStrip />
       <KronList />
-      <ChartAndAnalysis />
     </section>
   );
 }

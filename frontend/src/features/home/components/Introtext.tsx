@@ -1,33 +1,29 @@
-import { useContext } from "react"
-import { AppContext } from "@/api/Context"
+import { useContext } from "react";
+import { AppContext } from "@/api/Context";
 import { RxHamburgerMenu } from "react-icons/rx";
 
 function Introtext() {
-
-    // creating context branch
-    const context = useContext(AppContext)
-  // guard to check if context is okay
-    if (!context) return "context cannot be used here"
-  // destructuring what I need from context
-  const {isNavOpen,setIsNavOpen}= context
+  const context = useContext(AppContext);
+  if (!context) return "context cannot be used here";
+  const { isNavOpen, setIsNavOpen } = context;
 
   return (
+    <section className="flex items-center gap-x-4">
+      <button
+        className="md:hidden cursor-pointer text-[#64748b] hover:text-[#e2e8f0]"
+        onClick={() => setIsNavOpen(!isNavOpen)}
+      >
+        <RxHamburgerMenu size="1.4rem" />
+      </button>
 
-    <section className="flex items  px-4 md:px-8 gap-x-4">
-<button className="md:hidden cursor-pointer" onClick={()=>{setIsNavOpen(!isNavOpen)}} >
-
-     <RxHamburgerMenu color="#fff" size="2rem" />
-</button>
-
-      {/* the text */}
-      <div className="flex items-center justify-start gap-x-2">
-      <h3 className="text-2xl text-[#ededed] uppercase font-bold">Kronos</h3>
-      <img alt="" src="eyes.gif"  className="max-w-[2rem] "/>
+      <div className="flex flex-col gap-0.5">
+        <h1 className="text-xl font-semibold tracking-tight text-[#e2e8f0]">
+          Dashboard
+        </h1>
+        <p className="text-[13px] text-[#64748b]">Tracking your active Krons</p>
       </div>
     </section>
-
-    
-  )
+  );
 }
 
-export default Introtext
+export default Introtext;

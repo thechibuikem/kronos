@@ -1,54 +1,38 @@
-import { BsArrowUpRightCircleFill } from "react-icons/bs";
-import { LuAlarmClockMinus } from "react-icons/lu";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/features/home/ui/card"
-// import type { Kron } from "@/features/repositories/components/RepoCard";
-
+import { LuGithub, LuArrowUpRight } from "react-icons/lu";
 
 export type kronType = {
-  name:string,
-  link:string,
-  desc:string
-}
+  name: string;
+  link: string;
+  desc: string;
+};
 
-export default function KronCard({name,link,desc}:kronType) {
-
-
-
-
+export default function KronCard({ name, link, desc }: kronType) {
   return (
-    <Card className="h-fit w-full md:w-[12rem] aspect-square flex flex-col gap-y-[1.5rem] transparent-cards">
-      <CardHeader style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-        <CardTitle style={{fontSize:"1rem"}}>{name}</CardTitle>
-
-
-<a href={link} target="blank">
-    <BsArrowUpRightCircleFill style={{
-    height: "1.5rem",
-    width: "1.5rem",
-    boxShadow: "0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)",
-    borderRadius: "9999px"}}/>
-    </a>
-
-      </CardHeader>
-      {/* the container housing the wires */}
-      <CardContent className="">
-          <LuAlarmClockMinus style={{ color: "#ecececbd", fontSize: "2rem" }} />
-      </CardContent>
-      <CardFooter>
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2 leading-4 md:font-medium text-sm h-[2.5rem]">
-              {desc}
-            </div>
-          </div>
+    <div
+      className="relative h-fit w-full aspect-square flex flex-col gap-3.5 p-4.5 rounded-2xl
+        bg-[#111118] border border-[#1e293b] hover:border-[#334155] hover:-translate-y-0.5
+        transition-all duration-150 cursor-default"
+    >
+      <div className="flex items-center justify-between">
+        <div className="flex items-center justify-center w-[34px] h-[34px] rounded-[9px] bg-[#0a0a0f] border border-[#1e293b]">
+          <LuGithub size={16} color="#06b6d4" />
         </div>
-      </CardFooter>
-    </Card>
-  )
+
+        <a
+          href={link}
+          target="_blank"
+          rel="noreferrer"
+          className="text-[#475569] hover:text-[#94a3b8] transition-colors"
+        >
+          <LuArrowUpRight size={16} />
+        </a>
+      </div>
+
+      <h3 className="text-sm font-semibold text-[#e2e8f0]">{name}</h3>
+
+      <p className="text-xs text-[#64748b] leading-relaxed mt-auto line-clamp-2">
+        {desc}
+      </p>
+    </div>
+  );
 }
