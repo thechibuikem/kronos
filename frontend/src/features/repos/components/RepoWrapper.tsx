@@ -1,41 +1,40 @@
 import RepoCard from "@/features/repos/components/RepoCard";
 import { Loader } from "@/features/loading/components/preloader";
-// import AddKronUpdateCard from "./AddKronUpdateCard";
 import { useAllReposHandler } from "@/features/repos/handlers/allRepo.Handlers";
 
 function RepoWrapper() {
-  // const kronLimit: number = 30;
-  const {repos } = useAllReposHandler(); //repos State from redux
-
-console.log("all repositories @ repoWrapper",repos)
-
-
+  const { repos } = useAllReposHandler();
 
   return (
-    <section className="bg-bue-500 w-full mt-8 gap-[2rem] flex flex-col px-4 md:px-8 mx-auto">
-      <h1 className="text-3xl text-white">My Repositories</h1>
+    <section className="w-full flex flex-col gap-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-[#475569]">
+          My Repositories
+        </h2>
+        <span className="text-xs text-[#334155] bg-[#111118] border border-[#1e293b] rounded-full px-3 py-0.5">
+          {repos.length} repos
+        </span>
+      </div>
 
-      {/* group of krons */}
-      <figure className="w-full  gap-[1rem] flex flex-col">
-        {repos.length === 0 && (
-          <div className="w-full my-24 flex justify-center ">
-            <Loader size={50} />
+      <div className="flex flex-col gap-y-2.5">
+        {repos.length === 0 ? (
+          <div className="w-full flex justify-center py-24">
+            <Loader size={40} />
           </div>
+        ) : (
+          repos.map((repo, index) => (
+            <RepoCard
+              key={index}
+              repoName={repo.repoName}
+              repoUrl={repo.repoUrl}
+              githubOwnerId={repo.githubOwnerId}
+              repoId={repo.repoId}
+              isPrivate={repo.isPrivate}
+              owner={repo.owner}
+            />
+          ))
         )}
-
-        {/* {repos.slice(0, kronLimit).map((repo, index) => ( */}
-        {repos.map((repo, index) => (
-          <RepoCard
-            key={index}
-            repoName={repo.repoName}
-            repoUrl={repo.repoUrl}
-            githubOwnerId={repo.githubOwnerId}
-            repoId={repo.repoId}
-            isPrivate={repo.isPrivate}
-            owner={repo.owner}
-          />
-        ))}
-      </figure>
+      </div>
     </section>
   );
 }

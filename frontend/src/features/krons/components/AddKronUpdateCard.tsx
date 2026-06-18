@@ -1,14 +1,18 @@
-import { Card } from "@/features/home/ui/card"
-import { IoIosAdd } from "react-icons/io";
+import { LuPlus } from "react-icons/lu";
 
-
-// add button at Kron List Page
 function AddKronUpdateCard() {
   return (
-     <Card className="w-full px-4 md:px-8 -mt-[1rem] transparent-cards border-2 border-dashed py-2">
-        <IoIosAdd size={"1.5rem"} className="hover:text-blue-950 mx-auto"/>
-</Card>
-  )
+    <button
+      className="w-full flex items-center justify-center gap-2 px-5 py-4 rounded-xl
+        border-[1.5px] border-dashed border-[#1e293b] bg-transparent
+        text-[#475569] text-sm font-medium
+        hover:border-[#06b6d4] hover:text-[#06b6d4] hover:bg-[#0d0d15]
+        transition-all duration-150 cursor-pointer"
+    >
+      <LuPlus size={16} />
+      Add a Kron
+    </button>
+  );
 }
 
-export default AddKronUpdateCard
+export default AddKronUpdateCard;

@@ -1,16 +1,12 @@
-import TopBar from "../../home/components/TopBar"
+import TopBar from "../../home/components/TopBar";
 import RepoWrapper from "@/features/repos/components/RepoWrapper";
-import { useAllReposHandler } from "@/features/repos/handlers/allRepo.Handlers"; 
+import { useAllReposHandler } from "@/features/repos/handlers/allRepo.Handlers";
 
-
-//the main part in our respositories page 
 function RepoList() {
-  const { getRepos,repos } = useAllReposHandler(); //repos State from redux
-  // getRepos()
-  return (
-  
+  const { repos } = useAllReposHandler();
 
-    <section className="w-full h-fit grid grid-rows-[minmax(0,50px)_minmax(0,400px)_minmax(0,fit)]">
+  return (
+    <section className="w-full h-fit flex flex-col gap-y-7 px-4 md:px-10 py-7 max-w-[1100px]">
       <TopBar searchArray={repos} />
       <RepoWrapper />
     </section>

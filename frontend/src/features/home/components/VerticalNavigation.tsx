@@ -35,13 +35,6 @@ const VerticalNavigation = () => {
       textWidth: "0.85rem",
       to: "/repos",
     },
-    {
-      name: "Analytics",
-      Logo: TbBrandGoogleAnalytics,
-      logoWidth: "1.1rem",
-      textWidth: "0.85rem",
-      to: "/analytics",
-    },
   ];
 
   return (
