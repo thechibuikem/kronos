@@ -6,6 +6,10 @@ export async function getKronByRepoId(repoId) {
   return requiredKron;
 }
 
+export async function getKron(id) {
+  return KronModel.findOne({ repoId: id }).populate("repo");
+}
+
 //2. kron Input validator
 export async function kronValidator(githubOwnerId, repoId, limit) {
   const kron = await KronModel.findOne({ githubOwnerId, repoId });
@@ -60,7 +64,19 @@ export async function getKronsFromMDB(user) {
 }
 
 export async function addKron(kronData) {
+console.log("kronData at addKron\n",kronData)
+
+
   const requiredRepo = await RepoModel.findOne({ repoId: kronData.repoId });
+
+  if (!requiredRepo) {
+    console.error({
+      message: "required Repo, does not exist",
+      location: "krons/krons.service.js",
+      error: "required Repo, does not exist at mongoDB",
+    });
+  }
+
 
   const newKronData = {
     githubOwnerId: kronData.githubOwnerId,
@@ -77,6 +93,3 @@ export async function addKron(kronData) {
   }
 }
 
-export async function getKron(id) {
-  return KronModel.findOne({ repoId: id }).populate("repo");
-}

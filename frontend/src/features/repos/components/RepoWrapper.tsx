@@ -8,8 +8,9 @@ const PAGE_SIZE = 10;
 
 function RepoWrapper() {
   const { repos } = useAllReposHandler();
+  console.log(repos)
   const [visible, setVisible] = useState<number>(PAGE_SIZE);
-
+  
   const visibleRepos = repos.slice(0, visible);
   const hasMore = visible < repos.length;
 

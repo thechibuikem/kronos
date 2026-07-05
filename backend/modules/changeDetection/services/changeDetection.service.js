@@ -16,9 +16,9 @@ try{
 
   //.2 validate kronos user
   const requiredUser = await userModel.findOne({ refreshToken });
-if (!requiredUser){
-  throw new Error("user could not be found when creating web-hook")
-}
+  if (!requiredUser){
+    throw new Error("user could not be found when creating web-hook")
+  }
 
   // .3 initialize octokit client
   const octokitClient = createOctokit(requiredUser.githubToken);

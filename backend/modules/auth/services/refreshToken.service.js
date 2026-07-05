@@ -2,7 +2,7 @@ import { getRefreshTokenFromRedis } from "../../../core/redis.client.js";
 import jwt from "jsonwebtoken";
 
 export async function refreshTokenService(refreshToken) {
-  const storedUserId = await getRefreshTokenFromRedis(refreshToken);
+  const storedUserId = await getRefreshTokenFromRedis(`refresh:${refreshToken}`);
 
   // 1. guarding our protected routes against unregistered users
   if (!storedUserId) {

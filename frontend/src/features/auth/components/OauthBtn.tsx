@@ -1,6 +1,6 @@
 import { FaGithub } from "react-icons/fa";
-import { useDispatch } from "react-redux";
-import { setAccessToken } from "../slices/Authenthicated.Slice";
+// import { useDispatch } from "react-redux";
+// import { setAccessToken } from "../slices/Authenthicated.Slice";
 import { getUrls } from "@/config";
 
 const { backendUrl } = getUrls();

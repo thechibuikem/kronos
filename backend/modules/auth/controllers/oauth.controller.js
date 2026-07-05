@@ -44,7 +44,7 @@
     res.cookie("refreshToken", result.data.refreshToken, {
         httpOnly: true,
         secure: isProduction,
-        sameSite: "None",
+        sameSite: isProduction? "None" : "Lax",
         path:"/",
         maxAge: 30 * 24 * 60 * 60 * 1000,
       });

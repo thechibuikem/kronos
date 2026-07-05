@@ -24,9 +24,9 @@ function RepoCard({
   isPrivate,
   owner,
 }: RepoCardProps) {
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { updateKronUiHandler } = useAllKronsHandler();
-
   const kronData: Partial<Kron> = { githubOwnerId, repoId };
   const webhookData: WebhookData = { repo: repoName, owner };
 
