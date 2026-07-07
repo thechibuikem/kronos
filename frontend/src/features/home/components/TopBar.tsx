@@ -1,6 +1,7 @@
 import Introtext from "./Introtext";
 import SearchComponent from "./SearchComponent";
 import { type Repo } from "@/features/repos/slices/allRepo.Slice";
+import type { Kron } from "@/features/krons/slices/allKron.Slice";
 
 interface TopBarProps {
   searchArray: Repo[];

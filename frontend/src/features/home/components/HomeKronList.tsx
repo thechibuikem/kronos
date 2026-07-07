@@ -1,36 +1,14 @@
 import KronCard from "../../krons/components/KronCard";
-import { type kronType } from "../../krons/components/KronCard";
 import AddKron from "../../krons/components/AddKron";
+import { type Kron } from "@/features/krons/slices/allKron.Slice";
 
-function KronList() {
-  const kronLimit: number = 4;
-  const KronList: kronType[] = [
-    {
-      name: "kronos",
-      link: "https://www.google.com",
-      desc: "lorem lorem lorem lorem ",
-    },
-    {
-      name: "kronos",
-      link: "https://www.google.com",
-      desc: "lorem lorem lorem lorem ",
-    },
-    {
-      name: "kronos",
-      link: "https://www.google.com",
-      desc: "lorem lorem lorem lorem lorem lorem lorem lorem",
-    },
-    {
-      name: "kronos",
-      link: "https://www.google.com",
-      desc: "lorem lorem lorem lorem lorem lorem lorem lorem",
-    },
-    {
-      name: "kronos",
-      link: "https://www.google.com",
-      desc: "lorem lorem lorem lorem",
-    },
-  ];
+interface kronListProps {
+  kronArray: Partial <Kron> [];
+}
+
+
+function KronList({kronArray}: kronListProps) {
+
 
   return (
     <section>
@@ -38,12 +16,13 @@ function KronList() {
         Your Krons
       </h2>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
-        {KronList.slice(0, kronLimit).map((kron, index) => (
+        {kronArray.map((kron, index) => (
           <KronCard
             key={index}
-            name={kron.name}
-            link={kron.link}
-            desc={kron.desc}
+            repoName={kron.repoName}
+            repoUrl={kron.repoUrl}
+            owner={kron.owner}
+            // desc={kron.desc}
           />
         ))}
         <AddKron />

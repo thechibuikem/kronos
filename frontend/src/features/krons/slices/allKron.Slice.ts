@@ -27,6 +27,7 @@ export const fetchAllKrons = createAsyncThunk(
 
 //initial state
 const initialState: Partial<Kron>[] = [];
+
 //All kron Slice
 const allKronSlice = createSlice({
   name: "allKrons",

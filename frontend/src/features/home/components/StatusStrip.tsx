@@ -1,4 +1,3 @@
-// StatusStrip replaces the old ChartAndAnalysis section.
 // TODO: wire these four values to real handlers/state instead of the placeholders below.
 //   - lastSync      → timestamp of most recent webhook/cron event
 //   - kronsTracked  → repos.length from your watchlist state

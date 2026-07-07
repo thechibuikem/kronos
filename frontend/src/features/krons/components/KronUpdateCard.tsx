@@ -10,7 +10,9 @@ const { backendUrl } = getUrls();
 
 function KronUpdateCard({ repoName, repoId }: Partial<Kron>) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { getKrons } = useAllKronsHandler();
+  const { krons } = useAllKronsHandler();
+
+console.log("krons at KronUpdate",krons)
 
   async function removeKron() {
     try {
@@ -25,7 +27,7 @@ function KronUpdateCard({ repoName, repoId }: Partial<Kron>) {
     } catch (err) {
       throw new Error();
     } finally {
-      getKrons();
+      // getKrons();
       setIsLoading(false);
     }
   }
