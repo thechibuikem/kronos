@@ -33,7 +33,7 @@ function RepoCard({
   async function addKron() {
     try {
       setIsLoading(true);
-      await axios.post(
+      const createRes = await axios.post(
         `${backendUrl}/api/v1/krons/kron`,
         { kronData },
         { withCredentials: true },
@@ -43,7 +43,8 @@ function RepoCard({
         { kronData, webhookData },
         { withCredentials: true },
       );
-      await updateKronUiHandler(kronData);
+      const createKron:Kron = createRes.data.data.kron
+      await updateKronUiHandler(createKron);
     } catch (error) {
       console.log("error adding kron", error);
     } finally {

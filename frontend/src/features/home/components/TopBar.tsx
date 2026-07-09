@@ -4,7 +4,7 @@ import { type Repo } from "@/features/repos/slices/allRepo.Slice";
 import type { Kron } from "@/features/krons/slices/allKron.Slice";
 
 interface TopBarProps {
-  searchArray: Repo[];
+  searchArray: Repo[] | Kron[];
 }
 
 function TopBar({ searchArray }: TopBarProps) {

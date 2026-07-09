@@ -9,10 +9,10 @@ export function useAllKronsHandler(){
   //initializing dispatch
   const dispatch = useAppDispatch();
   // getting state from redux
-  const krons: Partial<Kron>[] = useAppSelector((state: RootState) => state.KronList);
+  const krons: Kron[] = useAppSelector((state: RootState) => state.KronList);
 
   //using updateKronUi action in handler function to add kron
-  const updateKronUiHandler = async (kronData: Partial<Kron>) => {
+  const updateKronUiHandler = async (kronData: Kron) => {
     dispatch(updateKronUI(kronData));
   };
 

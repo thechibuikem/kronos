@@ -26,14 +26,14 @@ export const fetchAllKrons = createAsyncThunk(
 );
 
 //initial state
-const initialState: Partial<Kron>[] = [];
+const initialState: Kron[] = [];
 
 //All kron Slice
 const allKronSlice = createSlice({
   name: "allKrons",
   initialState,
   reducers: {
-    updateKronUI(state, action: PayloadAction<Partial<Kron>>) {
+    updateKronUI(state, action: PayloadAction<Kron>) {
       state.push(action.payload);
     },
   }, //a reducer that pushes in a value to our already existing state
