@@ -2,14 +2,14 @@ import VerticalNavigation from "@/features/home/components/VerticalNavigation";
 import Layout from "@/features/home/components/Layout";
 import { useFetchKrons } from "@/hooks/useFetchKrons";
 import { useFetchRepos } from "@/hooks/useFetchRepos";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 function Dashboard() {
-useEffect(() => {
+// useEffect(() => {
   useFetchRepos()
   useFetchKrons()
 
-}, []);
+// }, []);
   return (
     <section className="flex bg-[#0a0a0f] min-h-screen h-full w-full overflow-x-hidden">
       <VerticalNavigation />
