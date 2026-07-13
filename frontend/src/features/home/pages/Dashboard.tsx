@@ -3,9 +3,11 @@ import Layout from "@/features/home/components/Layout";
 
 function Dashboard() {
   return (
-    <section className="flex bg-[#0a0a0f] h-full min-h-screen relative max-w-screen">
+    <section className="flex bg-[#0a0a0f] min-h-screen h-full w-full overflow-x-hidden">
       <VerticalNavigation />
-      <Layout />
+      <div className="flex-1 min-w-0">
+        <Layout />
+      </div>
     </section>
   );
 }
