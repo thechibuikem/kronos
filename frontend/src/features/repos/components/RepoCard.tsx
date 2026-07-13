@@ -9,7 +9,7 @@ import { useState } from "react";
 const { backendUrl } = getUrls();
 
 interface WebhookData {
-  repo: string;
+  repoName: string;
   owner: string;
 }
 
@@ -28,29 +28,100 @@ function RepoCard({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { updateKronUiHandler } = useAllKronsHandler();
   const kronData: Partial<Kron> = { githubOwnerId, repoId };
-  const webhookData: WebhookData = { repo: repoName, owner };
+  const webhookData: WebhookData = { repoName: repoName, owner };
 
-  async function addKron() {
-    try {
-      setIsLoading(true);
-      const createRes = await axios.post(
-        `${backendUrl}/api/v1/krons/kron`,
-        { kronData },
-        { withCredentials: true },
-      );
+  // async function addKron() {
+  //   try {
+  //     setIsLoading(true);
+  //     const createRes = await axios.post(
+  //       `${backendUrl}/api/v1/krons/kron`,
+  //       { kronData },
+  //       { withCredentials: true },
+  //     );
+  //     await axios.post(
+  //       `${backendUrl}/api/v1/changeDetection/webhook`,
+  //       { kronData, webhookData },
+  //       { withCredentials: true },
+  //     );
+  //     const createKron:Kron = createRes.data.data.kron
+  //     await updateKronUiHandler(createKron);
+  //   } catch (error) {
+  //     console.log("error adding kron", error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // }
+
+async function addKron() {
+  try {
+    setIsLoading(true);
+    const createRes = await axios.post(
+      `${backendUrl}/api/v1/krons/kron`,
+      { kronData },
+      { withCredentials: true },
+    );
+    const createKron: Kron = createRes.data.data.kron;
+
+    try {``
       await axios.post(
         `${backendUrl}/api/v1/changeDetection/webhook`,
         { kronData, webhookData },
         { withCredentials: true },
       );
-      const createKron:Kron = createRes.data.data.kron
-      await updateKronUiHandler(createKron);
-    } catch (error) {
-      console.log("error adding kron", error);
-    } finally {
-      setIsLoading(false);
+    } catch (webhookErr) {
+      await axios.delete(`${backendUrl}/api/v1/krons/kron/${createKron.repoId}`, {
+        withCredentials: true,
+      });
+      throw webhookErr;
     }
+
+    await updateKronUiHandler(createKron);
+  } catch (error) {
+    console.log("error adding kron", error);
+  } finally {
+    setIsLoading(false);
   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   return (
     <div className="w-full flex items-center justify-between px-5 py-4 bg-[#111118] border border-[#1e293b] rounded-xl hover:border-[#334155] transition-all duration-150">
