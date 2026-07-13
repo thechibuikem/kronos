@@ -79,7 +79,7 @@ export async function addWebhookMdb(refreshToken, webhookData, hookId) {
   // .2 creating webhook entry
   const webhookEntry = new webhookModel({
     githubHookId: hookId,
-    repo: webhookData.repo,
+    repo: webhookData.repoName,
     githubOwnerId: requiredUser.githubId,
   });
 
@@ -140,7 +140,7 @@ try {
   //.2 validating kronos user
   const requiredRepo = await RepoModel.findOne({ repoId });
   if (!requiredRepo) {
-    throw new Error("repo DNE at removing web-hook Github.");
+    throw new Error("repo DNE at removing web-hook MongoDB.");
   }
 
   // .3 validating hooks existence
@@ -149,7 +149,7 @@ try {
     refreshToken,
   );
   if (!requiredWebhook) {
-    throw new Error("webhook DNE at removing web-hook Github.");
+    throw new Error("webhook DNE at removing web-hook MongoDB.");
   }
 
 //.4 delete required webhook @mdb
