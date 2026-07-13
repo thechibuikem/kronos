@@ -2,6 +2,7 @@ import { getUrls } from "../../../core/config.js"
 import { createOctokit } from "../../../core/octokit.client.js"
 import { RepoModel } from "../../repos/models/repos.model.js"
 import { userModel } from "../../user/models/user.model.js"
+import { getMDBUserThroughRefreshToken } from "../../user/service/user.service.js"
 import { webhookModel } from "../models/webhook.model.js"
 
 // . Get backend-url
@@ -11,14 +12,15 @@ const {backendUrl} = getUrls()
 //. Service  to add a webhook to a repository. 
 export async function addWebhookGithub(webhookData,refreshToken){
 try{
+
+
+
+  
   // .1 github's standard url for adding webhook
   const repourl = `POST /repos/${webhookData.owner}/${webhookData.repoName}/hooks`; //endoint for webHook addition
 
   //.2 validate kronos user
-  const requiredUser = await userModel.findOne({ refreshToken });
-  if (!requiredUser){
-    throw new Error("user could not be found when creating web-hook")
-  }
+  const requiredUser = await getMDBUserThroughRefreshToken(refreshToken)
 
   // .3 initialize octokit client
   const octokitClient = createOctokit(requiredUser.githubToken);
@@ -41,32 +43,18 @@ try{
    },
  });
 
-  // .5 handling errors @ reg webhook
-if (!webhook){
-   console.error({
-     message: "webhook could not be registered at github",
-     location: "changeDetection/changeDetection.service.js",
-     error: webhook,
-   });
- throw new Error("webhook registeration unsuccessful")
-}
-
 // .6 returning webhook Id
 return webhook.data.id
 }
 // .7 error handling
 catch(error){
-  throw new Error ("error occured at adding webhook github",error)
+  throw new Error (`error occured at adding webhook github ${error}`)
 }
 }
 // service to check if webhook already exists
 export async function findWebhookMdb(repoName,refreshToken){
   // .1 validating kronos user
-const requiredUser = await userModel.findOne({refreshToken})
-if (!requiredUser){
-  throw new Error ("required user DNE at findWebhookMdb")
-}
-
+  const requiredUser = await getMDBUserThroughRefreshToken(refreshToken);
 // .2 locate webhook in our mdb collection 
 const requiredWebhook = await webhookModel.findOne({
   $and:[
@@ -85,11 +73,7 @@ export async function addWebhookMdb(refreshToken, webhookData, hookId) {
   }
 
   //.2 validating kronos user
-  const requiredUser = await userModel.findOne({ refreshToken });
-
-if (!requiredUser) {
-  throw new Error("user could not be found when creating web-hook");
-}
+  const requiredUser = await getMDBUserThroughRefreshToken(refreshToken);
 
 
   // .2 creating webhook entry
@@ -107,12 +91,7 @@ export async function removeWebhookGithub(repoId, refreshToken) {
 
 try{
   //.1 validating user
-  const requiredUser = await userModel.findOne({ refreshToken });
-
-  if (!requiredUser) {
-    throw new Error("user DNE @ remove web-hook github");
-  }
-
+  const requiredUser = await getMDBUserThroughRefreshToken(refreshToken);
   //.2 validating kronos user
   const requiredRepo = await RepoModel.findOne({ repoId });
 
@@ -156,10 +135,7 @@ try{
 export async function removeWebhookMdb(repoId, refreshToken) {
 try {
   //.1 find user 
-  const requiredUser = await userModel.findOne({ refreshToken });
-  if (!requiredUser) {
-    throw new Error("user could not be found when creating web-hook");
-  }
+  const requiredUser = await getMDBUserThroughRefreshToken(refreshToken);
 
   //.2 validating kronos user
   const requiredRepo = await RepoModel.findOne({ repoId });

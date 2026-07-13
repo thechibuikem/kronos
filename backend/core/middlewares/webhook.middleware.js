@@ -33,3 +33,36 @@ export function verifyWebhookSignature(req, res, next) {
     return res.status(500).json({ error: "Signature verification failed" });
   }
 }
+
+
+export function verifyAddWebhookData(req, res, next) {
+
+    // .1 get GitHub's signature from header
+    const webhookData = req.body.webhookData;
+
+      if (!webhookData) {
+        console.error("webhoookData unavailable, at add webhook middleware");
+        return res.status(401).json({
+          error: {
+            message: "No webhook data in add webhook body",
+            code: "NO_WEBHOOK_DATA",
+          },
+        });
+      }
+
+
+       if (
+         typeof webhookData.owner !== "string" ||
+         typeof webhookData.repoName !== "string"
+       ) {
+         console.error("webhoookData corrupt, at add webhook middleware");
+         return res.status(401).json({
+           error: {
+             message: "Incorrect webhook data in add webhook body",
+             code: "INCORRECT_WEBHOOK_DATA",
+           },
+         });
+       }
+
+    next();
+}
