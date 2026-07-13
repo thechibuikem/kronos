@@ -49,23 +49,6 @@ throw new Error("error at webhook data controller\n",error)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export async function removeWebhookController(req, res) {
   try {
     const refreshToken = req.cookies.refreshToken;
@@ -78,7 +61,7 @@ export async function removeWebhookController(req, res) {
     await removeWebhookMdb(repoId, refreshToken);
     res.status(204).send();
   } catch (err) {
-       console.error("webhook deletion controller", error);
+       console.error("webhook deletion controller", err);
        res.status(500).json({
          error: {
            message: "Failed to remove webhook",
@@ -87,6 +70,9 @@ export async function removeWebhookController(req, res) {
        });
   }
 }
+
+
+
 
 export async function addWebhookController(req, res) {
   try {

@@ -12,7 +12,7 @@ const {backendUrl} = getUrls()
 export async function addWebhookGithub(webhookData,refreshToken){
 try{
   // .1 github's standard url for adding webhook
-  const repourl = `POST /repos/${webhookData.owner}/${webhookData.repo}/hooks`; //endoint for webHook addition
+  const repourl = `POST /repos/${webhookData.owner}/${webhookData.repoName}/hooks`; //endoint for webHook addition
 
   //.2 validate kronos user
   const requiredUser = await userModel.findOne({ refreshToken });
@@ -43,6 +43,11 @@ try{
 
   // .5 handling errors @ reg webhook
 if (!webhook){
+   console.error({
+     message: "webhook could not be registered at github",
+     location: "changeDetection/changeDetection.service.js",
+     error: webhook,
+   });
  throw new Error("webhook registeration unsuccessful")
 }
 

@@ -116,7 +116,7 @@ const {repoId} = req.params
        error: {
          message: "Failed to delete krons",
          code: "DELETE_KRON_FAILED",
-       }
+       }  
      });
    }
 }
