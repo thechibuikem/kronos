@@ -1,75 +1,166 @@
 import axios from "axios";
-import { Card } from "@/features/home/ui/card"
-import { IoIosAdd } from "react-icons/io";
+import { LuGithub, LuPlus, LuLock } from "react-icons/lu";
 import { useAllKronsHandler } from "@/features/krons/handlers/allKrons.Handlers";
 import { type Kron } from "@/features/krons/slices/allKron.Slice";
 import { Loader } from "@/features/loading/components/preloader";
 import { getUrls } from "@/config.ts";
-const { backendUrl } = getUrls();
 import { useState } from "react";
 
+const { backendUrl } = getUrls();
+
 interface WebhookData {
-  repo: string,
-  owner: string
+  repoName: string;
+  owner: string;
 }
 
-type RepoCardProps = Pick<Kron, 'repoName' | 'repoUrl' | 'owner'> & Partial<Kron>;
+type RepoCardProps = Pick<Kron, "repoName" | "repoUrl" | "owner"> &
+  Partial<Kron>;
 
-// repocard 
-function RepoCard({ repoName, repoUrl, githubOwnerId, repoId, owner
+function RepoCard({
+  repoName,
+  repoUrl,
+  githubOwnerId,
+  repoId,
+  isPrivate,
+  owner,
 }: RepoCardProps) {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const { updateKronUiHandler } = useAllKronsHandler()
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { updateKronUiHandler } = useAllKronsHandler();
+  const kronData: Partial<Kron> = { githubOwnerId, repoId };
+  const webhookData: WebhookData = { repoName: repoName, owner };
 
-  // modelling the data that would be sent to our backend
-  const kronData: Partial<Kron> = {
-    githubOwnerId: githubOwnerId,
-    repoId: repoId,
-  }
+  // async function addKron() {
+  //   try {
+  //     setIsLoading(true);
+  //     const createRes = await axios.post(
+  //       `${backendUrl}/api/v1/krons/kron`,
+  //       { kronData },
+  //       { withCredentials: true },
+  //     );
+  //     await axios.post(
+  //       `${backendUrl}/api/v1/changeDetection/webhook`,
+  //       { kronData, webhookData },
+  //       { withCredentials: true },
+  //     );
+  //     const createKron:Kron = createRes.data.data.kron
+  //     await updateKronUiHandler(createKron);
+  //   } catch (error) {
+  //     console.log("error adding kron", error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // }
 
-  const webhookData: WebhookData = {
-    repo: repoName,
-    owner: owner,
-  };
+async function addKron() {
+  try {
+    setIsLoading(true);
+    const createRes = await axios.post(
+      `${backendUrl}/api/v1/krons/kron`,
+      { kronData },
+      { withCredentials: true },
+    );
+    const createKron: Kron = createRes.data.data.kron;
 
-  async function addKron() {
-    try {
-      setIsLoading(true);
-      console.log("our webhook data", webhookData)
-      console.log("owner of repo", owner)
-
-// adding kron to kronList
+    try {``
       await axios.post(
-        `${backendUrl}/api/v1/krons/kron`,
-      {kronData},
-        { withCredentials: true }
+        `${backendUrl}/api/v1/changeDetection/webhook`,
+        { kronData, webhookData },
+        { withCredentials: true },
       );
-
-// adding webhook for a kron @ github
-      await axios.post(`${backendUrl}/api/v1/changeDetection/webhook`,
-      {kronData,webhookData},
-      {withCredentials:true})
-
-      await updateKronUiHandler(kronData); //updafing ui with kron
-    } catch (error) {
-      console.log("error adding kron", error);
-      setIsLoading(true);
-    } finally {
-      setIsLoading(false);
+    } catch (webhookErr) {
+      await axios.delete(`${backendUrl}/api/v1/krons/kron/${createKron.repoId}`, {
+        withCredentials: true,
+      });
+      throw webhookErr;
     }
+
+    await updateKronUiHandler(createKron);
+  } catch (error) {
+    console.log("error adding kron", error);
+  } finally {
+    setIsLoading(false);
   }
+}
 
 
-  // my repo card
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   return (
-    <Card className="w-full flex flex-row justify-between px-4 md:px-4 transparent-cards py-3 text-[1rem]">
-      <a href={repoUrl}>{repoName}</a>
-      {isLoading
-        ? <Loader size={20} />
-        : <IoIosAdd size={"1.5rem"} className="hover:text-blue-950" onClick={addKron} />
-      }
-    </Card>
+    <div className="w-full flex items-center justify-between px-5 py-4 bg-[#111118] border border-[#1e293b] rounded-xl hover:border-[#334155] transition-all duration-150">
+      <div className="flex items-center gap-3.5">
+        <div className="flex items-center justify-center w-9 h-9 rounded-[9px] bg-[#0a0a0f] border border-[#1e293b] shrink-0">
+          <LuGithub size={16} color="#06b6d4" />
+        </div>
+        <div className="flex flex-col gap-0.5">
+          <a
+            href={repoUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="text-sm font-medium text-[#e2e8f0] hover:text-[#06b6d4] transition-colors"
+          >
+            {repoName}
+          </a>
+          {isPrivate && (
+            <span className="flex items-center gap-1 text-[11px] text-[#475569]">
+              <LuLock size={10} />
+              Private
+            </span>
+          )}
+        </div>
+      </div>
+
+      {isLoading ? (
+        <Loader size={20} />
+      ) : (
+        <button
+          onClick={addKron}
+          className="flex items-center justify-center w-8 h-8 rounded-lg border border-transparent
+            text-[#475569] hover:text-[#06b6d4] hover:border-[#06b6d4]/20 hover:bg-[#06b6d4]/5
+            transition-all duration-150 cursor-pointer"
+          title="Add to Krons"
+        >
+          <LuPlus size={16} />
+        </button>
+      )}
+    </div>
   );
 }
 

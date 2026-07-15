@@ -39,7 +39,7 @@ export async function getUserFromGithubId(githubId) {
       location: "user/user.service.getUserFromUserId.js",
       error: user,
     });
-    throw new Error("Failed to fetch user");
+    // throw new Error("Failed to fetch user");
   }
 
   return user;

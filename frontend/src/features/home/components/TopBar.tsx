@@ -1,26 +1,19 @@
 import Introtext from "./Introtext";
 import SearchComponent from "./SearchComponent";
 import { type Repo } from "@/features/repos/slices/allRepo.Slice";
+import type { Kron } from "@/features/krons/slices/allKron.Slice";
 
-
-interface TopBarProps{
-  searchArray:Repo[]
+interface TopBarProps {
+  searchArray: Repo[] | Kron[];
 }
 
-
-
-
-
-
-
-function TopBar({searchArray}: TopBarProps) {
-  // const {repos}= useAllReposHandler()
+function TopBar({ searchArray }: TopBarProps) {
   return (
-    <section className="flex flex-col gap-y-8 pt-8 lg:flex-row md:items-center justify-between">
+    <section className="flex flex-col gap-y-5 lg:flex-row lg:items-center justify-between">
       <Introtext />
       <SearchComponent searchArray={searchArray} />
     </section>
   );
 }
 
-export default TopBar
+export default TopBar;

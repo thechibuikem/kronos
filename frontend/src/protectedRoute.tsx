@@ -12,12 +12,11 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  useOAuthToken()
+  useOAuthToken();
   const dispatch = useDispatch();
   const [checking, setChecking] = useState(true);
   const isAuthorized = useSelector((state:RootState)=>state.authenticated.isAuthorized)
-  
-
+  // const isAuthorized = true
 
   // 1. side effect to allow access to my protected route
   useEffect(() => {
@@ -33,8 +32,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     }
     validate();
   }, []);
-
-
 
   // console.log("repos from frontend: ",repos)
   if (checking) return <LoadingPage />;

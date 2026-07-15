@@ -6,7 +6,12 @@ export async function getKronByRepoId(repoId) {
   return requiredKron;
 }
 
-//2. kron Input validator
+// 2. Get a particular Kron
+export async function getKron(id) {
+  return KronModel.findOne({ repoId: id }).populate("repo");
+}
+
+//3. kron Input validator
 export async function kronValidator(githubOwnerId, repoId, limit) {
   const kron = await KronModel.findOne({ githubOwnerId, repoId });
   const userKrons = await KronModel.find({ githubOwnerId });
@@ -60,23 +65,37 @@ export async function getKronsFromMDB(user) {
 }
 
 export async function addKron(kronData) {
+console.log("kronData at addKron\n",kronData)
+
+
   const requiredRepo = await RepoModel.findOne({ repoId: kronData.repoId });
 
+if (!requiredRepo) {
+    const errorMsg = "required Repo, does not exist at mongoDB";
+    console.error({
+      message: "required Repo, does not exist",
+      location: "krons/krons.service.js",
+      error: errorMsg,
+    });
+    throw new Error(errorMsg); // Stop execution and pass the error to your controller
+  }
+
   const newKronData = {
+    repo: requiredRepo._id,
     githubOwnerId: kronData.githubOwnerId,
     repoId: requiredRepo.repoId,
   };
 
   try {
     await kronValidator(newKronData.githubOwnerId, newKronData.repoId, 5);
+    // save to Database
     const newKron = new KronModel(newKronData);
     await newKron.save();
+    // 5. Hydrate the "repo" field with the full document before returning to the frontend
+    return newKron.populate("repo");
   } catch (err) {
     console.error(err.message);
     throw err;
   }
-}
 
-export async function getKron(id) {
-  return KronModel.findOne({ repoId: id }).populate("repo");
 }

@@ -65,10 +65,11 @@ if (typeof repoId !== "number" || Number.isNaN(repoId)) {
 
    // 2.2 consuming service
    try {
-     await addKron(kronData);
+    const newKron = await addKron(kronData);
      return res.status(201).json({
        data: {
          message: "Kron created successfully",
+         kron: newKron
        },
      });
 
@@ -115,7 +116,7 @@ const {repoId} = req.params
        error: {
          message: "Failed to delete krons",
          code: "DELETE_KRON_FAILED",
-       }
+       }  
      });
    }
 }

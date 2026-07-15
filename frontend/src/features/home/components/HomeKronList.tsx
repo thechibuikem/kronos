@@ -1,41 +1,34 @@
-import KronCard from "../../krons/components/KronCard"
-import { type kronType } from "../../krons/components/KronCard"
-import AddKron from "../../krons/components/AddKron"
+import KronCard from "../../krons/components/KronCard";
+import AddKron from "../../krons/components/AddKron";
+import { type Kron } from "@/features/krons/slices/allKron.Slice";
 
-function KronList() {
-const kronLimit:number = 4
-const KronList:kronType[] = [
-    {name:"kronos",
-    link:"https://www.google.com",
-    desc:"lorem lorem lorem lorem "},
-     {name:"kronos",
-    link:"https://www.google.com",
-    desc:"lorem lorem lorem lorem "},
-     {name:"kronos",
-    link:"https://www.google.com",
-    desc:"lorem lorem lorem lorem lorem lorem lorem lorem"},
-     {name:"kronos",
-    link:"https://www.google.com",
-    desc:"lorem lorem lorem lorem lorem lorem lorem lorem"},
-     {name:"kronos",
-    link:"https://www.google.com",
-    desc:"lorem lorem lorem lorem"},
-]
+interface kronListProps {
+  kronArray: Partial <Kron> [];
+}
+
+
+function KronList({kronArray}: kronListProps) {
 
 
   return (
-    <section className="bg-bue-500 w-full mt-8 grid grid-cols-2 gap-[1rem] lg:grid-cols-4 items-center justify-between md:gap-x-8 md:gap-y-16 px-4 md:px-8 mx-auto">
-        {KronList.slice(0,kronLimit).map((kron,index)=>(
-            <KronCard
-             key={index}
-             name={kron.name}
-             link={kron.link}
-             desc={kron.desc}
-             />
-            ))}
-<AddKron/>
+    <section>
+      <h2 className="text-xs font-semibold uppercase tracking-wider text-[#475569] mb-4">
+        Your Krons
+      </h2>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
+        {kronArray.map((kron, index) => (
+          <KronCard
+            key={index}
+            repoName={kron.repoName}
+            repoUrl={kron.repoUrl}
+            owner={kron.owner}
+            // desc={kron.desc}
+          />
+        ))}
+        <AddKron />
+      </div>
     </section>
-  )
+  );
 }
 
-export default KronList
+export default KronList;

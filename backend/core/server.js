@@ -91,7 +91,7 @@ async function startServer() {
   try {
     await connectDB();
     await connectRedis();
-    startCollectChangesCron(); // Add this line
+    startCollectChangesCron();
     app.listen(PORT, () => {
       console.log(`Server running on port:${backendUrl}`);
     });

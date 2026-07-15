@@ -2,11 +2,11 @@ import VerticalNavigation from "@/features/home/components/VerticalNavigation";
 import RepoList from "@/features/repos/components/RepoList";
 import { useFetchRepos } from "@/hooks/useFetchRepos";
 
-//2. functional component
 function Repos() {
-useFetchRepos()
+  useFetchRepos();
+
   return (
-    <section className="flex md:p-8 bg-gradient-to-r from-blue-950 to-blue-100 h-full min-h-screen relative w-screen">
+    <section className="flex bg-[#0a0a0f] h-full min-h-screen relative w-screen">
       <VerticalNavigation />
       <RepoList />
     </section>

@@ -15,10 +15,8 @@ const api = axios.create({
 
 //4. isRefreshing flag to prevent multiple refresh-token calls.
 let isRefreshing = false; 
-
 //5. Queue to catch multiple failed requests
 let failedQueue: any[] = [];
-
 // 6. function to handle requests in failed-Queue; race condition
 const processQueue = (error: any, token: string | null = null) => {
   failedQueue.forEach((prom) => {
@@ -28,7 +26,6 @@ const processQueue = (error: any, token: string | null = null) => {
   });
   failedQueue = []; //Clear failedQueue
 };
-
 // 7. axios request interceptor
 api.interceptors.request.use(
   (config) => {
@@ -39,7 +36,6 @@ api.interceptors.request.use(
   },
   (error) => Promise.reject(error), //edge case where there's an error setting up request.
 );
-
 // 8. axios response interceptor
 api.interceptors.response.use(
   (response) => response, //return response immediately if successful
@@ -74,12 +70,10 @@ api.interceptors.response.use(
           {},
         );
         const newAccessToken = res.data.data.accessToken;
-
         store.dispatch(setAccessToken(newAccessToken)); // Save the new access-token to Redux.
         // Resolve all queued requests using the new token.
         processQueue(null, newAccessToken);
         isRefreshing = false;
-
         // Retry the failed request that triggered the refresh.
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return api(originalRequest);
