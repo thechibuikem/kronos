@@ -10,13 +10,13 @@ export async function analyze(kronName, commits){
   if (heuristics.isFlagged) {
     // send to Gemini for analysis
     const insights = await flaggedAgent(kronName, metrics, heuristics.flags);
-    return insights;
     console.log("AI's flagged insight",insight)
+    return insights;
   } else {
     // send template email
     const insights = await unflaggedAgent(kronName, metrics);
-    return insights;
     console.log("AI's unflagged insight",insight)
+    return insights;
 
   }
 }

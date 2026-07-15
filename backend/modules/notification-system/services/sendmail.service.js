@@ -1,6 +1,5 @@
 import { Resend } from "resend";
 import { getUserFromUserId } from "../../user/service/user.service.js";
-const resend = new Resend("re_xxxxxxxxx");
 
 
 function generateName(){
