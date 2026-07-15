@@ -111,6 +111,7 @@ Kronos is organized into three layers:
 - Commit data enrichment via secondary GitHub API call (`getRicherCommitData`) — GitHub's webhook payload omits file-level diff data by design; Kronos fetches it explicitly via Octokit, adding `filename`, `additions`, `deletions`, and `changes` per file
 - Enriched commit data held in memory (transient) — Change Collection picks it up from here for processing
 
+
 ### 4 Change Collection System
  ![diagram](./docs/architecture/kronosChangeCollectionFlow.svg)
 - `storeCommitBatch` stores enriched commits per user in Redis under `kron:{userId}:commits` as a JSON list
@@ -119,19 +120,35 @@ Kronos is organized into three layers:
 - BullMQ Worker picks up each job, processes the commit batch, clears the Redis key after completion
 - Failed jobs retained in BullMQ for inspection — not silently dropped
 - Analytical Engine integration stubbed and ready — `analyzeWithGemini` and `saveInsights` calls are next
+
+
+### 5 Analytical Engine
+![diagram](./docs/architecture/kronos_analytical_engine_flow.png)
+- `getMetrics()` computes totalAdds, totalDeletes, totalChurn, deletionRatio, additionRatio, filesChanged, rewriteFiles, and commit messages from raw commit batch
+- `heuristicEngine()` pre-filters commits before calling Gemini — checks for heavy deletion, rewrite thrashing, massive churn, file scatter, and pure deletion patterns. Unflagged sessions skip the AI call entirely
+- `flaggedAgent()` — sends flagged metrics and detected patterns to Gemini 3.5 Flash with a structured prompt, returns `{ explanation, tip }` as JSON
+- `unflaggedAgent()` — sends neutral session stats to Gemini 3.5 Flash, returns `{ summary }` for notification only — not persisted
+- Only flagged insights are persisted to MongoDB: `userId`, `kronId`, `timestamp`, `severity`, `explanation`, `tip`
+- Summaries are sent via email and discarded — keeps MongoDB lean and every stored record meaningful
+
+
+### 6 Notification System
+![diagram](./docs/architecture/kronos_notification_flow.png)
+- `sendMail()` uses Resend to deliver productivity reports to the developer's GitHub-scoped email
+- Email content is dynamically generated based on insight type — flagged sessions get `explanation + tip`, unflagged sessions get the neutral `summary`
+- Receiver email fetched from MongoDB via `getUserFromUserId()`
+
 ---
 
 ## What's Next
+ 
+### 1 Cross-session Analysis
+- Extend heuristic engine to compare current session against historical averages
+- Detect trends across multiple 6-hour windows, not just single sessions
 
-### 1 Analytical Engine
-- Diff analysis: files changed, lines added/removed, commit patterns, module focus
-- Gemini 2 integration for AI-generated text insights
-- Analysis results persisted to MongoDB with timestamps
-
-### 2 Notification System
-- Post-analysis alerts when insights are ready
-- Periodic summaries (daily rollup + midday sprint summary)
-
+### 2 Docker + Deployment
+- Containerize backend with Docker
+- Deploy to AWS EC2 with structured logging
 ---
 
 ## Tech Stack
