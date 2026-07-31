@@ -12,9 +12,8 @@ export async function getReposFromGithub(user) {
     const allRepos = await octokitClient.paginate("GET /user/repos", {
       headers: { "X-GitHub-Api-Version": "2026-03-10" },
       type: "owner",
-      affiliation: "owner,collaborator",                      
+                     
     });
-
     return allRepos;
   } catch (error) {
     console.error({
@@ -48,28 +47,30 @@ export async function getRepos(user) {
   // cache miss
   else {
     console.log("There was a cache miss");
-    const response = await getReposFromGithub(user);
+    const allRepos = await getReposFromGithub(user);
+    console.log("type of response",typeof(allRepos))
+    
     // on etag change
-    // if (response.status === 200) {
-    const repoList = craftRepoList(response, user);
+    if (allRepos) {
+    const repoList = craftRepoList(allRepos, user);
     console.log("repolist from github: \n", console.table(repoList));
 
     // ========= UPDATING MONGODB ==========//
-    // await RepoModel.deleteMany({ githubOwnerId: user.id });
-    // await Promise.all(
-    //   repoList.map((repo) => {
-    //     const newRepo = new RepoModel(repo);
+    await RepoModel.deleteMany({ githubOwnerId: user.id });
+    await Promise.all(
+      repoList.map((repo) => {
+        const newRepo = new RepoModel(repo);
 
-    //     return newRepo.save();
-    //   }),
-    // );
+        return newRepo.save();
+      }),
+    );
 
     // ========= UPDATING REDIS ==========//
-    // await redisClient.set(redisRepoKey, JSON.stringify(repoList), {
-    //   EX: TTL,
-    // });
+    await redisClient.set(redisRepoKey, JSON.stringify(repoList), {
+      EX: TTL,
+    });
 
     return repoList; // returning repos to client
-    // }
+    }
   }
 }
