@@ -3,6 +3,7 @@ import isExistingUserReducer from "../features/auth/slices/ExistingUser.Slice";
 import isAuthenticatedReducer from "../features/auth/slices/Authenthicated.Slice"
 import allRepoListReducer from "../features/repos/slices/allRepo.Slice"
 import allKronSliceReducer from "../features/krons/slices/allKron.Slice"
+import toastReducer from "../features/feedback/slices/Toast.Slice"
 
 //redux store holding all shared states
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
     authenticated:isAuthenticatedReducer,
     repoList: allRepoListReducer,
     KronList:allKronSliceReducer,
+    toast: toastReducer,
   // isLoading:isLoadingReducer,
   },
 });

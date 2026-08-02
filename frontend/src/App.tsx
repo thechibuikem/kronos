@@ -1,3 +1,4 @@
+import { AppProvider } from "./api/Context";
 import LoginPage from "./features/auth/pages/LoginPage";
 import Dashboard from "./features/home/pages/Dashboard";
 import Krons from "./features/krons/pages/Krons";
@@ -5,8 +6,9 @@ import Repos from "./features/repos/pages/Repositories";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./protectedRoute";
 import PublicRoute from "./PublicRoute";
-import { AppProvider } from "./api/Context";
-export const baseBackendUrl = `${import.meta.env.VITE_BASE_BACKEND_URL}`;
+import { ToastContainer } from "./features/feedback/components/ToastContainer";
+// export const baseBackendUrl = `${import.meta.env.VITE_BASE_BACKEND_URL}`;
+
 
 
 
@@ -15,6 +17,7 @@ function App() {
 
   return (
     <AppProvider>
+      <ToastContainer />
       <Routes>
         <Route
           path="/"

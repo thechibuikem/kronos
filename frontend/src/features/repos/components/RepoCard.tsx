@@ -5,6 +5,9 @@ import { type Kron } from "@/features/krons/slices/allKron.Slice";
 import { Loader } from "@/features/loading/components/preloader";
 import { getUrls } from "@/config.ts";
 import { useState } from "react";
+// import { UseDispatch } from "react-redux";
+import { addToast } from "@/features/feedback/slices/Toast.Slice";
+import { useAppDispatch } from "@/hooks/hooks";
 
 const { backendUrl } = getUrls();
 
@@ -29,28 +32,8 @@ function RepoCard({
   const { updateKronUiHandler } = useAllKronsHandler();
   const kronData: Partial<Kron> = { githubOwnerId, repoId };
   const webhookData: WebhookData = { repoName: repoName, owner };
+const dispatch = useAppDispatch()
 
-  // async function addKron() {
-  //   try {
-  //     setIsLoading(true);
-  //     const createRes = await axios.post(
-  //       `${backendUrl}/api/v1/krons/kron`,
-  //       { kronData },
-  //       { withCredentials: true },
-  //     );
-  //     await axios.post(
-  //       `${backendUrl}/api/v1/changeDetection/webhook`,
-  //       { kronData, webhookData },
-  //       { withCredentials: true },
-  //     );
-  //     const createKron:Kron = createRes.data.data.kron
-  //     await updateKronUiHandler(createKron);
-  //   } catch (error) {
-  //     console.log("error adding kron", error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // }
 
 async function addKron() {
   try {
@@ -61,17 +44,21 @@ async function addKron() {
       { withCredentials: true },
     );
     const createKron: Kron = createRes.data.data.kron;
-
-    try {``
+    
+try {
       await axios.post(
         `${backendUrl}/api/v1/changeDetection/webhook`,
         { kronData, webhookData },
         { withCredentials: true },
       );
+      // send feedback
+    dispatch(addToast({ message: "Kron added", type: "success" }));
     } catch (webhookErr) {
       await axios.delete(`${backendUrl}/api/v1/krons/kron/${createKron.repoId}`, {
         withCredentials: true,
       });
+      // send feedback
+       dispatch(addToast({ message: "Failed to add kron", type: "error" }));
       throw webhookErr;
     }
 
