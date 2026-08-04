@@ -39,12 +39,9 @@ export const addOauthUser = async (email, user,access_token) => {
       newUser.refreshToken = refreshToken;
       await newUser.save();
 
-      // .retrieve new user's objectId 
-
-
       //.4 storing refresh token in redis 'w' TTL
     console.log("refreshToken\n @ add new user", typeof refreshToken);
-    console.log("newUserId\n @ add new user", typeof newUser["_id"]);
+    // console.log("newUserId\n @ add new user", typeof newUser["_id"]);
       try{
       redisClient.set(`refresh:${refreshToken}`, newUser["_id"].toString(), {
         EX: 60 * 60 * 24 * 30,
@@ -66,6 +63,13 @@ export const addOauthUser = async (email, user,access_token) => {
         },
       };
     }
+
+
+
+
+
+
+
     //2. user Exists
     if (existingOauthUser) {
       //.1 create tokens
@@ -84,6 +88,18 @@ export const addOauthUser = async (email, user,access_token) => {
       );
 
     //.3 updating our saved user
+
+    /**  
+     * I believe, I have discovered the reason why my refresh tokens stack up at redis
+     * On first successful signup or login, the active refresh token (at redis), matches the current refresh-token at redis
+     * However, when we do oauth for an existing user, we update the refreshToken, before we try deleting it at redis, using the same refresh token
+     * adversely, nothing gets deleted, and refresh tokens pile up eventually.
+    */
+
+    // preserve current token
+    const currentToken = existingOauthUser.refreshToken
+
+    // update existing user
     existingOauthUser.githubId = user.id;
     existingOauthUser.repos_url = user.repos_url,
     existingOauthUser.refreshToken = refreshToken;
@@ -93,14 +109,10 @@ export const addOauthUser = async (email, user,access_token) => {
       existingOauthUser.userEmail = email
       } 
 
-      // .3 Store refresh token in redis
-      // console.log("refreshToken\n @ add existing user", typeof refreshToken);
-      // console.log("newUserId\n @ add existing user", typeof existingOauthUser["_id"]);
-
       try {
-        // Before generating new tokens for existing user:
+        // Delete current token, Before setting new tokens for existing user:
         if (existingOauthUser.refreshToken) {
-          await redisClient.del(`refresh:${existingOauthUser.refreshToken}`);
+          await redisClient.del(`refresh:${currentToken}`);
         }
         redisClient.set(`refresh:${refreshToken}`, existingOauthUser["_id"].toString(), {
           EX: 60 * 60 * 24 * 30,
