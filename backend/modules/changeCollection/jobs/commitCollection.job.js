@@ -12,8 +12,7 @@ export async function collectChanges() {
     const userId = key.split(":")[1];
     const kronId = key.split(":")[2];
     const kron = await getKron(kronId);
-    const kronName = kron.repo.repoName
-
+    const kronName = kron.repo.repoName;
 
     // Fetch all commits for this user, under this kron
     const commits = await redisClient.lRange(key, 0, -1);
@@ -23,10 +22,9 @@ export async function collectChanges() {
     // Parse commits back to objects
     const commitObjects = commits.map((commit) => JSON.parse(commit));
 
-    console.log("logging commit objects",commitObjects)
+    console.log("logging commit objects", commitObjects);
 
-
-      const jobData = {
+    const jobData = {
       userId,
       kronId,
       kronName,
@@ -41,19 +39,20 @@ export async function collectChanges() {
       continue;
     }
 
-
-
-// add to queue for the actual analysis
+    // add to queue for the actual analysis
     try {
-    await analysisQueue.add("analyze", jobData);
-    console.log("✓ Successfully queued");
+      await analysisQueue.add("analyze", jobData);
+      console.log("✓ Successfully queued");
     } catch (error) {
       console.error("✗ Queue.add() failed:", error.message);
     }
-
   }
 }
 
+// export function startCollectChangesCron() {
+//   cron.schedule("0 0 */6 * * *", collectChanges);
+// }
+
 export function startCollectChangesCron() {
-  cron.schedule("0 0 */6 * * *", collectChanges);
+  cron.schedule("0 0/3 * * * *", collectChanges);
 }
