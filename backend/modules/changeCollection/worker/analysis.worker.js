@@ -21,11 +21,9 @@ export const analysisWorker = new Worker(
     const mail = await sendMail(userId,insights);
     console.log("mail at analysis-worker",mail)
 
-    // Persist to MongoDB
 
     // Clear Redis
     await redisClient.del(`kron:${userId}:${kronId}:commits`);
-
     console.log("it got to the deleting from redis part");
     return { success: true };
   },
