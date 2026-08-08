@@ -1,6 +1,6 @@
 import { Worker } from "bullmq";
-import { analysisQueue } from "../../../core/queue/analysis.queue.js";
-import { redisClient } from "../../../core/redis.client.js";
+// import { analysisQueue } from "../../../core/queue/analysis.queue.js";
+import { redisClient, bullmqconnection} from "../../../core/redis.client.js";
 import { analyze } from "../../analytical-engine/services/analyse.js";
 import { sendMail } from "../../notification-system/services/sendmail.service.js";
 
@@ -16,11 +16,9 @@ export const analysisWorker = new Worker(
     const insights = await analyze(kronName, commits);
     // console.log("\nAI's insight",insights)
 
-
     // send mail
-    const mail = await sendMail(userId,insights);
-    console.log("mail at analysis-worker",mail)
-
+    const mail = await sendMail(userId, insights);
+    console.log("mail at analysis-worker", mail);
 
     // Clear Redis
     await redisClient.del(`kron:${userId}:${kronId}:commits`);
@@ -28,13 +26,10 @@ export const analysisWorker = new Worker(
     return { success: true };
   },
   {
-    connection: {
-      host: process.env.REDIS_HOST,
-      port: parseInt(process.env.REDIS_PORT),
-      password: process.env.REDIS_PASSWORD,
-      username: "default",
-    },
+    connection: bullmqconnection,
   },
+  console.log(`${process.env.REDIS_HOST}`),
+  console.log(`${process.env.REDIS_PORT}`),
 );
 
 analysisWorker.on("completed", (job) => {

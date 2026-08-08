@@ -10,14 +10,31 @@ export async function analyze(kronName, commits){
   if (heuristics.isFlagged) {
     // send to Gemini for analysis
     const insights = await flaggedAgent(kronName, metrics, heuristics.flags);
-    console.log("AI's flagged insight",insight)
+
+    if (!insights){
+        console.error({
+          message: `Ai flagged insight generation failed`,
+          location: "analytical-engine/services/analyse.js",
+          error: insights,
+        });
+    }
+
+    console.log("AI's flagged insight",insights)
     return insights;
   } else {
     // send template email
     const insights = await unflaggedAgent(kronName, metrics);
-    console.log("AI's unflagged insight",insight)
-    return insights;
 
+       if (!insights) {
+         console.error({
+           message: `Ai unflagged insight generation failed`,
+           location: "analytical-engine/services/analyse.js",
+           error: insights,
+         });
+       }
+
+    console.log("AI's unflagged insight",insights)
+    return insights;
   }
 }
 

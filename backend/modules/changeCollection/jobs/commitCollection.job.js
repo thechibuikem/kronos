@@ -54,5 +54,5 @@ export async function collectChanges() {
 // }
 
 export function startCollectChangesCron() {
-  cron.schedule("0 0/3 * * * *", collectChanges);
+  cron.schedule("*/2 * * * *", collectChanges);
 }

@@ -32,12 +32,30 @@ export async function unflaggedAgent(kronName, metrics) {
       `;
 
   const response = await ai.models.generateContent({
-    model: "gemini-3.5-flash",
+    model: "gemini-3.6-flash",
     contents: prompt,
     config: {
       responseMimeType: "application/json",
     },
   });
 
-  return JSON.parse(response.text);
+console.log("response @ flagged agent", response);
+console.log("text response @ flagged agent", response.text);
+
+const insights = JSON.parse(response.text);
+
+
+if (!insights){
+    console.error({
+      message: `insights is undefined`,
+      location: "analytical-engine/agents/unflagged.agent.js",
+      error: insights,
+    });
+}
+
+
+console.log("insights at unflagged agent",insights)
+
+
+return insights;
 }

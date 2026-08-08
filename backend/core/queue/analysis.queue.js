@@ -1,12 +1,10 @@
 import { Queue } from "bullmq";
+import { bullmqconnection } from "../redis.client.js";
+
+ 
 
 export const analysisQueue = new Queue("analysis-queue", {
-  connection: {
-    host: process.env.REDIS_HOST,
-    port: parseInt(process.env.REDIS_PORT),
-    password: process.env.REDIS_PASSWORD,
-    username: "default",
-  },
+  connection: bullmqconnection,
   defaultJobOptions: {
     attempts: 3, // Retry 3 times total
     backoff: {

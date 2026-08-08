@@ -1,8 +1,8 @@
+import "dotenv/config";
 import cors from "cors";
 import express from "express";
 import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
-import dotenv from "dotenv";
 import connectDB from "./db.js";
 import { connectRedis } from "./redis.client.js"
 import { getUrls } from "./config.js";
@@ -15,7 +15,6 @@ import repoRoutes from "../modules/repos/routes/repos.route.js";
 import kronRoutes from "../modules/krons/routes/krons.route.js";
 import changeDetectionRoutes from "../modules/changeDetection/routes/changeDetection.routes.js";
 
-dotenv.config();
 
 // 1. getting urls
 const { frontendUrl, backendUrl } = getUrls();

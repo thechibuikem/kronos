@@ -1,4 +1,7 @@
 import { createClient } from "redis";
+import {createNodeRedisClient } from "bullmq";
+// const {createNodeRedisClient} = bullmq
+
 
 //1. initialize a redis client instance
 export const redisClient = createClient({
@@ -6,18 +9,23 @@ export const redisClient = createClient({
   password: process.env.REDIS_PASSWORD,
   socket: {
     host: process.env.REDIS_HOST,
-    port: process.env.REDIS_PORT,
+    port: parseInt(process.env.REDIS_PORT),
   },
+  tls:true
 });
+
+export const bullmqconnection = createNodeRedisClient(redisClient);
+
 
 // 2. log any errors encountered
 redisClient.on("error", (err) => console.log("Redis Client Error", err));
 
 // 3. create async function that connects to redis
 export async function connectRedis() {
+  if (redisClient.isOpen) return; // already connected, skip
   try {
     await redisClient.connect();
-    console.log(`Connected to redis 🌟`);
+    console.log("Connected to redis 🌟");
   } catch (err) {
     console.log("error connecting to redis 💣\n", err);
   }
