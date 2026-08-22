@@ -1,20 +1,25 @@
 import { Queue } from "bullmq";
-import { bullmqconnection } from "../redis.client.js";
+import { getBullMQConnection } from "../redis.client.js";
 
- 
+let analysisQueue;
 
-export const analysisQueue = new Queue("analysis-queue", {
-  connection: bullmqconnection,
-  defaultJobOptions: {
-    attempts: 3, // Retry 3 times total
-    backoff: {
-      type: "exponential",
-      delay: 2000, // Start at 2s, exponential backoff
+export function initializeAnalysisQueue() {
+  analysisQueue = new Queue("analysis-queue", {
+    connection: getBullMQConnection(),
+    defaultJobOptions: {
+      attempts: 3,
+      backoff: {
+        type: "exponential",
+        delay: 2000,
+      },
+      removeOnComplete: true,
+      removeOnFail: false,
     },
-    removeOnComplete: true,
-    removeOnFail: false, // Delete failed jobs too
-  },
-});
+  });
+  console.log("Analysis Queue Initialized Successfully 🌟");
+  return analysisQueue;
+}
 
-
-
+export function getAnalysisQueue() {
+  return analysisQueue;
+}

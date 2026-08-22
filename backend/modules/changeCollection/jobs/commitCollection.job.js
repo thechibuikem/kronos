@@ -1,11 +1,12 @@
 import cron from "node-cron";
 import { redisClient } from "../../../core/redis.client.js";
-import { analysisQueue } from "../../../core/queue/analysis.queue.js";
+import { getAnalysisQueue } from "../../../core/queue/analysis.queue.js";
 import { getKron } from "../../krons/service/krons.service.js";
 
 export async function collectChanges() {
   // Get all user keys from Redis
   const keys = await redisClient.keys("kron:*:*:commits");
+  const analysisQueue = getAnalysisQueue();
 
   for (const key of keys) {
     // Extract credentials from key
@@ -49,6 +50,11 @@ export async function collectChanges() {
   }
 }
 
+// export function startCollectChangesCron() {
+//   cron.schedule("0 */6 * * *", collectChanges);
+// }
+
+
 export function startCollectChangesCron() {
-  cron.schedule("0 */6 * * *", collectChanges);
+  cron.schedule("*/2 * * * *", collectChanges);
 }

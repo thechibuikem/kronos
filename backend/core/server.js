@@ -1,32 +1,36 @@
+
+import dns from "node:dns";
+dns.setDefaultResultOrder("ipv4first");
+
+// trying to resolve, connection timeout on first try.
+
 import "dotenv/config";
 import cors from "cors";
 import express from "express";
 import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
 import connectDB from "./db.js";
-import { connectRedis } from "./redis.client.js"
+import { connectRedis } from "./redis.client.js";
 import { getUrls } from "./config.js";
 import { startCollectChangesCron } from "../modules/changeCollection/jobs/commitCollection.job.js";
-import { verifyWebhookSignature } from "./middlewares/webhook.middleware.js";
-import { analysisQueue } from "./queue/analysis.queue.js";
-import { analysisWorker } from "../modules/changeCollection/worker/analysis.worker.js";
+const { initializeAnalysisQueue } = await import("./queue/analysis.queue.js");
+const { initializeAnalysisWorker } = await import("../modules/changeCollection/worker/analysis.worker.js");
 import authRoutes from "../modules/auth/routes/auth.route.js";
 import repoRoutes from "../modules/repos/routes/repos.route.js";
 import kronRoutes from "../modules/krons/routes/krons.route.js";
 import changeDetectionRoutes from "../modules/changeDetection/routes/changeDetection.routes.js";
 
-
 // 1. getting urls
 const { frontendUrl, backendUrl } = getUrls();
 
 // 2. constructing auth limiter
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 10,
-  message: { error: "Kronos says too many attempts,try again later" },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
+// const authLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 10,
+//   message: { error: "Kronos says too many attempts,try again later" },
+//   standardHeaders: true,
+//   legacyHeaders: false,
+// });
 
 // 3. mounting CORS
 const allowedOrigin = frontendUrl;
@@ -52,15 +56,12 @@ app.use(
   }),
 );
 
-
-
 app.use(cookieParser());
 
 /**  
   6. rate limiter for my endpoints
  app.use("/api/auth", authLimiter);
  */
-
 
 // *. middle ware that logs every request coming to my server
 app.use((req, res, next) => {
@@ -90,6 +91,8 @@ async function startServer() {
   try {
     await connectDB();
     await connectRedis();
+    initializeAnalysisQueue();
+    initializeAnalysisWorker();
     startCollectChangesCron();
     app.listen(PORT, () => {
       console.log(`Server running on port:${backendUrl}`);
@@ -99,4 +102,4 @@ async function startServer() {
   }
 }
 
-await startServer()
+await startServer();
