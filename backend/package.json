@@ -21,12 +21,13 @@
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "express-rate-limit": "^8.2.1",
+    "gcp-metadata": "^7.0.1",
     "ioredis": "^6.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^9.3.0",
     "node-cron": "^4.2.1",
     "octokit": "^5.0.5",
-    "redis": "^5.9.0",
+    "redis": "^5.12.1",
     "resend": "^6.12.4"
   },
   "devDependencies": {
