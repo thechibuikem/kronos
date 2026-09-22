@@ -35,7 +35,7 @@ function StatusStrip() {
           <span className="absolute inset-0 rounded-full bg-emerald-500" />
         </div>
         <span className="text-[15px] font-medium text-[#e2e8f0]">
-          Kronos is <span className="text-[#06b6d4]">watching</span>
+          Kronos is watching
         </span>
       </div>
 
@@ -53,7 +53,7 @@ function StatusStrip() {
         <div className="w-px h-8 bg-[#1e293b]" />
 
         <div className="flex flex-col items-center gap-0.5 flex-1 md:flex-none md:min-w-[72px]">
-          <span className="text-[22px] md:text-[26px] font-bold tracking-tight text-[#06b6d4] tabular-nums leading-none">
+          <span className="text-[22px] md:text-[26px] font-bold tracking-tight text-[#e2e8f0] tabular-nums leading-none">
             {repos.length}
           </span>
           <span className="text-[10px] uppercase tracking-wider text-[#475569]">
