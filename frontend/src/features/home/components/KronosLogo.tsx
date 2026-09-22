@@ -10,7 +10,7 @@ export default function KronosLogo({
   return (
     <figure className="flex gap-x-2.5 justify-center items-center">
       <h1 className="text-lg font-semibold tracking-tight" style={{ color }}>
-        Kron<span style={{ color: accentColor }}>os</span>
+        Kronos
       </h1>
     </figure>
   );
