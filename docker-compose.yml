@@ -1,0 +1,15 @@
+services:
+  kronos:
+    build: ./backend
+    env_file: ./backend/.env
+    ports:
+      - "5000:5000"
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - kronos
