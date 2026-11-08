@@ -1,22 +1,17 @@
-import { useState } from "react";
 import RepoCard from "@/features/repos/components/RepoCard";
 import { Loader } from "@/features/loading/components/preloader";
 import { useAllReposHandler } from "@/features/repos/handlers/allRepo.Handlers";
 import { LuChevronDown } from "react-icons/lu";
 
-const PAGE_SIZE = 10;
+interface RepoWrapperProps {
+  visible: number;
+  onLoadMore: () => void;
+}
 
-function RepoWrapper() {
+function RepoWrapper({ visible, onLoadMore }: RepoWrapperProps) {
   const { repos } = useAllReposHandler();
-  console.log(repos)
-  const [visible, setVisible] = useState<number>(PAGE_SIZE);
-  
   const visibleRepos = repos.slice(0, visible);
   const hasMore = visible < repos.length;
-
-  function loadMore() {
-    setVisible((prev) => prev + PAGE_SIZE);
-  }
 
   return (
     <section className="w-full flex flex-col gap-y-6">
@@ -36,9 +31,9 @@ function RepoWrapper() {
           </div>
         ) : (
           <>
-            {visibleRepos.map((repo, index) => (
+            {visibleRepos.map((repo) => (
               <RepoCard
-                key={index}
+                key={repo.repoId}
                 repoName={repo.repoName}
                 repoUrl={repo.repoUrl}
                 githubOwnerId={repo.githubOwnerId}
@@ -50,7 +45,7 @@ function RepoWrapper() {
 
             {hasMore && (
               <button
-                onClick={loadMore}
+                onClick={onLoadMore}
                 className="w-full flex items-center justify-center gap-2 px-5 py-3.5 mt-1
                   rounded-xl border border-[#1e293b] bg-[#111118]
                   text-sm font-medium text-[#64748b]

@@ -1,5 +1,6 @@
 import { LuGithub, LuArrowUpRight, LuLock, LuGlobe } from "react-icons/lu";
 import { type Kron } from "../slices/allKron.Slice";
+import { getSearchTargetId } from "@/features/home/utilis/searchTargets";
 
 // export type kronType = {
 //   name: string;
@@ -12,9 +13,11 @@ export default function KronCard({
   repoUrl,
   owner,
   isPrivate,
+  repoId,
 }: Partial<Kron>) {
   return (
     <div
+      id={repoId ? getSearchTargetId(repoId) : undefined}
       className="relative w-full aspect-square flex flex-col justify-between p-3.5 rounded-2xl
       bg-[#111118] border border-[#1e293b] hover:border-[#334155] hover:-translate-y-0.5
       transition-all duration-150"

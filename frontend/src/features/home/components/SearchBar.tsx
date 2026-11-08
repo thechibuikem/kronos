@@ -6,10 +6,6 @@ import { useContext } from "react";
 
 function SearchBar() {
   const context = useContext(AppContext);
-  if (!context) {
-    console.log("Dashboard must be used inside AppProvider");
-  }
-
   const { isSearchOpen, setIsSearchOpen, setSearchValue } = context;
 
   return (
@@ -18,10 +14,15 @@ function SearchBar() {
         className="w-full rounded-lg pl-9 pr-4 py-2.5 border border-[#1e293b] bg-[#111118]
           focus-visible:ring-0 text-[#e2e8f0] placeholder:text-[#475569]
           focus-visible:ring-offset-0 focus-visible:border-[#06b6d4] transition-colors"
-        placeholder="Search for a Kron..."
-        onFocus={() => setIsSearchOpen(!isSearchOpen)}
-        onBlur={() => setIsSearchOpen(!isSearchOpen)}
-        onChange={(e) => setSearchValue(e.target.value)}
+        placeholder="Search repositories and Krons..."
+        onFocus={() => setIsSearchOpen(true)}
+        onChange={(event) => {
+          setSearchValue(event.target.value);
+          setIsSearchOpen(true);
+        }}
+        onKeyDown={(event) => {
+          if (event.key === "Escape") setIsSearchOpen(false);
+        }}
       />
 
       <span className="absolute left-3 pointer-events-none">
@@ -29,8 +30,13 @@ function SearchBar() {
       </span>
 
       <button
+        type="button"
         className="absolute right-3 cursor-pointer text-[#475569] hover:text-[#94a3b8]"
-        onClick={() => setIsSearchOpen(!isSearchOpen)}
+        onMouseDown={(event) => event.preventDefault()}
+        onClick={() => {
+          setIsSearchOpen(!isSearchOpen);
+          if (isSearchOpen) setSearchValue("");
+        }}
       >
         {isSearchOpen ? <TbZoomCancel size={16} /> : null}
       </button>
