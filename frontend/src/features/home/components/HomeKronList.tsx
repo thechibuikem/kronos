@@ -18,10 +18,11 @@ function KronList({kronArray}: kronListProps) {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
         {kronArray.map((kron, index) => (
           <KronCard
-            key={index}
+            key={kron.repoId ?? index}
             repoName={kron.repoName}
             repoUrl={kron.repoUrl}
             owner={kron.owner}
+            repoId={kron.repoId}
             // desc={kron.desc}
           />
         ))}

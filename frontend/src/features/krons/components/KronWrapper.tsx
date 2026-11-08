@@ -22,9 +22,9 @@ function KronWrapper() {
       </div>
 
       <div className="flex flex-col gap-y-2.5">
-        {krons.map((kron, index) => (
+        {krons.map((kron) => (
           <KronUpdateCard
-            key={index}
+            key={kron.repoId}
             repoName={kron.repoName}
             repoId={kron.repoId}
           />

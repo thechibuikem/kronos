@@ -7,6 +7,7 @@
   import { useState } from "react";
   import { useAppDispatch } from "@/hooks/hooks";
   import { addToast } from "@/features/feedback/slices/Toast.Slice";
+  import { getSearchTargetId } from "@/features/home/utilis/searchTargets";
 
   const { backendUrl } = getUrls();
 
@@ -40,7 +41,10 @@
     }
 
     return (
-      <div className="w-full flex items-center justify-between px-5 py-4 bg-[#111118] border border-[#1e293b] rounded-xl hover:border-[#334155] transition-all duration-150">
+      <div
+        id={repoId ? getSearchTargetId(repoId) : undefined}
+        className="w-full flex items-center justify-between px-5 py-4 bg-[#111118] border border-[#1e293b] rounded-xl hover:border-[#334155] transition-all duration-150"
+      >
         <div className="flex items-center gap-3.5">
           <div className="flex items-center justify-center w-9 h-9 rounded-[9px] bg-[#0a0a0f] border border-[#1e293b] shrink-0">
             <LuGithub size={16} color="#06b6d4" />
