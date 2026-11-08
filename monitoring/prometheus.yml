@@ -6,6 +6,8 @@ scrape_configs:
     static_configs:
       - targets: ["localhost:9090"]   
 
-  - job_name: kronos       
+  - job_name: kronos      
+    authorization:
+      credentials_file: /etc/prometheus/metrics_token 
     static_configs:
       - targets: ["kronos:5000"]     

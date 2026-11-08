@@ -11,5 +11,7 @@ services:
       - "9090:9090"
     volumes:
       - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/metrics_token:/etc/prometheus/metrics_token:ro
+
     depends_on:
       - kronos
