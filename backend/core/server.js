@@ -12,6 +12,7 @@ import cookieParser from "cookie-parser";
 import connectDB from "./db.js";
 import { connectRedis } from "./redis.client.js";
 import { getUrls } from "./config.js";
+import { client } from "./metrics.js";
 import { startCollectChangesCron } from "../modules/changeCollection/jobs/commitCollection.job.js";
 const { initializeAnalysisQueue } = await import("./queue/analysis.queue.js");
 const { initializeAnalysisWorker } = await import("../modules/changeCollection/worker/analysis.worker.js");
@@ -62,8 +63,12 @@ app.use(cookieParser());
   6. rate limiter for my endpoints
  app.use("/api/auth", authLimiter);
  */
+app.get('/metrics', async (req, res)=>{
+  res.set("Content-Type", client.register.contentType);
+  res.end(await client.register.metrics());
+})
 
-// *. middle ware that logs every request coming to my server
+// middle ware that logs every request coming to my server
 app.use((req, res, next) => {
   console.log("Incoming request:", req.method, req.url);
   next();

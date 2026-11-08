@@ -25,9 +25,10 @@ export function verifyWebhookSignature(req, res, next) {
       trusted.length !== computed.length ||
       !crypto.timingSafeEqual(trusted, computed)
     ) {
+      webhooksTotal.inc({ result: "bad_hmac" });
       return res.status(401).json({ error: "Invalid signature" });
     }
-
+    webhooksTotal.inc({ result: "ok" });
     next();
   } catch (error) {
     return res.status(500).json({ error: "Signature verification failed" });
