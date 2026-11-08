@@ -12,6 +12,7 @@ import cookieParser from "cookie-parser";
 import connectDB from "./db.js";
 import { connectRedis } from "./redis.client.js";
 import { getUrls } from "./config.js";
+import { client } from "./metrics.js";
 import { startCollectChangesCron } from "../modules/changeCollection/jobs/commitCollection.job.js";
 const { initializeAnalysisQueue } = await import("./queue/analysis.queue.js");
 const { initializeAnalysisWorker } = await import("../modules/changeCollection/worker/analysis.worker.js");
@@ -24,13 +25,13 @@ import changeDetectionRoutes from "../modules/changeDetection/routes/changeDetec
 const { frontendUrl, backendUrl } = getUrls();
 
 // 2. constructing auth limiter
-// const authLimiter = rateLimit({
-//   windowMs: 15 * 60 * 1000,
-//   max: 10,
-//   message: { error: "Kronos says too many attempts,try again later" },
-//   standardHeaders: true,
-//   legacyHeaders: false,
-// });
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { error: "Kronos says too many attempts,try again later" },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 // 3. mounting CORS
 const allowedOrigin = frontendUrl;
@@ -58,12 +59,29 @@ app.use(
 
 app.use(cookieParser());
 
-/**  
-  6. rate limiter for my endpoints
- app.use("/api/auth", authLimiter);
- */
+  
+// 6. rate limiter for my endpoints
+app.use("/api/auth", authLimiter);
+ 
+// =========== Monitoring ============= //
 
-// *. middle ware that logs every request coming to my server
+function tokenOk(given) {
+  const a = Buffer.from(given);
+  const b = Buffer.from(process.env.METRICS_TOKEN || "");
+  return b.length > 0 && a.length === b.length && crypto.timingSafeEqual(a, b);
+}
+
+app.get("/metrics", async (req, res) => {
+  const auth = req.headers.authorization || "";
+  const given = auth.startsWith("Bearer ") ? auth.slice(7) : "";
+  if (!tokenOk(given)) return res.status(401).end();
+
+  res.set("Content-Type", client.register.contentType);
+  res.end(await client.register.metrics());
+});
+// =========== ============= //
+
+// middle ware that logs every request coming to my server
 app.use((req, res, next) => {
   console.log("Incoming request:", req.method, req.url);
   next();

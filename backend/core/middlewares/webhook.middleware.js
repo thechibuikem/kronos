@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import { webhooksTotal } from "../metrics.js";
 
 export function verifyWebhookSignature(req, res, next) {
   try {
@@ -25,11 +26,13 @@ export function verifyWebhookSignature(req, res, next) {
       trusted.length !== computed.length ||
       !crypto.timingSafeEqual(trusted, computed)
     ) {
+      webhooksTotal.inc({ result: "bad_hmac" });
       return res.status(401).json({ error: "Invalid signature" });
     }
-
+    webhooksTotal.inc({ result: "ok" });
     next();
   } catch (error) {
+    console.error(error, " Unexpected error in webhook payload verification")
     return res.status(500).json({ error: "Signature verification failed" });
   }
 }

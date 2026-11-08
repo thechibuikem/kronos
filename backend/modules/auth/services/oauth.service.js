@@ -34,10 +34,8 @@ export async function githubTokenService(code) {
     throw new Error("Github Token Request Failed");
     } 
       
-
   //.3 retrieving access token from token response
   const { access_token } = await tokenRes.json();
-
 
   //.4 Fetching user profile
   const userRes = await fetch("https://api.github.com/user", {
