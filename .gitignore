@@ -12,6 +12,8 @@ dist
 dist-ssr
 *.local
 
+metrics_token
+
 #environmental variables 
 .env
 *.env
